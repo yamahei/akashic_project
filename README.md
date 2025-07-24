@@ -32,15 +32,15 @@ akashic_project
 プロジェクト
 ----------
 
-### プロジェクトA(/prj/projectA)
-### プロジェクトB(/prj/projectB)
+### プロジェクトA(`/prj/projectA`)
+### プロジェクトB(`/prj/projectB`)
 
 その他の詳細
 ----------
 
-### TODO: 自作ライブラリ(/prj/lib)
-### TODO: コマンドラインツール(/bin)
-### TODO: Dockerコンテナ(/Dockerfile)
+### TODO: 自作ライブラリ(`/prj/lib`)
+### TODO: コマンドラインツール(`/bin`)
+### TODO: Dockerコンテナ(`/Dockerfile`)
 
 
 
