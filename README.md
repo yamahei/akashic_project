@@ -25,6 +25,7 @@ akashic_project
 │   ├── projectB     # プロジェクトルート（B）
 │   └── ...
 ├── Dockerfile       # コンテナ定義
+├── GEMINI.md        # Geminiへの基本指示
 ├── README.md        # このファイル
 └── index.html       # Github公開トップページ
 ```
@@ -42,6 +43,11 @@ akashic_project
 ### TODO: コマンドラインツール(`/bin`)
 ### TODO: Dockerコンテナ(`/Dockerfile`)
 
+保守
+----
 
+### リモートブランチに存在しないのブランチをすべて削除する
 
-
+```sh
+git fetch -p && git branch -vv | grep ': gone]' | awk '{print $1}' | xargs git branch -D
+```
