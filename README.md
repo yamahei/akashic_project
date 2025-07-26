@@ -43,6 +43,32 @@ akashic_project
 ### TODO: コマンドラインツール(`/bin`)
 ### TODO: Dockerコンテナ(`/Dockerfile`)
 
+#### ビルド
+```sh
+docker build -t akashic-dev .
+```
+
+#### 起動
+```sh
+docker run -it --rm -v "$(pwd)/prj":/akashic/prj -p 3300:3300 -p 3000:3000 akashic-dev
+```
+
+#### ビルド&起動
+```sh
+docker build -t akashic-dev . && docker run -it --rm -v "$(pwd)/prj":/akashic/prj -p 3300:3300 -p 3000:3000 akashic-dev
+```
+
+#### ログの表示
+```sh
+docker logs -f $(docker ps | grep akashic-dev | gawk '{print $1}')
+```
+
+#### 不要なリソースの削除
+```sh
+docker system prune -f
+```
+
+
 保守
 ----
 
