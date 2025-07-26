@@ -103,7 +103,12 @@ akashic sandbox
 ----------
 
 ### TODO: 自作ライブラリ(`/prj/lib`)
-### TODO: コマンドラインツール(`/bin`)
+### コマンドラインツール(`/bin`)
+
+<dl>
+<dt>convert_images.sh</dt>
+<dd>ORIGINAL_ASSETS/内の画像をprj/assets/image/にコピーし、PNG形式に変換します。その際、色`#007575`を透過します。</dd>
+</dl>
 
 
 保守
