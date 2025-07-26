@@ -30,43 +30,77 @@ akashic_project
 └── index.html       # Github公開トップページ
 ```
 
-プロジェクト
-----------
+Dockerコンテナ
+--------------
 
-### プロジェクトA(`/prj/projectA`)
-### プロジェクトB(`/prj/projectB`)
+### ビルド&起動
+```sh
+docker build -t akashic-dev . && docker run -it --rm -v "$(pwd)/prj":/akashic/prj -p 3300:3300 -p 3000:3000 akashic-dev
+```
+
+<details>
+<summary>コマンド詳細</summary>
+
+### ビルド
+```sh
+docker build -t akashic-dev .
+```
+### 起動
+```sh
+docker run -it --rm -v "$(pwd)/prj":/akashic/prj -p 3300:3300 -p 3000:3000 akashic-dev
+```
+### ログの表示
+```sh
+docker logs -f $(docker ps | grep akashic-dev | gawk '{print $1}')
+```
+### 不要なリソースの削除
+```sh
+docker system prune -f
+```
+</details>
+
+
+プロジェクト
+------------
+
+「プロジェクト」とは主にAkashic Engineを使ったプロジェクトを指す。
+（その他ツール等の非Akashicプロジェクトもあり得る）
+プロジェクトは直下に`README.md`を置くこと。
+
+### 共通の情報
+
+#### 新規プロジェクトの作成
+
+コンテナの`WORKDIR`直下(`/akashic/prj`)で以下のコマンドを実行する。
+（プロジェクト名は`${PRJ_NAME}`とする）
+
+```sh
+PRJ_NAME=00.hello-akashic
+mkdir -p /akashic/prj/${PRJ_NAME}
+cd /akashic/prj/${PRJ_NAME}
+akashic init -t typescript
+```
+
+#### プロジェクトの実行
+
+```sh
+# プロジェクトディレクトリで実行する
+akashic sandbox
+```
+
+### プロジェクト
+
+<dl>
+<dt>[00.hello-akashic](./prj/00.hello-akashic/README.md)</dt>
+<dd>akashic-cliとDockerコンテナのテストを兼ねて作成。</dd>
+</dl>
+
 
 その他の詳細
 ----------
 
 ### TODO: 自作ライブラリ(`/prj/lib`)
 ### TODO: コマンドラインツール(`/bin`)
-### TODO: Dockerコンテナ(`/Dockerfile`)
-
-#### ビルド
-```sh
-docker build -t akashic-dev .
-```
-
-#### 起動
-```sh
-docker run -it --rm -v "$(pwd)/prj":/akashic/prj -p 3300:3300 -p 3000:3000 akashic-dev
-```
-
-#### ビルド&起動
-```sh
-docker build -t akashic-dev . && docker run -it --rm -v "$(pwd)/prj":/akashic/prj -p 3300:3300 -p 3000:3000 akashic-dev
-```
-
-#### ログの表示
-```sh
-docker logs -f $(docker ps | grep akashic-dev | gawk '{print $1}')
-```
-
-#### 不要なリソースの削除
-```sh
-docker system prune -f
-```
 
 
 保守
