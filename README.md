@@ -77,7 +77,7 @@ docker system prune -f
 コンテナの`WORKDIR`直下(`/akashic/prj`)で以下のコマンドを実行する。
 （プロジェクト名は`${PRJ_NAME}`とする）
 ```sh
-PRJ_NAME=00.hello-akashic
+PRJ_NAME=PRJ_NAME
 mkdir -p /akashic/prj/${PRJ_NAME}
 cd /akashic/prj/${PRJ_NAME}
 akashic init -t typescript
