@@ -67,26 +67,29 @@ docker system prune -f
 （その他ツール等の非Akashicプロジェクトもあり得る）
 プロジェクトは直下に`README.md`を置くこと。
 
+<details>
+<summary>プロジェクト共通の情報・ルール</summary>
+
 ### 共通の情報
 
 #### 新規プロジェクトの作成
 
 コンテナの`WORKDIR`直下(`/akashic/prj`)で以下のコマンドを実行する。
 （プロジェクト名は`${PRJ_NAME}`とする）
-
 ```sh
 PRJ_NAME=00.hello-akashic
 mkdir -p /akashic/prj/${PRJ_NAME}
 cd /akashic/prj/${PRJ_NAME}
 akashic init -t typescript
 ```
-
 #### プロジェクトの実行
-
 ```sh
 # プロジェクトディレクトリで実行する
 akashic sandbox
 ```
+</details>
+
+
 
 ### プロジェクト
 
