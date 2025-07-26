@@ -94,7 +94,7 @@ akashic sandbox
 ### プロジェクト
 
 <dl>
-<dt>[00.hello-akashic](./tree/main/prj/00.hello-akashic)</dt>
+<dt>00.hello-akashic</dt>
 <dd>akashic-cliとDockerコンテナのテストを兼ねて作成。</dd>
 </dl>
 
