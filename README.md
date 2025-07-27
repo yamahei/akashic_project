@@ -105,6 +105,20 @@ akashic sandbox
 ### TODO: 自作ライブラリ(`/prj/lib`)
 ### コマンドラインツール(`/bin`)
 
+#### split_char_images.sh
+
+`ORIGINAL_ASSETS/char_sheets`に配置されたキャラクターシート（PNG画像）を、ゲームで利用可能な32x32のキャラクター画像に分割し、`prj/assets/image/char`に出力します。
+
+**実行方法**
+```sh
+./bin/split_char_images.sh
+```
+
+**前提条件**
+
+*   `ORIGINAL_ASSETS/char_sheets`ディレクトリに、`charaXX.png`という形式で分割したい画像シートが配置されていること。
+*   実行環境にImageMagickがインストールされていること。
+
 #### ~~convert_images.sh~~(廃止)
 
 ~~ORIGINAL_ASSETS/内の画像をprj/assets/image/にコピーし、PNG形式に変換します。その際、色`#007575`を透過します。~~
