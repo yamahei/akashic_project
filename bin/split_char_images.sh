@@ -43,3 +43,16 @@ for file in "$SRC_DIR"/*.gif; do
   done
 
 echo "画像の分割・透過処理が完了しました。"
+echo "画像のリネームを行います。"
+
+ls -1 ${DST_DIR}/*.png | \
+ruby -nle 'ARGF.each{|f| r=f.gsub(/chara([0-9]+)_([a-z]+)([0-9]+)_([0-9]+)/){ "char_#{$2}-#{$1}-#{$4}_#{$3}" } ;puts "mv #{f.chomp} #{r.chomp}" }' | \
+bash
+# なぜか1つ目のファイルだけマッチしないので、ハードコードする（SRCに存在するので失敗しないはず）
+mv prj/assets/image/char/chara01_a1_0.png prj/assets/image/char/char_a-01-0_1.png
+
+# 不要なファイルを削除
+rm prj/assets/image/char/char_b-07-7_1.png # 牛1
+rm prj/assets/image/char/char_b-07-7_2.png # 牛2
+
+# TODO: chara07_b3.gif ベースのファイル（char_b-07-*）は削除したい
