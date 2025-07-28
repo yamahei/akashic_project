@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ja">
+<meta charset="utf-8">
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
+></link>
+<style>
+    img{
+        image-rendering: pixelated;
+    }
+    #color_selector{
+        width: 100%;
+        overflow: auto;
+        white-space: nowrap;
+    }
+    #color_selector figure{
+        display: inline-block;
+        width: 48px;
+        margin: 0 4px;
+        padding: 0;
+    }
+</style>
+<body>
+    <script type="importmap">
+        {
+            "imports": {
+                "vue": "https://cdn.jsdelivr.net/npm/vue@3.2/dist/vue.esm-browser.prod.js"
+            }
+        }
+    </script>
+
+    <div id="app" class="container">
+
+        <div class="columns">
+            <div class="column" :class="getColumnSizeList()[column_size]">
+                <div class="content">
+                    <div class="field has-addons">
+                        <p class="control">
+                            <button class="button" @click="addColumnSize(-1)">➖</button>
+                        </p>
+                        <p class="control">
+                            <button class="button" @click="addColumnSize(+1)">➕</button>
+                        </p>
+                    </div>
+                    <div class="box">
+                        <figure class="image is-9by16">
+                            <img :src="getCharSrc()" />
+                        </figure>                
+                    </div>
+                    <div id="color_selector">
+                        <figure class="image is-9by16" v-for="(char, index) in getCharList()" :key="index" @click="setCharIndex(index)">
+                            <img :src="char?.line" />
+                        </figure>                
+                    </div>
+                </div>
+            </div>
+            <div class="column">
+                <div class="content">
+
+
+<div class="field is-horizontal">
+  <div class="field-label is-normal">
+    <label class="label">From</label>
+  </div>
+  <div class="field-body">
+    <div class="field">
+      <p class="control is-expanded has-icons-left">
+        <input class="input" type="text" placeholder="Name">
+        <span class="icon is-small is-left">
+          <i class="fas fa-user"></i>
+        </span>
+      </p>
+    </div>
+    <div class="field">
+      <p class="control is-expanded has-icons-left has-icons-right">
+        <input class="input is-success" type="email" placeholder="Email" value="alex@smith.com">
+        <span class="icon is-small is-left">
+          <i class="fas fa-envelope"></i>
+        </span>
+        <span class="icon is-small is-right">
+          <i class="fas fa-check"></i>
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="field is-horizontal">
+  <div class="field-label"></div>
+  <div class="field-body">
+    <div class="field is-expanded">
+      <div class="field has-addons">
+        <p class="control">
+          <a class="button is-static">
+            +44
+          </a>
+        </p>
+        <p class="control is-expanded">
+          <input class="input" type="tel" placeholder="Your phone number">
+        </p>
+      </div>
+      <p class="help">Do not enter the first zero</p>
+    </div>
+  </div>
+</div>
+
+<div class="field is-horizontal">
+  <div class="field-label is-normal">
+    <label class="label">Department</label>
+  </div>
+  <div class="field-body">
+    <div class="field is-narrow">
+      <div class="control">
+        <div class="select is-fullwidth">
+          <select>
+            <option>Business development</option>
+            <option>Marketing</option>
+            <option>Sales</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="field is-horizontal">
+  <div class="field-label">
+    <label class="label">Already a member?</label>
+  </div>
+  <div class="field-body">
+    <div class="field is-narrow">
+      <div class="control">
+        <label class="radio">
+          <input type="radio" name="member">
+          Yes
+        </label>
+        <label class="radio">
+          <input type="radio" name="member">
+          No
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="field is-horizontal">
+  <div class="field-label is-normal">
+    <label class="label">Subject</label>
+  </div>
+  <div class="field-body">
+    <div class="field">
+      <div class="control">
+        <input class="input is-danger" type="text" placeholder="e.g. Partnership opportunity">
+      </div>
+      <p class="help is-danger">
+        This field is required
+      </p>
+    </div>
+  </div>
+</div>
+
+<div class="field is-horizontal">
+  <div class="field-label is-normal">
+    <label class="label">Question</label>
+  </div>
+  <div class="field-body">
+    <div class="field">
+      <div class="control">
+        <textarea class="textarea" placeholder="Explain how we can help you"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="field is-horizontal">
+  <div class="field-label">
+    <!-- Left empty for spacing -->
+  </div>
+  <div class="field-body">
+    <div class="field">
+      <div class="control">
+        <button class="button is-primary">
+          Send message
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="module">
+        const FILENAME = "filenames.txt";
+
+        import { createApp } from 'vue';
+
+        createApp({
+            async beforeCreate(){
+                const self = this;
+                await fetch(FILENAME)
+                .then(response => response.text())
+                .then(text => {
+                    const lines = text.split('\n').filter(line => line.trim());
+                    const chars = self.$data.chars = {};
+                    lines.forEach(line => {
+                        const pathes = line.split("/");
+                        const filename = pathes.pop();
+                        const path = pathes.join("/");
+                        const [prefix, id, index, ext] = filename.split(/[_\.]/);
+                        if (!chars[id]) { chars[id] = []; }
+                        chars[id].push({ line, path, prefix, id, index, ext});
+                    });
+                    console.log(chars);
+                })
+                .catch(error => console.error('Error fetching filenames:', error));
+            },
+            data() {
+                return {
+                    name: 'world',
+                    chars: {},
+                    char_id: null,
+                    char_index: null,
+                    column_size: 4,
+                };
+            },
+            methods:{
+                getCharSrc(){
+                    const id = this.char_id || Object.keys(this.chars)[0];
+                    const index = this.char_index || 0;
+                    const src = this.chars[id][index].line;
+                    return src;
+                },
+                getCharList(){
+                    const id = this.char_id || Object.keys(this.chars)[0];
+                    return this.chars[id] || [];
+                },
+                setCharIndex(index){
+                    this.char_index = index;
+                },
+                getColumnSizeList(){
+                    return ["is-one-fifth","is-one-quarter","is-one-third","is-two-fifths","is-half"];
+                },
+                addColumnSize(val){
+                    const list = this.getColumnSizeList();
+                    this.column_size += val;
+                    if(this.column_size < 0){this.column_size = 0;}
+                    if(this.column_size >= list.length){this.column_size = list.length - 1;}
+                },
+            }
+        }).mount('#app');
+
+    </script>
+</body>
+</html>
