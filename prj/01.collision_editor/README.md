@@ -8,8 +8,8 @@
 
 ```sh
 # exec below command in "akashic_project/prj/01.collision_editor"
-ln -s ../assets assets
 ls -1 ../assets/image/char/*.png > ./filenames.txt
+ln -s ../assets assets
 ```
 
 起動
