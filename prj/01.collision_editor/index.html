@@ -9,16 +9,24 @@
     img{
         image-rendering: pixelated;
     }
-    #color_selector{
+    #color_selector {
         width: 100%;
         overflow: auto;
         white-space: nowrap;
     }
-    #color_selector figure{
+    #char_selector {
+        width: 100vw;
+        overflow: auto;
+        white-space: nowrap;
+    }
+    #color_selector figure, #char_selector figure {
         display: inline-block;
         width: 48px;
         margin: 0 4px;
         padding: 0;
+    }
+    input[type="number"] {
+        text-align: right;
     }
 </style>
 <body>
@@ -46,10 +54,11 @@
                     <div class="box">
                         <figure class="image is-9by16">
                             <img :src="getCharSrc()" />
+                            <div class="collision_area" v-for="no in (chip_columns * chip_rows)" :key="index" :style="getRectStyle(chip_columns * chip_rows - 1)" />
                         </figure>                
                     </div>
                     <div id="color_selector">
-                        <figure class="image is-9by16" v-for="(char, index) in getCharList()" :key="index" @click="setCharIndex(index)">
+                        <figure class="image is-9by16" v-for="(char, index) in getColorList()" :key="index" @click="setColorIndex(index)">
                             <img :src="char?.line" />
                         </figure>                
                     </div>
@@ -58,142 +67,104 @@
             <div class="column">
                 <div class="content">
 
-
-<div class="field is-horizontal">
-  <div class="field-label is-normal">
-    <label class="label">From</label>
-  </div>
-  <div class="field-body">
-    <div class="field">
-      <p class="control is-expanded has-icons-left">
-        <input class="input" type="text" placeholder="Name">
-        <span class="icon is-small is-left">
-          <i class="fas fa-user"></i>
-        </span>
-      </p>
-    </div>
-    <div class="field">
-      <p class="control is-expanded has-icons-left has-icons-right">
-        <input class="input is-success" type="email" placeholder="Email" value="alex@smith.com">
-        <span class="icon is-small is-left">
-          <i class="fas fa-envelope"></i>
-        </span>
-        <span class="icon is-small is-right">
-          <i class="fas fa-check"></i>
-        </span>
-      </p>
-    </div>
-  </div>
-</div>
-
-<div class="field is-horizontal">
-  <div class="field-label"></div>
-  <div class="field-body">
-    <div class="field is-expanded">
-      <div class="field has-addons">
-        <p class="control">
-          <a class="button is-static">
-            +44
-          </a>
-        </p>
-        <p class="control is-expanded">
-          <input class="input" type="tel" placeholder="Your phone number">
-        </p>
-      </div>
-      <p class="help">Do not enter the first zero</p>
-    </div>
-  </div>
-</div>
-
-<div class="field is-horizontal">
-  <div class="field-label is-normal">
-    <label class="label">Department</label>
-  </div>
-  <div class="field-body">
-    <div class="field is-narrow">
-      <div class="control">
-        <div class="select is-fullwidth">
-          <select>
-            <option>Business development</option>
-            <option>Marketing</option>
-            <option>Sales</option>
-          </select>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="field is-horizontal">
-  <div class="field-label">
-    <label class="label">Already a member?</label>
-  </div>
-  <div class="field-body">
-    <div class="field is-narrow">
-      <div class="control">
-        <label class="radio">
-          <input type="radio" name="member">
-          Yes
-        </label>
-        <label class="radio">
-          <input type="radio" name="member">
-          No
-        </label>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="field is-horizontal">
-  <div class="field-label is-normal">
-    <label class="label">Subject</label>
-  </div>
-  <div class="field-body">
-    <div class="field">
-      <div class="control">
-        <input class="input is-danger" type="text" placeholder="e.g. Partnership opportunity">
-      </div>
-      <p class="help is-danger">
-        This field is required
-      </p>
-    </div>
-  </div>
-</div>
-
-<div class="field is-horizontal">
-  <div class="field-label is-normal">
-    <label class="label">Question</label>
-  </div>
-  <div class="field-body">
-    <div class="field">
-      <div class="control">
-        <textarea class="textarea" placeholder="Explain how we can help you"></textarea>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="field is-horizontal">
-  <div class="field-label">
-    <!-- Left empty for spacing -->
-  </div>
-  <div class="field-body">
-    <div class="field">
-      <div class="control">
-        <button class="button is-primary">
-          Send message
-        </button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
+                    <p class="subtitle">キャラチップの情報</p>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">画像のサイズ</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field has-addons">
+                                <p class="control"><a class="button is-static">幅</a></p>
+                                <p class="control is-expanded">
+                                    <input class="input" type="number" placeholder="幅" :value="chip_width"/>
+                                </p>
+                                <p class="control"><a class="button is-static">高さ</a></p>
+                                <p class="control is-expanded">
+                                    <input class="input" type="number" placeholder="高さ" :value="chip_height"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">チップ数</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field has-addons">
+                                <p class="control"><a class="button is-static">列</a></p>
+                                <p class="control is-expanded">
+                                    <input class="input" type="number" :value="chip_columns"/>
+                                </p>
+                                <p class="control"><a class="button is-static">行</a></p>
+                                <p class="control is-expanded">
+                                    <input class="input" type="number" :value="chip_rows"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                  
+                    <p class="subtitle">このキャラクタの情報</p>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">キャラクタ識別情報</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field has-addons">
+                                <p class="control"><a class="button is-static">ID</a></p>
+                                <p class="control is-expanded">
+                                    <input class="input" type="text" readonly :value="char_id"/>
+                                </p>
+                                <p class="control"><a class="button is-static">Name</a></p>
+                                <p class="control is-expanded">
+                                    <input class="input" type="text" v-model="char_name" @change="setCharSetting"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">当たり判定領域</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field has-addons">
+                                <p class="control"><a class="button is-static">X</a></p>
+                                <p class="control is-expanded">
+                                    <input class="input" type="number" v-model="char_collision_x" @change="setCharSetting"/>
+                                </p>
+                                <p class="control"><a class="button is-static">Y</a></p>
+                                <p class="control is-expanded">
+                                    <input class="input" type="number" v-model="char_collision_y" @change="setCharSetting"/>
+                                </p>
+                                <p class="control"><a class="button is-static">width</a></p>
+                                <p class="control is-expanded">
+                                    <input class="input" type="number" v-model="char_collision_w" @change="setCharSetting"/>
+                                </p>
+                                <p class="control"><a class="button is-static">height</a></p>
+                                <p class="control is-expanded">
+                                    <input class="input" type="number" v-model="char_collision_h" @change="setCharSetting"/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
         </div>
+
+        <div class="columns">
+            <div class="column">
+                <div class="content">
+
+                    <div id="char_selector">
+                        <figure class="image is-9by16" v-for="(char, index) in getCharList()" :key="index" @click="setCharID(char?.id)">
+                            <img :src="char?.line" />
+                        </figure>
+                    </div>
+
+                  </div>
+            </div>
+        </div>
+
 
     </div>
 
@@ -203,7 +174,8 @@
         import { createApp } from 'vue';
 
         createApp({
-            async beforeCreate(){
+            async beforeMount(){
+                //TODO: Load chars to LocalStorage (if exists)
                 const self = this;
                 await fetch(FILENAME)
                 .then(response => response.text())
@@ -215,8 +187,9 @@
                         const filename = pathes.pop();
                         const path = pathes.join("/");
                         const [prefix, id, index, ext] = filename.split(/[_\.]/);
+                        const [collision_x, collision_y, collision_w, collision_h] = [0, 0, 0, 0];
                         if (!chars[id]) { chars[id] = []; }
-                        chars[id].push({ line, path, prefix, id, index, ext});
+                        chars[id].push({ line, path, prefix, id, index, ext, collision_x, collision_y, collision_w, collision_h});
                     });
                     console.log(chars);
                 })
@@ -224,26 +197,53 @@
             },
             data() {
                 return {
-                    name: 'world',
                     chars: {},
                     char_id: null,
-                    char_index: null,
-                    column_size: 4,
+                    char_index: 0,
+                    column_size: 2,
+                    char_name: "name",
+                    char_collision_x: 0,
+                    char_collision_y: 0,
+                    char_collision_w: 0,
+                    char_collision_h: 0,
+                    chip_width: 72,
+                    chip_height: 128,
+                    chip_columns: 3,
+                    chip_rows: 4,
                 };
             },
             methods:{
                 getCharSrc(){
-                    const id = this.char_id || Object.keys(this.chars)[0];
-                    const index = this.char_index || 0;
+                    if(!this.char_id){ this.char_id = Object.keys(this.chars)[0]; }
+                    if(!this.char_id){ return ""; }
+                    const id = this.char_id;
+                    const index = this.char_index;
                     const src = this.chars[id][index].line;
                     return src;
                 },
-                getCharList(){
-                    const id = this.char_id || Object.keys(this.chars)[0];
+                getColorList(){
+                    const id = this.char_id;
                     return this.chars[id] || [];
                 },
-                setCharIndex(index){
+                setColorIndex(index){
                     this.char_index = index;
+                },
+                getCharList(){
+                  const chars = this.chars;
+                    return Object.keys(this.chars).map(id => {
+                        const char = chars[id][0];
+                        return { id, line: char.line };
+                    });
+                },
+                setCharID(id){
+                  this.char_id = id;
+                  this.char_index = 0;
+                  const char = this.chars[id][0];
+                  this.char_name = char.name || `name_${id}`;
+                  this.char_collision_x = char.collision_x || 0;
+                  this.char_collision_y = char.collision_y || 0;
+                  this.char_collision_w = char.collision_w || 0;
+                  this.char_collision_h = char.collision_h || 0;
                 },
                 getColumnSizeList(){
                     return ["is-one-fifth","is-one-quarter","is-one-third","is-two-fifths","is-half"];
@@ -253,6 +253,20 @@
                     this.column_size += val;
                     if(this.column_size < 0){this.column_size = 0;}
                     if(this.column_size >= list.length){this.column_size = list.length - 1;}
+                },
+                setCharSetting(){
+                    const char_list = this.chars[this.char_id];
+                    char_list.forEach((char, index) => {
+                        char.name = this.char_name;
+                        char.collision_x = this.char_collision_x;
+                        char.collision_y = this.char_collision_y;
+                        char.collision_w = this.char_collision_w;
+                        char.collision_h = this.char_collision_h;
+                    });
+                    //TODO: Save chars to LocalStorage
+                },
+                getRectStyle(index){
+                  //TODO
                 },
             }
         }).mount('#app');
