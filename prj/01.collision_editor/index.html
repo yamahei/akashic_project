@@ -11,20 +11,39 @@
     }
     #color_selector {
         width: 100%;
+        height: 100%;
         overflow: auto;
         white-space: nowrap;
     }
-    #char_selector {
-        width: 100vw;
-        overflow: auto;
-        white-space: nowrap;
-    }
-    #color_selector figure, #char_selector figure {
-        display: inline-block;
+    #color_selector figure {
+        display: block;
         width: 48px;
-        margin: 0 4px;
+        margin: 4px 0;
         padding: 0;
     }
+    #color_selector figure img{
+        border: solid 1px silver;
+    }
+
+    #char_selector {
+        max-height: 100vh;
+        overflow: auto;
+    }
+    #char_selector figure {
+        display: block;
+        width: 48px;
+        margin: 4px 0;
+        padding: 0;
+    }
+    #char_selector figure img{
+        border: solid 1px silver;
+    }
+
+    .mini-title{
+        font-size: 0.8em;
+        font-weight: bold;
+    }
+
     input[type="number"] {
         text-align: right;
     }
@@ -41,22 +60,42 @@
     <div id="app" class="container">
 
         <div class="columns">
+
+            <div class="column is-1">
+                <div class="content">
+                    <p class="mini-title">Char</p>
+                    <div id="char_selector">
+                        <figure class="image is-9by16" v-for="(char, index) in getCharList()" :key="index" @click="setCharID(char?.id)">
+                            <img :src="char?.line" />
+                        </figure>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="column" :class="getColumnSizeList()[column_size]">
                 <div class="content">
-                    <div class="field has-addons">
-                        <p class="control">
-                            <button class="button" @click="addColumnSize(-1)">➖</button>
-                        </p>
-                        <p class="control">
-                            <button class="button" @click="addColumnSize(+1)">➕</button>
-                        </p>
-                    </div>
+                    <p class="mini-title">Collision</p>
                     <div class="box">
                         <figure class="image is-9by16">
                             <img :src="getCharSrc()" />
-                            <div class="collision_area" v-for="no in (chip_columns * chip_rows)" :key="index" :style="getRectStyle(chip_columns * chip_rows - 1)" />
+                            <div class="collision_area" v-for="(no, index) in (chip_columns * chip_rows)" :key="index" :style="getRectStyle(index)" />
                         </figure>                
                     </div>
+                </div>
+                <div class="field has-addons">
+                    <p class="control">
+                        <button class="button" @click="addColumnSize(-1)">➖</button>
+                    </p>
+                    <p class="control">
+                        <button class="button" @click="addColumnSize(+1)">➕</button>
+                    </p>
+                </div>
+            </div>
+
+            <div class="column is-1">
+                <div class="content">
+                    <p class="mini-title">Color</p>
                     <div id="color_selector">
                         <figure class="image is-9by16" v-for="(char, index) in getColorList()" :key="index" @click="setColorIndex(index)">
                             <img :src="char?.line" />
@@ -64,6 +103,7 @@
                     </div>
                 </div>
             </div>
+
             <div class="column">
                 <div class="content">
 
@@ -151,20 +191,6 @@
             </div>
         </div>
 
-        <div class="columns">
-            <div class="column">
-                <div class="content">
-
-                    <div id="char_selector">
-                        <figure class="image is-9by16" v-for="(char, index) in getCharList()" :key="index" @click="setCharID(char?.id)">
-                            <img :src="char?.line" />
-                        </figure>
-                    </div>
-
-                  </div>
-            </div>
-        </div>
-
 
     </div>
 
@@ -242,8 +268,8 @@
                   this.char_name = char.name || `name_${id}`;
                   this.char_collision_x = char.collision_x || 0;
                   this.char_collision_y = char.collision_y || 0;
-                  this.char_collision_w = char.collision_w || 0;
-                  this.char_collision_h = char.collision_h || 0;
+                  this.char_collision_w = char.collision_w || 24;
+                  this.char_collision_h = char.collision_h || 32;
                 },
                 getColumnSizeList(){
                     return ["is-one-fifth","is-one-quarter","is-one-third","is-two-fifths","is-half"];
@@ -266,7 +292,37 @@
                     //TODO: Save chars to LocalStorage
                 },
                 getRectStyle(index){
-                  //TODO
+                    // chip_width: 72,
+                    // chip_height: 128,
+                    // chip_columns: 3,
+                    // chip_rows: 4,
+                    // char_collision_x: 0,
+                    // char_collision_y: 0,
+                    // char_collision_w: 0,
+                    // char_collision_h: 0,
+                    const w_px = 100 / this.chip_width;
+                    const h_px = 100 / this.chip_height;
+                    const char_width = this.chip_width / this.chip_columns;
+                    const char_height = this.chip_height / this.chip_rows;
+                    const chip_x = index % this.chip_columns;
+                    const chip_y = Math.floor(index / this.chip_columns);
+                    const base_x = chip_x * char_width * w_px;
+                    const base_y = chip_y * char_height * h_px;
+                    const p1_x = this.char_collision_x * w_px + base_x;
+                    const p1_y = this.char_collision_y * h_px + base_y;
+                    const p2_x = this.char_collision_w * w_px;
+                    const p2_y = this.char_collision_h * h_px;
+
+                    return {
+                        position: 'absolute',
+                        left: `${p1_x}%`,
+                        top: `${p1_y}%`,
+                        width: `${p2_x}%`,
+                        height: `${p2_y}%`,
+                        border: '1px solid red',
+                        boxSizing: 'border-box',
+                    };
+
                 },
             }
         }).mount('#app');
