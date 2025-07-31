@@ -38,6 +38,12 @@
     #char_selector figure img{
         border: solid 1px silver;
     }
+    .char_selected {
+        background-color: silver;;
+    }
+    .color_selected {
+        background-color: silver;;
+    }
 
     .mini-title{
         font-size: 0.8em;
@@ -65,7 +71,7 @@
                 <div class="content">
                     <p class="mini-title">Char</p>
                     <div id="char_selector">
-                        <figure class="image is-9by16" v-for="(char, index) in getCharList()" :key="index" @click="setCharID(char?.id)">
+                        <figure class="image is-9by16" v-for="(char, index) in getCharList()" :key="index" @click="setCharID(char?.id)" :class="getSelectedCharClass(char?.id)">
                             <img :src="char?.line" />
                         </figure>
                     </div>
@@ -97,7 +103,7 @@
                 <div class="content">
                     <p class="mini-title">Color</p>
                     <div id="color_selector">
-                        <figure class="image is-9by16" v-for="(char, index) in getColorList()" :key="index" @click="setColorIndex(index)">
+                        <figure class="image is-9by16" v-for="(char, index) in getColorList()" :key="index" @click="setColorIndex(index)" :class="getSelectedCharColor(index)">
                             <img :src="char?.line" />
                         </figure>                
                     </div>
@@ -175,6 +181,15 @@
                                 <p class="control is-expanded">
                                     <input class="input" type="number" v-model="char_collision_y" @change="setCharSetting"/>
                                 </p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label"></label>
+                        </div>
+                        <div class="field-body">
+                            <div class="field has-addons">
                                 <p class="control"><a class="button is-static">width</a></p>
                                 <p class="control is-expanded">
                                     <input class="input" type="number" v-model="char_collision_w" @change="setCharSetting"/>
@@ -187,6 +202,15 @@
                         </div>
                     </div>
 
+                    <p class="subtitle">エクスポート</p>
+                    <div vlass="field">
+                        <p class="control">
+                            <button class="button is-small is-fullwidth" @click="exportCharData">
+                                キャラチップの情報をコンソールにエクスポート
+                            </button>
+                        </p>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -196,30 +220,38 @@
 
     <script type="module">
         const FILENAME = "filenames.txt";
+        const LOCAL_STORAGE_KEY = "collision_editor_chars";
 
         import { createApp } from 'vue';
 
         createApp({
             async beforeMount(){
-                //TODO: Load chars to LocalStorage (if exists)
                 const self = this;
-                await fetch(FILENAME)
-                .then(response => response.text())
-                .then(text => {
-                    const lines = text.split('\n').filter(line => line.trim());
-                    const chars = self.$data.chars = {};
-                    lines.forEach(line => {
-                        const pathes = line.split("/");
-                        const filename = pathes.pop();
-                        const path = pathes.join("/");
-                        const [prefix, id, index, ext] = filename.split(/[_\.]/);
-                        const [collision_x, collision_y, collision_w, collision_h] = [0, 0, 0, 0];
-                        if (!chars[id]) { chars[id] = []; }
-                        chars[id].push({ line, path, prefix, id, index, ext, collision_x, collision_y, collision_w, collision_h});
-                    });
-                    console.log(chars);
-                })
-                .catch(error => console.error('Error fetching filenames:', error));
+                const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+                if (raw) {
+                    //Load chars to LocalStorage (if exists)
+                    self.$data.chars = JSON.parse(raw);
+                }else{
+                    //Load filenames from text file (initialize data)
+                    await fetch(FILENAME)
+                    .then(response => response.text())
+                    .then(text => {
+                        const lines = text.split('\n').filter(line => line.trim());
+                        const chars = self.$data.chars = {};
+                        lines.forEach(line => {
+                            const pathes = line.split("/");
+                            const filename = pathes.pop();
+                            const path = pathes.join("/");
+                            const [prefix, id, index, ext] = filename.split(/[_\.]/);
+                            const [name, collision_x, collision_y, collision_w, collision_h] = ["", 0, 0, 0, 0];
+                            if (!chars[id]) { chars[id] = []; }
+                            chars[id].push({ line, path, prefix, id, index, ext, name, collision_x, collision_y, collision_w, collision_h});
+                        });
+                    })
+                    .catch(error => console.error('Error fetching filenames:', error));
+                }
+                self.$data.char_id = Object.keys(self.chars)[0];
+                self.$data.char_index = 0;
             },
             data() {
                 return {
@@ -262,14 +294,15 @@
                     });
                 },
                 setCharID(id){
-                  this.char_id = id;
-                  this.char_index = 0;
-                  const char = this.chars[id][0];
-                  this.char_name = char.name || `name_${id}`;
-                  this.char_collision_x = char.collision_x || 0;
-                  this.char_collision_y = char.collision_y || 0;
-                  this.char_collision_w = char.collision_w || 24;
-                  this.char_collision_h = char.collision_h || 32;
+                    this.saveData();
+                    this.char_id = id;
+                    this.char_index = 0;
+                    const char = this.chars[id][0];
+                    this.char_name = char.name || "";
+                    this.char_collision_x = char.collision_x || 0;
+                    this.char_collision_y = char.collision_y || 0;
+                    this.char_collision_w = char.collision_w || 24;
+                    this.char_collision_h = char.collision_h || 32;
                 },
                 getColumnSizeList(){
                     return ["is-one-fifth","is-one-quarter","is-one-third","is-two-fifths","is-half"];
@@ -289,17 +322,9 @@
                         char.collision_w = this.char_collision_w;
                         char.collision_h = this.char_collision_h;
                     });
-                    //TODO: Save chars to LocalStorage
+                    this.saveData();
                 },
                 getRectStyle(index){
-                    // chip_width: 72,
-                    // chip_height: 128,
-                    // chip_columns: 3,
-                    // chip_rows: 4,
-                    // char_collision_x: 0,
-                    // char_collision_y: 0,
-                    // char_collision_w: 0,
-                    // char_collision_h: 0,
                     const w_px = 100 / this.chip_width;
                     const h_px = 100 / this.chip_height;
                     const char_width = this.chip_width / this.chip_columns;
@@ -322,7 +347,18 @@
                         border: '1px solid red',
                         boxSizing: 'border-box',
                     };
-
+                },
+                getSelectedCharClass(char_id){
+                    return this.char_id === char_id ? 'char_selected' : '';
+                },
+                getSelectedCharColor(color_index){
+                    return this.char_index === color_index ? 'color_selected' : '';
+                },
+                exportCharData(){
+                    console.log(JSON.stringify(this.chars, null, 2));
+                },
+                saveData(){
+                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.chars));
                 },
             }
         }).mount('#app');
