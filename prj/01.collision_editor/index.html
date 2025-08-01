@@ -41,6 +41,9 @@
     .char_selected {
         background-color: silver;;
     }
+    .has_name {
+        border: dotted 2px #1a4;
+    }
     .color_selected {
         background-color: silver;;
     }
@@ -71,7 +74,7 @@
                 <div class="content">
                     <p class="mini-title">Char</p>
                     <div id="char_selector">
-                        <figure class="image is-9by16" v-for="(char, index) in getCharList()" :key="index" @click="setCharID(char?.id)" :class="getSelectedCharClass(char?.id)">
+                        <figure class="image is-9by16" v-for="(char, index) in getCharList()" :key="index" @click="setCharID(char?.id)" :class="getCharClass(char?.id)">
                             <img :src="char?.line" />
                         </figure>
                     </div>
@@ -252,6 +255,7 @@
                 }
                 self.$data.char_id = Object.keys(self.chars)[0];
                 self.$data.char_index = 0;
+                self.setCharID(self.char_id);
             },
             data() {
                 return {
@@ -293,16 +297,25 @@
                         return { id, line: char.line };
                     });
                 },
+                numberValueTrimmer(max, value){
+                    const intval = parseInt(value, 10);
+                    if(isNaN(intval)){ return 0; }
+                    if(intval <= 0){ return 0; }
+                    if(intval >= max){ return max; }
+                    return value;
+                },
+                trim23(value){ return this.numberValueTrimmer(23, value); },
+                trim31(value){ return this.numberValueTrimmer(31, value); },
                 setCharID(id){
                     this.saveData();
                     this.char_id = id;
                     this.char_index = 0;
                     const char = this.chars[id][0];
                     this.char_name = char.name || "";
-                    this.char_collision_x = char.collision_x || 0;
-                    this.char_collision_y = char.collision_y || 0;
-                    this.char_collision_w = char.collision_w || 24;
-                    this.char_collision_h = char.collision_h || 32;
+                    this.char_collision_x = char.collision_x = this.trim23(char.collision_x) || 0;
+                    this.char_collision_y = char.collision_y = this.trim31(char.collision_y) || 0;
+                    this.char_collision_w = char.collision_w = this.trim23(char.collision_w) || 23;
+                    this.char_collision_h = char.collision_h = this.trim31(char.collision_h) || 31;
                 },
                 getColumnSizeList(){
                     return ["is-one-fifth","is-one-quarter","is-one-third","is-two-fifths","is-half"];
@@ -317,10 +330,10 @@
                     const char_list = this.chars[this.char_id];
                     char_list.forEach((char, index) => {
                         char.name = this.char_name;
-                        char.collision_x = this.char_collision_x;
-                        char.collision_y = this.char_collision_y;
-                        char.collision_w = this.char_collision_w;
-                        char.collision_h = this.char_collision_h;
+                        char.collision_x = this.char_collision_x = this.trim23(this.char_collision_x) || 0;
+                        char.collision_y = this.char_collision_y = this.trim31(this.char_collision_y) || 0;
+                        char.collision_w = this.char_collision_w = this.trim23(this.char_collision_w) || 23;
+                        char.collision_h = this.char_collision_h = this.trim31(this.char_collision_h) || 31;
                     });
                     this.saveData();
                 },
@@ -335,8 +348,8 @@
                     const base_y = chip_y * char_height * h_px;
                     const p1_x = this.char_collision_x * w_px + base_x;
                     const p1_y = this.char_collision_y * h_px + base_y;
-                    const p2_x = this.char_collision_w * w_px;
-                    const p2_y = this.char_collision_h * h_px;
+                    const p2_x = (this.char_collision_w + 1) * w_px;
+                    const p2_y = (this.char_collision_h + 1) * h_px;
 
                     return {
                         position: 'absolute',
@@ -348,8 +361,11 @@
                         boxSizing: 'border-box',
                     };
                 },
-                getSelectedCharClass(char_id){
-                    return this.char_id === char_id ? 'char_selected' : '';
+                getCharClass(char_id){
+                    const char_classes = [];
+                    if(this.char_id === char_id) { char_classes.push('char_selected'); }
+                    if(this.chars[char_id][0]?.name) { char_classes.push('has_name'); }
+                    return char_classes.join(' ');
                 },
                 getSelectedCharColor(color_index){
                     return this.char_index === color_index ? 'color_selected' : '';

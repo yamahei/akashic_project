@@ -96,6 +96,10 @@ akashic sandbox
 <dl>
 <dt>00.hello-akashic</dt>
 <dd>akashic-cliとDockerコンテナのテストを兼ねて作成。</dd>
+<dt>01.collision_editor</dt>
+<dd>キャラチップの当たり判定領域作成ツール。非Akashic</dd>
+
+
 </dl>
 
 
