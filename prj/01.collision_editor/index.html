@@ -106,6 +106,7 @@
                                     <select v-model="orderby" >
                                         <option value="">default</option>
                                         <option value="id">id</option>
+                                        <option value="name">name</option>
                                     </select>
                                 </div>
 
@@ -357,6 +358,14 @@
                             if(!charB || Object.keys(charB).length === 0){ return 0; }
                             return charA.id?.localeCompare(charB.id) || 
                                 charA.name?.localeCompare(charB.name);
+                        });
+                    }else if(this.orderby=="name"){
+                        char_list.sort((a, b)=>{
+                            const [charA, charB] = [chars[a][0], chars[b][0]];
+                            if(!charA || Object.keys(charA).length === 0){ return 0; }
+                            if(!charB || Object.keys(charB).length === 0){ return 0; }
+                            return charA.name?.localeCompare(charB.name) || 
+                                charA.id?.localeCompare(charB.id);
                         });
                     }else{
                         char_list.sort((a, b)=>{
