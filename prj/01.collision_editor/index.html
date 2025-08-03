@@ -6,46 +6,31 @@
   href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"
 ></link>
 <style>
-    img{
+    img {
         image-rendering: pixelated;
     }
-    #color_selector {
-        width: 100%;
-        height: 100%;
+    label {
+        white-space: nowrap;
+    }
+    #color_selector, #char_selector {
         overflow: auto;
         white-space: nowrap;
     }
-    #color_selector figure {
-        display: block;
-        width: 48px;
-        margin: 4px 0;
+    #color_selector figure, #char_selector figure {
+        display: inline-block;
+        width: 32px;
+        margin: 0 4px;
         padding: 0;
     }
-    #color_selector figure img{
+    #color_selector figure img, #char_selector figure img{
         border: solid 1px silver;
     }
 
-    #char_selector {
-        max-height: 100vh;
-        overflow: auto;
-    }
-    #char_selector figure {
-        display: block;
-        width: 48px;
-        margin: 4px 0;
-        padding: 0;
-    }
-    #char_selector figure img{
-        border: solid 1px silver;
-    }
-    .char_selected {
+    .selected {
         background-color: silver;;
     }
     .has_name {
         border: dotted 2px #1a4;
-    }
-    .color_selected {
-        background-color: silver;;
     }
 
     .mini-title{
@@ -68,19 +53,17 @@
 
     <div id="app" class="container">
 
-        <div class="columns">
-
-            <div class="column is-1">
-                <div class="content">
-                    <p class="mini-title">Char</p>
-                    <div id="char_selector">
-                        <figure class="image is-9by16" v-for="(char, index) in getCharList()" :key="index" @click="setCharID(char?.id)" :class="getCharClass(char?.id)">
-                            <img :src="char?.line" />
-                        </figure>
-                    </div>
-                </div>
+        <div class="content">
+            <p class="mini-title">Char</p>
+            <div id="char_selector">
+                <figure class="image is-9by16" v-for="(char, index) in getCharList()" :key="index" @click="setCharID(char?.id)" :class="getCharClass(char?.id)">
+                    <img :src="char?.line" />
+                </figure>
             </div>
+        </div>
 
+
+        <div class="columns">
 
             <div class="column" :class="getColumnSizeList()[column_size]">
                 <div class="content">
@@ -91,37 +74,119 @@
                             <div class="collision_area" v-for="(no, index) in (chip_columns * chip_rows)" :key="index" :style="getRectStyle(index)" />
                         </figure>                
                     </div>
-                </div>
-                <div class="field has-addons">
-                    <p class="control">
-                        <button class="button" @click="addColumnSize(-1)">➖</button>
-                    </p>
-                    <p class="control">
-                        <button class="button" @click="addColumnSize(+1)">➕</button>
-                    </p>
-                </div>
-            </div>
-
-            <div class="column is-1">
-                <div class="content">
-                    <p class="mini-title">Color</p>
-                    <div id="color_selector">
-                        <figure class="image is-9by16" v-for="(char, index) in getColorList()" :key="index" @click="setColorIndex(index)" :class="getSelectedCharColor(index)">
-                            <img :src="char?.line" />
-                        </figure>                
+                    <p class="mini-title">Export</p>
+                    <div vlass="field">
+                        <p class="control">
+                            <button class="button is-small is-fullwidth is-primary" @click="exportCharData">
+                                Jsonをダウンロード
+                            </button>
+                        </p>
                     </div>
+
                 </div>
             </div>
 
             <div class="column">
+
+                <div class="columns">
+                    <div class="column">
+                        <p class="mini-title">Size</p>
+                        <div class="field has-addons">
+                            <p class="control">
+                                <button class="button is-small" @click="addColumnSize(-1)">➖</button>
+                            </p>
+                            <p class="control">
+                                <button class="button is-small" @click="addColumnSize(+1)">➕</button>
+                            </p>
+                        </div>
+                        <p class="mini-title">Order</p>
+                        <div class="field has-addons">
+                            <p class="control">
+                                <div class="select is-small">
+                                    <select v-model="orderby" >
+                                        <option value="">default</option>
+                                        <option value="id">id</option>
+                                    </select>
+                                </div>
+
+                            </p>
+                        </div>
+
+                    </div>
+                    <div class="column">
+                        <div class="content">
+                            <p class="mini-title">Color</p>
+                            <div id="color_selector">
+                                <figure class="image is-9by16" v-for="(char, index) in getColorList()" :key="index" @click="setColorIndex(index)" :class="getSelectedCharColor(index)">
+                                    <img :src="char?.line" />
+                                </figure>                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="content">
+                            <p class="mini-title">Attributes</p>
+                            <div class="field is-horizontal">
+                                <div class="field-body">
+                                    <div class="select">
+                                        <select v-model="char_attr_job" @change="setCharSetting">
+                                            <option value="" disabled selected style="display:none;">*job</option>
+                                            <option value=""></option>
+                                            <option value="todo">todo</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="field-body">
+                                    <div class="select">
+                                        <select v-model="char_attr_type" @change="setCharSetting">
+                                            <option value="" disabled selected style="display:none;">*type</option>
+                                            <option value=""></option>
+                                            <option value="human">human</option>
+                                            <option value="animal">animal</option>
+                                            <option value="spirit">spirit</option>
+                                            <option value="monster">monster</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="field-body">
+                                    <div class="select">
+                                        <select v-model="char_attr_sex" @change="setCharSetting">
+                                            <option value="" disabled selected style="display:none;">*sex</option>
+                                            <option value=""></option>
+                                            <option value="male">male</option>
+                                            <option value="female">female</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="field-body">
+                                    <div class="select">
+                                        <select v-model="char_attr_age" @change="setCharSetting">
+                                            <option value="" disabled selected style="display:none;">*age</option>
+                                            <option value=""></option>
+                                            <option value="baby">baby</option>
+                                            <option value="child">child</option>
+                                            <option value="teen">teen</option>
+                                            <option value="adult">adult</option>
+                                            <option value="middle">middle</option>
+                                            <option value="senior">senior</option>
+                                            <option value="older">older</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
                 <div class="content">
 
                     <p class="subtitle">キャラチップの情報</p>
                     <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">画像のサイズ</label>
-                        </div>
                         <div class="field-body">
+                            <div class="field">
+                                <label class="label">画像のサイズ</label>
+                            </div>
                             <div class="field has-addons">
                                 <p class="control"><a class="button is-static">幅</a></p>
                                 <p class="control is-expanded">
@@ -132,13 +197,9 @@
                                     <input class="input" type="number" placeholder="高さ" :value="chip_height"/>
                                 </p>
                             </div>
-                        </div>
-                    </div>
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">チップ数</label>
-                        </div>
-                        <div class="field-body">
+                            <div class="field">
+                                <label class="label">チップ数</label>
+                            </div>
                             <div class="field has-addons">
                                 <p class="control"><a class="button is-static">列</a></p>
                                 <p class="control is-expanded">
@@ -154,15 +215,13 @@
                   
                     <p class="subtitle">このキャラクタの情報</p>
                     <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">キャラクタ識別情報</label>
-                        </div>
                         <div class="field-body">
+                            <div class="field">
+                                <label class="label">キャラクタ識別情報</label>
+                            </div>
                             <div class="field has-addons">
                                 <p class="control"><a class="button is-static">ID</a></p>
-                                <p class="control is-expanded">
-                                    <input class="input" type="text" readonly :value="char_id"/>
-                                </p>
+                                <p class="control"><a class="button is-static">{{ char_id }}</a></p>
                                 <p class="control"><a class="button is-static">Name</a></p>
                                 <p class="control is-expanded">
                                     <input class="input" type="text" v-model="char_name" @change="setCharSetting"/>
@@ -171,10 +230,10 @@
                         </div>
                     </div>
                     <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label">当たり判定領域</label>
-                        </div>
                         <div class="field-body">
+                            <div class="field">
+                                <label class="label">当たり判定領域</label>
+                            </div>
                             <div class="field has-addons">
                                 <p class="control"><a class="button is-static">X</a></p>
                                 <p class="control is-expanded">
@@ -185,13 +244,6 @@
                                     <input class="input" type="number" v-model="char_collision_y" @change="setCharSetting"/>
                                 </p>
                             </div>
-                        </div>
-                    </div>
-                    <div class="field is-horizontal">
-                        <div class="field-label is-normal">
-                            <label class="label"></label>
-                        </div>
-                        <div class="field-body">
                             <div class="field has-addons">
                                 <p class="control"><a class="button is-static">width</a></p>
                                 <p class="control is-expanded">
@@ -202,16 +254,14 @@
                                     <input class="input" type="number" v-model="char_collision_h" @change="setCharSetting"/>
                                 </p>
                             </div>
+                            <div class="field">
+                                <p class="control">
+                                    <button class="button" :disabled="hasCollisionSetting(char_id)" @click="setDefaultCollisionValue">
+                                        仮値
+                                    </button>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-
-                    <p class="subtitle">エクスポート</p>
-                    <div vlass="field">
-                        <p class="control">
-                            <button class="button is-small is-fullwidth" @click="exportCharData">
-                                キャラチップの情報をコンソールにエクスポート
-                            </button>
-                        </p>
                     </div>
 
                 </div>
@@ -222,8 +272,9 @@
     </div>
 
     <script type="module">
-        const FILENAME = "filenames.txt";
+        const CHARCHIP_LIST_FILENAME = "filenames.txt";
         const LOCAL_STORAGE_KEY = "collision_editor_chars";
+        const COLLISION_SETTING_FILENAME = "collision_settings.json";
 
         import { createApp } from 'vue';
 
@@ -236,7 +287,7 @@
                     self.$data.chars = JSON.parse(raw);
                 }else{
                     //Load filenames from text file (initialize data)
-                    await fetch(FILENAME)
+                    await fetch(CHARCHIP_LIST_FILENAME)
                     .then(response => response.text())
                     .then(text => {
                         const lines = text.split('\n').filter(line => line.trim());
@@ -246,9 +297,10 @@
                             const filename = pathes.pop();
                             const path = pathes.join("/");
                             const [prefix, id, index, ext] = filename.split(/[_\.]/);
-                            const [name, collision_x, collision_y, collision_w, collision_h] = ["", 0, 0, 0, 0];
+                            const [name, attr_job, attr_type, attr_sex, attr_age] = ["", "", "", "", ""];
+                            const [collision_x, collision_y, collision_w, collision_h] = [0, 0, 0, 0];
                             if (!chars[id]) { chars[id] = []; }
-                            chars[id].push({ line, path, prefix, id, index, ext, name, collision_x, collision_y, collision_w, collision_h});
+                            chars[id].push({ line, path, prefix, id, index, ext, name, attr_job, attr_type, attr_sex, attr_age, collision_x, collision_y, collision_w, collision_h});
                         });
                     })
                     .catch(error => console.error('Error fetching filenames:', error));
@@ -262,7 +314,8 @@
                     chars: {},
                     char_id: null,
                     char_index: 0,
-                    column_size: 2,
+                    column_size: 0,
+                    orderby: "",
                     char_name: "name",
                     char_collision_x: 0,
                     char_collision_y: 0,
@@ -272,6 +325,10 @@
                     chip_height: 128,
                     chip_columns: 3,
                     chip_rows: 4,
+                    char_attr_job: "",
+                    char_attr_type: "",
+                    char_attr_sex: "",
+                    char_attr_age: "",
                 };
             },
             methods:{
@@ -291,8 +348,30 @@
                     this.char_index = index;
                 },
                 getCharList(){
-                  const chars = this.chars;
-                    return Object.keys(this.chars).map(id => {
+                    const chars = this.chars;
+                    const char_list = Object.keys(chars);
+                    if(this.orderby=="id"){
+                        char_list.sort((a, b)=>{
+                            const [charA, charB] = [chars[a][0], chars[b][0]];
+                            if(!charA || Object.keys(charA).length === 0){ return 0; }
+                            if(!charB || Object.keys(charB).length === 0){ return 0; }
+                            return charA.id?.localeCompare(charB.id) || 
+                                charA.name?.localeCompare(charB.name);
+                        });
+                    }else{
+                        char_list.sort((a, b)=>{
+                            const [charA, charB] = [chars[a][0], chars[b][0]];
+                            if(!charA || Object.keys(charA).length === 0){ return 0; }
+                            if(!charB || Object.keys(charB).length === 0){ return 0; }
+                            return charA.attr_job?.localeCompare(charB.attr_job) || 
+                                charA.attr_type?.localeCompare(charB.attr_type) ||
+                                charA.attr_sex?.localeCompare(charB.attr_sex) ||
+                                charA.attr_age?.localeCompare(charB.attr_age) ||
+                                charA.attr_name?.localeCompare(charB.attr_name) ||
+                                charA.id?.localeCompare(charB.id);
+                        });
+                    }
+                    return char_list.map(id => {
                         const char = chars[id][0];
                         return { id, line: char.line };
                     });
@@ -316,6 +395,10 @@
                     this.char_collision_y = char.collision_y = this.trim31(char.collision_y) || 0;
                     this.char_collision_w = char.collision_w = this.trim23(char.collision_w) || 23;
                     this.char_collision_h = char.collision_h = this.trim31(char.collision_h) || 31;
+                    this.char_attr_job = char.attr_job || "";
+                    this.char_attr_type = char.attr_type || "";
+                    this.char_attr_sex = char.attr_sex || "";
+                    this.char_attr_age = char.attr_age || "";
                 },
                 getColumnSizeList(){
                     return ["is-one-fifth","is-one-quarter","is-one-third","is-two-fifths","is-half"];
@@ -326,7 +409,7 @@
                     if(this.column_size < 0){this.column_size = 0;}
                     if(this.column_size >= list.length){this.column_size = list.length - 1;}
                 },
-                setCharSetting(){
+                setCharSetting(e){
                     const char_list = this.chars[this.char_id];
                     char_list.forEach((char, index) => {
                         char.name = this.char_name;
@@ -334,6 +417,10 @@
                         char.collision_y = this.char_collision_y = this.trim31(this.char_collision_y) || 0;
                         char.collision_w = this.char_collision_w = this.trim23(this.char_collision_w) || 23;
                         char.collision_h = this.char_collision_h = this.trim31(this.char_collision_h) || 31;
+                        char.attr_job = this.char_attr_job;
+                        char.attr_type = this.char_attr_type;
+                        char.attr_sex = this.char_attr_sex;
+                        char.attr_age = this.char_attr_age;
                     });
                     this.saveData();
                 },
@@ -363,15 +450,41 @@
                 },
                 getCharClass(char_id){
                     const char_classes = [];
-                    if(this.char_id === char_id) { char_classes.push('char_selected'); }
+                    if(this.char_id === char_id) { char_classes.push('selected'); }
                     if(this.chars[char_id][0]?.name) { char_classes.push('has_name'); }
                     return char_classes.join(' ');
                 },
                 getSelectedCharColor(color_index){
-                    return this.char_index === color_index ? 'color_selected' : '';
+                    return this.char_index === color_index ? 'selected' : '';
+                },
+                hasCollisionSetting(char_id){
+                    const char = this.chars[char_id][this.char_index];
+                    const hasX = !!(char.collision_x);
+                    const hasY = !!(char.collision_y);
+                    const hasW = !!(char.collision_w) && (char.collision_w !== 23);
+                    const hasH = !!(char.collision_h) && (char.collision_h !== 31);
+                    return hasX && hasY && hasW && hasH;
+                },
+                setDefaultCollisionValue(){
+                    this.char_collision_x = 6;
+                    this.char_collision_y = 6;
+                    this.char_collision_w = 12;
+                    this.char_collision_h = 25;
+                    this.setCharSetting();
                 },
                 exportCharData(){
                     console.log(JSON.stringify(this.chars, null, 2));
+
+                    const fileName = COLLISION_SETTING_FILENAME;
+                    const data = new Blob([JSON.stringify(this.chars, null, 2)], { type: 'text/json' });
+                    const jsonURL = window.URL.createObjectURL(data);
+                    const link = document.createElement('a');
+                    document.body.appendChild(link);
+                    link.href = jsonURL;
+                    link.setAttribute('download', fileName);
+                    link.click();
+                    document.body.removeChild(link);
+
                 },
                 saveData(){
                     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.chars));
