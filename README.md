@@ -109,6 +109,12 @@ akashic sandbox
 ### TODO: 自作ライブラリ(`/prj/lib`)
 ### コマンドラインツール(`/bin`)
 
+#### update_prj_symlinks.sh
+
+`prj/`配下の（`assets`, `lib`以外の）ディレクトリ内に`prj/assets`, `prj/lib`へのシンボリックリンクを作成する。
+既に存在する場合は、削除して再作成する。
+スクリプトファイルの置き場を基準にパスを組み立てるので、どこから実行しても正しく動く。
+
 #### split_char_images.sh
 
 `ORIGINAL_ASSETS/char_sheets`に配置されたキャラクターシート（PNG画像）を、ゲームで利用可能な32x32のキャラクター画像に分割し、`prj/assets/image/char`に出力します。透過の指定もここで。
