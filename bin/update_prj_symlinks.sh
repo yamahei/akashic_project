@@ -17,29 +17,34 @@ cd "$PRJ_DIR" || { echo "Error: Could not navigate to $PRJ_DIR directory."; exit
 # Iterate through each subdirectory in prj/
 for project_dir in */; do
     # Exclude assets/ and lib/ directories themselves
-    # Exclude assets/ and lib/ directories themselves
     if [[ "$project_dir" == "assets/" || "$project_dir" == "lib/" ]]; then
         continue
     fi
 
     echo "Processing project: $project_dir"
     
+    # Navigate into the project directory
+    cd "$project_dir" || { echo "Error: Could not navigate to $project_dir."; exit 1; }
+
     # Remove existing symbolic links if they exist
-    if [ -L "${project_dir}assets" ]; then
+    if [ -L "assets" ]; then
         echo "  Removing existing assets symlink..."
-        rm "${project_dir}assets"
+        rm assets
     fi
-    if [ -L "${project_dir}lib" ]; then
+    if [ -L "lib" ]; then
         echo "  Removing existing lib symlink..."
-        rm "${project_dir}lib"
+        rm lib
     fi
     
     # Create new symbolic links
     echo "  Creating new assets symlink..."
-    ln -s "$COMMON_ASSETS_DIR" "${project_dir}assets"
+    ln -s "$COMMON_ASSETS_DIR" assets
     
     echo "  Creating new lib symlink..."
-    ln -s "$COMMON_LIB_DIR" "${project_dir}lib"
+    ln -s "$COMMON_LIB_DIR" lib
+
+    # Navigate back to prj/
+    cd ..
 done
 
 echo "Symbolic link update complete."
