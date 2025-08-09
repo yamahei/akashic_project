@@ -16,49 +16,34 @@ akashic_project
 
 ```sh
 .
-├── bin              # Github公開用のコマンドラインツール群
+├── bin              # 各種のコマンドラインツール群
 │   └── ...
-├── prj              # Dockerコンテナにマウントする
+├── prj              # プロジェクトルート
 │   ├── assets       # アセット格納用ディレクトリ
 │   ├── lib          # 自作ライブラリ格納用ディレクトリ
 │   ├── projectA     # プロジェクトルート（A）
 │   ├── projectB     # プロジェクトルート（B）
 │   └── ...
-├── Dockerfile       # コンテナ定義
 ├── GEMINI.md        # Geminiへの基本指示
 ├── README.md        # このファイル
 └── index.html       # Github公開トップページ
 ```
 
-Dockerコンテナ
---------------
+環境構築
+--------
 
-### ビルド&起動
-```sh
-docker build -t akashic-dev . && docker run -it --rm -v "$(pwd)/prj":/akashic/prj -p 3300:3300 -p 3000:3000 akashic-dev
-```
+### NVM
+---
 
-<details>
-<summary>コマンド詳細</summary>
+- https://github.com/nvm-sh/nvm
+- `README.md`記載のインストールスクリプトを実行すればインストール完了
+- `nvm use node`で安定版を指定する（時々再実行する必要あるのか？
 
-### ビルド
-```sh
-docker build -t akashic-dev .
-```
-### 起動
-```sh
-docker run -it --rm -v "$(pwd)/prj":/akashic/prj -p 3300:3300 -p 3000:3000 akashic-dev
-```
-### ログの表示
-```sh
-docker logs -f $(docker ps | grep akashic-dev | gawk '{print $1}')
-```
-### 不要なリソースの削除
-```sh
-docker system prune -f
-```
-</details>
+### Akashic Engine
 
+- [Akashic Engine のインストール](https://akashic-games.github.io/tutorial/v3/introduction.html#install-akashic-engine)
+- 公式のインストールコマンド
+- ATTENTION: VSCode名前解決のためにプロジェクトごとに`npm install`が必要
 
 プロジェクト
 ------------
@@ -74,18 +59,28 @@ docker system prune -f
 
 #### 新規プロジェクトの作成
 
-コンテナの`WORKDIR`直下(`/akashic/prj`)で以下のコマンドを実行する。
+プロジェクト(`prj/`)配下で以下のコマンドを実行する。
 （プロジェクト名は`${PRJ_NAME}`とする）
 ```sh
 PRJ_NAME=PRJ_NAME
 mkdir -p /akashic/prj/${PRJ_NAME}
 cd /akashic/prj/${PRJ_NAME}
-akashic init -t typescript
+akashic init -t typescript-minimal
+npm install # VSCode用型定義参照
 ```
+
+初期化時に聞かれる設定値は、以下を標準とする。
+（このリポジトリでは）
+
+- `width`: 320
+- `height`: 512
+- `fps`: 30
+
+
 #### プロジェクトの実行
 ```sh
 # プロジェクトディレクトリで実行する
-akashic sandbox
+akashic sandbox #=> access to http://localhost:3000/
 ```
 </details>
 
@@ -97,14 +92,20 @@ akashic sandbox
 <dt>00.hello-akashic</dt>
 <dd>akashic-cliとDockerコンテナのテストを兼ねて作成。</dd>
 <dt>01.collision_editor</dt>
-<dd>キャラチップの当たり判定領域作成ツール。非Akashic</dd>
-
+<dd>
+  キャラチップの当たり判定領域作成ツール。非Akashic。
+  キャラチップ設定データ`char_sprite_settings.json`を作成する。
+  （`prj/assets/data/`に配置する）
+</dd>
+<dt>02.lib_char_object</dt>
+<dd>`01.collision_editor`を読み込んで、いい感じにキャラクタスプライトを制御するためのオブジェクトのクラスを開発する</dd>
 
 </dl>
 
 
-その他の詳細
-----------
+
+その他
+------
 
 ### TODO: 自作ライブラリ(`/prj/lib`)
 ### コマンドラインツール(`/bin`)
@@ -114,6 +115,7 @@ akashic sandbox
 `prj/`配下の（`assets`, `lib`以外の）ディレクトリ内に`prj/assets`, `prj/lib`へのシンボリックリンクを作成する。
 既に存在する場合は、削除して再作成する。
 スクリプトファイルの置き場を基準にパスを組み立てるので、どこから実行しても正しく動く。
+※Dockerコンテナ内でプロジェクトが作成されるため、`sudo`で実行すること。
 
 #### split_char_images.sh
 
