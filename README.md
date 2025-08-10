@@ -73,14 +73,14 @@ PRJ_NAME=PRJ_NAME
 mkdir -p /akashic/prj/${PRJ_NAME}
 cd /akashic/prj/${PRJ_NAME}
 akashic init -t typescript
+# prompt: width:  (1280) 320
+# prompt: height:  (720) 512
+# prompt: fps:  (30) 
+npm install # VSCode用型定義参照
 ln -s ../assets assets
 ln -s ../lib lib
 cat tsconfig.json | jq '.include |= .+["lib/**/*.ts"]' > .jqtmp && mv .jqtmp tsconfig.json
-npm install # VSCode用型定義参照
 ```
-
-PRJ_NAME=02.lib_char_object
-
 
 初期化時に聞かれる設定値は、以下を標準とする。
 （このリポジトリでは）
@@ -89,6 +89,17 @@ PRJ_NAME=02.lib_char_object
 - `height`: 512
 - `fps`: 30
 
+注意事項
+
+初期状態では動くけど、ビルドすると動かなくなるのは、`game.json`のmain指定誤り？
+あるいはjsとtsの差異っぽい。
+いずれもバグっぽい。
+```json
+  {
+-   "main": "./script/main.js",
++   "main": "./script/src/main.js",
+  }
+```
 
 #### プロジェクトの実行
 ```sh
@@ -108,19 +119,16 @@ akashic scan assets
 
 ### プロジェクト
 
-<dl>
-<dt>00.hello-akashic</dt>
-<dd>akashic-cliとDockerコンテナのテストを兼ねて作成。</dd>
-<dt>01.collision_editor</dt>
-<dd>
-  キャラチップの当たり判定領域作成ツール。非Akashic。
-  キャラチップ設定データ`char_sprite_settings.json`を作成する。
-  （`prj/assets/data/`に配置する）
-</dd>
-<dt>02.lib_char_object</dt>
-<dd>`01.collision_editor`を読み込んで、いい感じにキャラクタスプライトを制御するためのオブジェクトのクラスを開発する</dd>
+#### 00.hello-akashic
+akashic-cliとDockerコンテナのテストを兼ねて作成。
 
-</dl>
+#### 01.collision_editor
+キャラチップの当たり判定領域作成ツール。非Akashic。
+キャラチップ設定データ`char_sprite_settings.json`を作成する。
+（`prj/assets/data/`に配置する）
+
+#### 02.lib_char_object
+`01.collision_editor`の`char_sprite_settings.json`を読み込んで、いい感じにキャラクタスプライトを制御するためのオブジェクトを開発する
 
 
 
