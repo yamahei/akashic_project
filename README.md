@@ -45,6 +45,13 @@ akashic_project
 - 公式のインストールコマンド
 - ATTENTION: VSCode名前解決のためにプロジェクトごとに`npm install`が必要
 
+### jq
+
+```sh
+sudo apt  install jq
+```
+
+
 プロジェクト
 ------------
 
@@ -65,9 +72,15 @@ akashic_project
 PRJ_NAME=PRJ_NAME
 mkdir -p /akashic/prj/${PRJ_NAME}
 cd /akashic/prj/${PRJ_NAME}
-akashic init -t typescript-minimal
+akashic init -t typescript
+ln -s ../assets assets
+ln -s ../lib lib
+cat tsconfig.json | jq '.include |= .+["lib/**/*.ts"]' > .jqtmp && mv .jqtmp tsconfig.json
 npm install # VSCode用型定義参照
 ```
+
+PRJ_NAME=02.lib_char_object
+
 
 初期化時に聞かれる設定値は、以下を標準とする。
 （このリポジトリでは）
@@ -82,6 +95,13 @@ npm install # VSCode用型定義参照
 # プロジェクトディレクトリで実行する
 akashic sandbox #=> access to http://localhost:3000/
 ```
+
+#### リソース（アセット）の更新
+```sh
+# プロジェクトディレクトリで実行する
+akashic scan assets
+```
+
 </details>
 
 
@@ -110,13 +130,6 @@ akashic sandbox #=> access to http://localhost:3000/
 ### TODO: 自作ライブラリ(`/prj/lib`)
 ### コマンドラインツール(`/bin`)
 
-#### update_prj_symlinks.sh
-
-`prj/`配下の（`assets`, `lib`以外の）ディレクトリ内に`prj/assets`, `prj/lib`へのシンボリックリンクを作成する。
-既に存在する場合は、削除して再作成する。
-スクリプトファイルの置き場を基準にパスを組み立てるので、どこから実行しても正しく動く。
-※Dockerコンテナ内でプロジェクトが作成されるため、`sudo`で実行すること。
-
 #### split_char_images.sh
 
 `ORIGINAL_ASSETS/char_sheets`に配置されたキャラクターシート（PNG画像）を、ゲームで利用可能な32x32のキャラクター画像に分割し、`prj/assets/image/char`に出力します。透過の指定もここで。
@@ -130,6 +143,14 @@ akashic sandbox #=> access to http://localhost:3000/
 
 *   `ORIGINAL_ASSETS/char_sheets`ディレクトリに、`charaXX.png`という形式で分割したい画像シートが配置されていること。
 *   実行環境にImageMagickがインストールされていること。
+
+
+#### ~~update_prj_symlinks.sh~~(廃止)
+
+~~`prj/`配下の（`assets`, `lib`以外の）ディレクトリ内に`prj/assets`, `prj/lib`へのシンボリックリンクを作成する。~~
+~~既に存在する場合は、削除して再作成する。~~
+~~スクリプトファイルの置き場を基準にパスを組み立てるので、どこから実行しても正しく動く。~~
+プロジェクト作成時に作成する方針に変えたので廃止。
 
 #### ~~convert_images.sh~~(廃止)
 
