@@ -33,7 +33,6 @@ akashic_project
 --------
 
 ### NVM
----
 
 - https://github.com/nvm-sh/nvm
 - `README.md`記載のインストールスクリプトを実行すればインストール完了
@@ -43,12 +42,12 @@ akashic_project
 
 - [Akashic Engine のインストール](https://akashic-games.github.io/tutorial/v3/introduction.html#install-akashic-engine)
 - 公式のインストールコマンド
-- ATTENTION: VSCode名前解決のためにプロジェクトごとに`npm install`が必要
+- ATTENTION: VSCode名前解決のためにプロジェクトごとに`npm install`が必要（プロジェクト作成手順に含む
 
 ### jq
 
 ```sh
-sudo apt  install jq
+sudo apt install jq
 ```
 
 
@@ -70,30 +69,22 @@ sudo apt  install jq
 （プロジェクト名は`${PRJ_NAME}`とする）
 ```sh
 PRJ_NAME=PRJ_NAME
-mkdir -p /akashic/prj/${PRJ_NAME}
-cd /akashic/prj/${PRJ_NAME}
+mkdir ../prj/${PRJ_NAME}
+cd ../prj/${PRJ_NAME}
 akashic init -t typescript
 # prompt: width:  (1280) 320
 # prompt: height:  (720) 512
 # prompt: fps:  (30) 
 npm install # VSCode用型定義参照
-ln -s ../assets assets
-ln -s ../lib lib
+ln -s ../../assets assets
+ln -s ../../lib lib
 cat tsconfig.json | jq '.include |= .+["lib/**/*.ts"]' > .jqtmp && mv .jqtmp tsconfig.json
+cat game.json | jq '.main |= "./script/src/main.js"' > .jqtmp && mv .jqtmp game.json
 ```
-
-初期化時に聞かれる設定値は、以下を標準とする。
-（このリポジトリでは）
-
-- `width`: 320
-- `height`: 512
-- `fps`: 30
 
 注意事項
 
-初期状態では動くけど、ビルドすると動かなくなるのは、`game.json`のmain指定誤り？
-あるいはjsとtsの差異っぽい。
-いずれもバグっぽい。
+初期状態では動くけど、ビルドすると動かなくなるのは、`game.json`のmain指定誤り
 ```json
   {
 -   "main": "./script/main.js",

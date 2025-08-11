@@ -490,10 +490,14 @@
                     this.setCharSetting();
                 },
                 exportCharData(){
-                    console.log(JSON.stringify(this.chars, null, 2));
+                    const char_list = [];
+                    Object.keys(this.chars).forEach(k=>{
+                        char_list = char_list.concat(this.chars[k]);
+                    });
+                    console.log(JSON.stringify(char_list, null, 2));
 
                     const fileName = COLLISION_SETTING_FILENAME;
-                    const data = new Blob([JSON.stringify(this.chars, null, 2)], { type: 'text/json' });
+                    const data = new Blob([JSON.stringify(char_list, null, 2)], { type: 'text/json' });
                     const jsonURL = window.URL.createObjectURL(data);
                     const link = document.createElement('a');
                     document.body.appendChild(link);

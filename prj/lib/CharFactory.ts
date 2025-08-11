@@ -31,12 +31,12 @@ export class CharFactory{
 
     private static findSetting(settings:CharFactorySettings, name_or_id: string, color_index: string): CharFactorySetting | undefined {
         const hits:CharFactorySettings = settings.filter(setting => {
-            if(setting.name != name_or_id){ return false; }
-            if(setting.id != name_or_id){ return false; }
-            if(setting.index != color_index){ return false; }
-            return true;
+            const is_name = setting.name === name_or_id;
+            const is_id = setting.id === name_or_id;
+            const is_color = setting.index === color_index;
+            return (is_name || is_id) && is_color;
         });
-        return hits.shift();
+        return hits[0];
     }
 
     private static getAssetPath(setting: CharFactorySetting): string {
@@ -53,6 +53,7 @@ export class CharFactory{
             src: g.game.scene().asset.getImage(asset_path),
             width: CHAR_CHIP_WIDTH,
             height: CHAR_CHIP_HEIGHT,
+            interval: 10,//frame in 30fps
             x: 0,
             y: 0
         });

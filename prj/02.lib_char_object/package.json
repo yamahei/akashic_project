@@ -12,7 +12,8 @@
     "start:multi": "akashic serve .",
     "export-zip": "rimraf game.zip && akashic export zip -o game.zip -s",
     "export-html": "rimraf game && akashic export html -o game",
-    "test": "jest"
+    "test": "jest",
+    "debug": "npm run build && npm run start"
   },
   "author": "",
   "license": "",

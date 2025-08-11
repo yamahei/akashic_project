@@ -1,4 +1,5 @@
-[
+{
+  "a-01-0": [
     {
       "line": "../assets/image/char/char_a-01-0_1.png",
       "path": "../assets/image/char",
@@ -83,7 +84,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-01-1": [
     {
       "line": "../assets/image/char/char_a-01-1_1.png",
       "path": "../assets/image/char",
@@ -168,7 +171,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-01-2": [
     {
       "line": "../assets/image/char/char_a-01-2_1.png",
       "path": "../assets/image/char",
@@ -253,7 +258,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-01-3": [
     {
       "line": "../assets/image/char/char_a-01-3_1.png",
       "path": "../assets/image/char",
@@ -338,7 +345,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "a-01-4": [
     {
       "line": "../assets/image/char/char_a-01-4_1.png",
       "path": "../assets/image/char",
@@ -423,7 +432,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-01-5": [
     {
       "line": "../assets/image/char/char_a-01-5_1.png",
       "path": "../assets/image/char",
@@ -508,7 +519,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-01-6": [
     {
       "line": "../assets/image/char/char_a-01-6_1.png",
       "path": "../assets/image/char",
@@ -593,7 +606,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-01-7": [
     {
       "line": "../assets/image/char/char_a-01-7_1.png",
       "path": "../assets/image/char",
@@ -678,7 +693,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-02-0": [
     {
       "line": "../assets/image/char/char_a-02-0_1.png",
       "path": "../assets/image/char",
@@ -763,7 +780,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "a-02-1": [
     {
       "line": "../assets/image/char/char_a-02-1_1.png",
       "path": "../assets/image/char",
@@ -848,7 +867,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-02-2": [
     {
       "line": "../assets/image/char/char_a-02-2_1.png",
       "path": "../assets/image/char",
@@ -933,7 +954,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "a-02-3": [
     {
       "line": "../assets/image/char/char_a-02-3_1.png",
       "path": "../assets/image/char",
@@ -1018,7 +1041,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "a-02-4": [
     {
       "line": "../assets/image/char/char_a-02-4_1.png",
       "path": "../assets/image/char",
@@ -1103,7 +1128,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "a-02-5": [
     {
       "line": "../assets/image/char/char_a-02-5_1.png",
       "path": "../assets/image/char",
@@ -1188,7 +1215,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "a-02-6": [
     {
       "line": "../assets/image/char/char_a-02-6_1.png",
       "path": "../assets/image/char",
@@ -1273,7 +1302,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-02-7": [
     {
       "line": "../assets/image/char/char_a-02-7_1.png",
       "path": "../assets/image/char",
@@ -1358,7 +1389,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "a-03-0": [
     {
       "line": "../assets/image/char/char_a-03-0_1.png",
       "path": "../assets/image/char",
@@ -1443,7 +1476,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "older"
-    },
+    }
+  ],
+  "a-03-1": [
     {
       "line": "../assets/image/char/char_a-03-1_1.png",
       "path": "../assets/image/char",
@@ -1528,7 +1563,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "older"
-    },
+    }
+  ],
+  "a-03-2": [
     {
       "line": "../assets/image/char/char_a-03-2_1.png",
       "path": "../assets/image/char",
@@ -1613,7 +1650,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "a-03-3": [
     {
       "line": "../assets/image/char/char_a-03-3_1.png",
       "path": "../assets/image/char",
@@ -1698,7 +1737,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-03-4": [
     {
       "line": "../assets/image/char/char_a-03-4_1.png",
       "path": "../assets/image/char",
@@ -1783,7 +1824,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "a-03-5": [
     {
       "line": "../assets/image/char/char_a-03-5_1.png",
       "path": "../assets/image/char",
@@ -1868,7 +1911,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-03-6": [
     {
       "line": "../assets/image/char/char_a-03-6_1.png",
       "path": "../assets/image/char",
@@ -1953,7 +1998,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "child"
-    },
+    }
+  ],
+  "a-03-7": [
     {
       "line": "../assets/image/char/char_a-03-7_1.png",
       "path": "../assets/image/char",
@@ -2038,7 +2085,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "child"
-    },
+    }
+  ],
+  "a-04-0": [
     {
       "line": "../assets/image/char/char_a-04-0_1.png",
       "path": "../assets/image/char",
@@ -2123,7 +2172,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "a-04-1": [
     {
       "line": "../assets/image/char/char_a-04-1_1.png",
       "path": "../assets/image/char",
@@ -2208,7 +2259,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "a-04-2": [
     {
       "line": "../assets/image/char/char_a-04-2_1.png",
       "path": "../assets/image/char",
@@ -2293,7 +2346,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "a-04-3": [
     {
       "line": "../assets/image/char/char_a-04-3_1.png",
       "path": "../assets/image/char",
@@ -2378,7 +2433,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "a-04-4": [
     {
       "line": "../assets/image/char/char_a-04-4_1.png",
       "path": "../assets/image/char",
@@ -2463,7 +2520,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "a-04-5": [
     {
       "line": "../assets/image/char/char_a-04-5_1.png",
       "path": "../assets/image/char",
@@ -2548,7 +2607,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-04-6": [
     {
       "line": "../assets/image/char/char_a-04-6_1.png",
       "path": "../assets/image/char",
@@ -2633,7 +2694,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-04-7": [
     {
       "line": "../assets/image/char/char_a-04-7_1.png",
       "path": "../assets/image/char",
@@ -2718,7 +2781,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-06-0": [
     {
       "line": "../assets/image/char/char_a-06-0_1.png",
       "path": "../assets/image/char",
@@ -2803,7 +2868,9 @@
       "attr_type": "spirit",
       "attr_sex": "",
       "attr_age": "child"
-    },
+    }
+  ],
+  "a-06-1": [
     {
       "line": "../assets/image/char/char_a-06-1_1.png",
       "path": "../assets/image/char",
@@ -2888,7 +2955,9 @@
       "attr_type": "spirit",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "a-06-2": [
     {
       "line": "../assets/image/char/char_a-06-2_1.png",
       "path": "../assets/image/char",
@@ -2973,7 +3042,9 @@
       "attr_type": "spirit",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-06-3": [
     {
       "line": "../assets/image/char/char_a-06-3_1.png",
       "path": "../assets/image/char",
@@ -3058,7 +3129,9 @@
       "attr_type": "spirit",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-06-4": [
     {
       "line": "../assets/image/char/char_a-06-4_1.png",
       "path": "../assets/image/char",
@@ -3143,7 +3216,9 @@
       "attr_type": "spirit",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-06-5": [
     {
       "line": "../assets/image/char/char_a-06-5_1.png",
       "path": "../assets/image/char",
@@ -3228,7 +3303,9 @@
       "attr_type": "spirit",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-06-6": [
     {
       "line": "../assets/image/char/char_a-06-6_1.png",
       "path": "../assets/image/char",
@@ -3313,7 +3390,9 @@
       "attr_type": "spirit",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-06-7": [
     {
       "line": "../assets/image/char/char_a-06-7_1.png",
       "path": "../assets/image/char",
@@ -3398,7 +3477,9 @@
       "attr_type": "spirit",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "a-07-0": [
     {
       "line": "../assets/image/char/char_a-07-0_1.png",
       "path": "../assets/image/char",
@@ -3483,7 +3564,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-07-1": [
     {
       "line": "../assets/image/char/char_a-07-1_1.png",
       "path": "../assets/image/char",
@@ -3568,7 +3651,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-07-2": [
     {
       "line": "../assets/image/char/char_a-07-2_1.png",
       "path": "../assets/image/char",
@@ -3653,7 +3738,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-07-3": [
     {
       "line": "../assets/image/char/char_a-07-3_1.png",
       "path": "../assets/image/char",
@@ -3738,7 +3825,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-07-4": [
     {
       "line": "../assets/image/char/char_a-07-4_1.png",
       "path": "../assets/image/char",
@@ -3823,7 +3912,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-07-5": [
     {
       "line": "../assets/image/char/char_a-07-5_1.png",
       "path": "../assets/image/char",
@@ -3908,7 +3999,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-07-6": [
     {
       "line": "../assets/image/char/char_a-07-6_1.png",
       "path": "../assets/image/char",
@@ -3993,7 +4086,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-07-7": [
     {
       "line": "../assets/image/char/char_a-07-7_1.png",
       "path": "../assets/image/char",
@@ -4078,7 +4173,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-08-0": [
     {
       "line": "../assets/image/char/char_a-08-0_1.png",
       "path": "../assets/image/char",
@@ -4163,7 +4260,9 @@
       "attr_type": "monster",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-08-1": [
     {
       "line": "../assets/image/char/char_a-08-1_1.png",
       "path": "../assets/image/char",
@@ -4248,7 +4347,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-08-2": [
     {
       "line": "../assets/image/char/char_a-08-2_1.png",
       "path": "../assets/image/char",
@@ -4333,7 +4434,9 @@
       "attr_type": "monster",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-08-3": [
     {
       "line": "../assets/image/char/char_a-08-3_1.png",
       "path": "../assets/image/char",
@@ -4418,7 +4521,9 @@
       "attr_type": "monster",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-08-4": [
     {
       "line": "../assets/image/char/char_a-08-4_1.png",
       "path": "../assets/image/char",
@@ -4503,7 +4608,9 @@
       "attr_type": "monster",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-08-5": [
     {
       "line": "../assets/image/char/char_a-08-5_1.png",
       "path": "../assets/image/char",
@@ -4588,7 +4695,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-08-6": [
     {
       "line": "../assets/image/char/char_a-08-6_1.png",
       "path": "../assets/image/char",
@@ -4673,7 +4782,9 @@
       "attr_type": "monster",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "a-08-7": [
     {
       "line": "../assets/image/char/char_a-08-7_1.png",
       "path": "../assets/image/char",
@@ -4758,7 +4869,9 @@
       "attr_type": "monster",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "b-01-0": [
     {
       "line": "../assets/image/char/char_b-01-0_1.png",
       "path": "../assets/image/char",
@@ -4843,7 +4956,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-01-1": [
     {
       "line": "../assets/image/char/char_b-01-1_1.png",
       "path": "../assets/image/char",
@@ -4928,7 +5043,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-01-2": [
     {
       "line": "../assets/image/char/char_b-01-2_1.png",
       "path": "../assets/image/char",
@@ -5013,7 +5130,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "b-01-3": [
     {
       "line": "../assets/image/char/char_b-01-3_1.png",
       "path": "../assets/image/char",
@@ -5098,7 +5217,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "b-01-4": [
     {
       "line": "../assets/image/char/char_b-01-4_1.png",
       "path": "../assets/image/char",
@@ -5183,7 +5304,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-01-5": [
     {
       "line": "../assets/image/char/char_b-01-5_1.png",
       "path": "../assets/image/char",
@@ -5268,7 +5391,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-01-6": [
     {
       "line": "../assets/image/char/char_b-01-6_1.png",
       "path": "../assets/image/char",
@@ -5353,7 +5478,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-01-7": [
     {
       "line": "../assets/image/char/char_b-01-7_1.png",
       "path": "../assets/image/char",
@@ -5438,7 +5565,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-02-0": [
     {
       "line": "../assets/image/char/char_b-02-0_1.png",
       "path": "../assets/image/char",
@@ -5523,7 +5652,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "b-02-1": [
     {
       "line": "../assets/image/char/char_b-02-1_1.png",
       "path": "../assets/image/char",
@@ -5608,7 +5739,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "b-02-2": [
     {
       "line": "../assets/image/char/char_b-02-2_1.png",
       "path": "../assets/image/char",
@@ -5693,7 +5826,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "b-02-3": [
     {
       "line": "../assets/image/char/char_b-02-3_1.png",
       "path": "../assets/image/char",
@@ -5778,7 +5913,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "b-02-4": [
     {
       "line": "../assets/image/char/char_b-02-4_1.png",
       "path": "../assets/image/char",
@@ -5863,7 +6000,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "b-02-5": [
     {
       "line": "../assets/image/char/char_b-02-5_1.png",
       "path": "../assets/image/char",
@@ -5948,7 +6087,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-02-6": [
     {
       "line": "../assets/image/char/char_b-02-6_1.png",
       "path": "../assets/image/char",
@@ -6033,7 +6174,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-02-7": [
     {
       "line": "../assets/image/char/char_b-02-7_1.png",
       "path": "../assets/image/char",
@@ -6118,7 +6261,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-03-0": [
     {
       "line": "../assets/image/char/char_b-03-0_1.png",
       "path": "../assets/image/char",
@@ -6203,7 +6348,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "b-03-1": [
     {
       "line": "../assets/image/char/char_b-03-1_1.png",
       "path": "../assets/image/char",
@@ -6288,7 +6435,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "b-03-2": [
     {
       "line": "../assets/image/char/char_b-03-2_1.png",
       "path": "../assets/image/char",
@@ -6373,7 +6522,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "b-03-3": [
     {
       "line": "../assets/image/char/char_b-03-3_1.png",
       "path": "../assets/image/char",
@@ -6458,7 +6609,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-03-4": [
     {
       "line": "../assets/image/char/char_b-03-4_1.png",
       "path": "../assets/image/char",
@@ -6543,7 +6696,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-03-5": [
     {
       "line": "../assets/image/char/char_b-03-5_1.png",
       "path": "../assets/image/char",
@@ -6628,7 +6783,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-03-6": [
     {
       "line": "../assets/image/char/char_b-03-6_1.png",
       "path": "../assets/image/char",
@@ -6713,7 +6870,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "child"
-    },
+    }
+  ],
+  "b-03-7": [
     {
       "line": "../assets/image/char/char_b-03-7_1.png",
       "path": "../assets/image/char",
@@ -6798,7 +6957,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "child"
-    },
+    }
+  ],
+  "b-04-0": [
     {
       "line": "../assets/image/char/char_b-04-0_1.png",
       "path": "../assets/image/char",
@@ -6883,7 +7044,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "child"
-    },
+    }
+  ],
+  "b-04-1": [
     {
       "line": "../assets/image/char/char_b-04-1_1.png",
       "path": "../assets/image/char",
@@ -6968,7 +7131,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "b-04-2": [
     {
       "line": "../assets/image/char/char_b-04-2_1.png",
       "path": "../assets/image/char",
@@ -7053,7 +7218,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "b-04-3": [
     {
       "line": "../assets/image/char/char_b-04-3_1.png",
       "path": "../assets/image/char",
@@ -7138,7 +7305,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-04-4": [
     {
       "line": "../assets/image/char/char_b-04-4_1.png",
       "path": "../assets/image/char",
@@ -7223,7 +7392,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "b-04-5": [
     {
       "line": "../assets/image/char/char_b-04-5_1.png",
       "path": "../assets/image/char",
@@ -7308,7 +7479,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "b-04-6": [
     {
       "line": "../assets/image/char/char_b-04-6_1.png",
       "path": "../assets/image/char",
@@ -7393,7 +7566,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-04-7": [
     {
       "line": "../assets/image/char/char_b-04-7_1.png",
       "path": "../assets/image/char",
@@ -7478,7 +7653,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "b-07-0": [
     {
       "line": "../assets/image/char/char_b-07-0_1.png",
       "path": "../assets/image/char",
@@ -7512,7 +7689,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "b-07-1": [
     {
       "line": "../assets/image/char/char_b-07-1_1.png",
       "path": "../assets/image/char",
@@ -7546,7 +7725,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "b-07-2": [
     {
       "line": "../assets/image/char/char_b-07-2_1.png",
       "path": "../assets/image/char",
@@ -7580,7 +7761,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "b-07-3": [
     {
       "line": "../assets/image/char/char_b-07-3_1.png",
       "path": "../assets/image/char",
@@ -7614,7 +7797,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "c-02-0": [
     {
       "line": "../assets/image/char/char_c-02-0_1.png",
       "path": "../assets/image/char",
@@ -7699,7 +7884,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "c-02-1": [
     {
       "line": "../assets/image/char/char_c-02-1_1.png",
       "path": "../assets/image/char",
@@ -7784,7 +7971,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "c-02-2": [
     {
       "line": "../assets/image/char/char_c-02-2_1.png",
       "path": "../assets/image/char",
@@ -7869,7 +8058,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "c-02-3": [
     {
       "line": "../assets/image/char/char_c-02-3_1.png",
       "path": "../assets/image/char",
@@ -7954,7 +8145,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "c-02-4": [
     {
       "line": "../assets/image/char/char_c-02-4_1.png",
       "path": "../assets/image/char",
@@ -8039,7 +8232,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "c-02-5": [
     {
       "line": "../assets/image/char/char_c-02-5_1.png",
       "path": "../assets/image/char",
@@ -8124,7 +8319,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "c-02-6": [
     {
       "line": "../assets/image/char/char_c-02-6_1.png",
       "path": "../assets/image/char",
@@ -8209,7 +8406,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "c-02-7": [
     {
       "line": "../assets/image/char/char_c-02-7_1.png",
       "path": "../assets/image/char",
@@ -8294,7 +8493,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "c-03-0": [
     {
       "line": "../assets/image/char/char_c-03-0_1.png",
       "path": "../assets/image/char",
@@ -8379,7 +8580,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "c-03-1": [
     {
       "line": "../assets/image/char/char_c-03-1_1.png",
       "path": "../assets/image/char",
@@ -8464,7 +8667,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "c-03-2": [
     {
       "line": "../assets/image/char/char_c-03-2_1.png",
       "path": "../assets/image/char",
@@ -8549,7 +8754,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "c-03-3": [
     {
       "line": "../assets/image/char/char_c-03-3_1.png",
       "path": "../assets/image/char",
@@ -8634,7 +8841,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "c-03-4": [
     {
       "line": "../assets/image/char/char_c-03-4_1.png",
       "path": "../assets/image/char",
@@ -8719,7 +8928,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "c-03-5": [
     {
       "line": "../assets/image/char/char_c-03-5_1.png",
       "path": "../assets/image/char",
@@ -8804,7 +9015,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "c-03-6": [
     {
       "line": "../assets/image/char/char_c-03-6_1.png",
       "path": "../assets/image/char",
@@ -8889,7 +9102,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "child"
-    },
+    }
+  ],
+  "c-03-7": [
     {
       "line": "../assets/image/char/char_c-03-7_1.png",
       "path": "../assets/image/char",
@@ -8974,7 +9189,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "child"
-    },
+    }
+  ],
+  "d-02-0": [
     {
       "line": "../assets/image/char/char_d-02-0_1.png",
       "path": "../assets/image/char",
@@ -9059,7 +9276,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "d-02-1": [
     {
       "line": "../assets/image/char/char_d-02-1_1.png",
       "path": "../assets/image/char",
@@ -9144,7 +9363,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "d-02-2": [
     {
       "line": "../assets/image/char/char_d-02-2_1.png",
       "path": "../assets/image/char",
@@ -9229,7 +9450,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "d-02-3": [
     {
       "line": "../assets/image/char/char_d-02-3_1.png",
       "path": "../assets/image/char",
@@ -9314,7 +9537,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "d-02-4": [
     {
       "line": "../assets/image/char/char_d-02-4_1.png",
       "path": "../assets/image/char",
@@ -9399,7 +9624,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "d-02-5": [
     {
       "line": "../assets/image/char/char_d-02-5_1.png",
       "path": "../assets/image/char",
@@ -9484,7 +9711,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "d-02-6": [
     {
       "line": "../assets/image/char/char_d-02-6_1.png",
       "path": "../assets/image/char",
@@ -9569,7 +9798,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "d-02-7": [
     {
       "line": "../assets/image/char/char_d-02-7_1.png",
       "path": "../assets/image/char",
@@ -9654,7 +9885,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "d-03-0": [
     {
       "line": "../assets/image/char/char_d-03-0_1.png",
       "path": "../assets/image/char",
@@ -9739,7 +9972,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "d-03-1": [
     {
       "line": "../assets/image/char/char_d-03-1_1.png",
       "path": "../assets/image/char",
@@ -9824,7 +10059,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "d-03-2": [
     {
       "line": "../assets/image/char/char_d-03-2_1.png",
       "path": "../assets/image/char",
@@ -9909,7 +10146,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "d-03-3": [
     {
       "line": "../assets/image/char/char_d-03-3_1.png",
       "path": "../assets/image/char",
@@ -9994,7 +10233,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "d-03-4": [
     {
       "line": "../assets/image/char/char_d-03-4_1.png",
       "path": "../assets/image/char",
@@ -10079,7 +10320,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "d-03-5": [
     {
       "line": "../assets/image/char/char_d-03-5_1.png",
       "path": "../assets/image/char",
@@ -10164,7 +10407,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "teen"
-    },
+    }
+  ],
+  "d-03-6": [
     {
       "line": "../assets/image/char/char_d-03-6_1.png",
       "path": "../assets/image/char",
@@ -10249,7 +10494,9 @@
       "attr_type": "human",
       "attr_sex": "",
       "attr_age": "baby"
-    },
+    }
+  ],
+  "d-03-7": [
     {
       "line": "../assets/image/char/char_d-03-7_1.png",
       "path": "../assets/image/char",
@@ -10334,7 +10581,9 @@
       "attr_type": "human",
       "attr_sex": "",
       "attr_age": "baby"
-    },
+    }
+  ],
+  "e-03-0": [
     {
       "line": "../assets/image/char/char_e-03-0_1.png",
       "path": "../assets/image/char",
@@ -10419,7 +10668,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "older"
-    },
+    }
+  ],
+  "e-03-1": [
     {
       "line": "../assets/image/char/char_e-03-1_1.png",
       "path": "../assets/image/char",
@@ -10504,7 +10755,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "older"
-    },
+    }
+  ],
+  "e-03-2": [
     {
       "line": "../assets/image/char/char_e-03-2_1.png",
       "path": "../assets/image/char",
@@ -10589,7 +10842,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "e-03-3": [
     {
       "line": "../assets/image/char/char_e-03-3_1.png",
       "path": "../assets/image/char",
@@ -10674,7 +10929,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "e-03-4": [
     {
       "line": "../assets/image/char/char_e-03-4_1.png",
       "path": "../assets/image/char",
@@ -10759,7 +11016,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "e-03-5": [
     {
       "line": "../assets/image/char/char_e-03-5_1.png",
       "path": "../assets/image/char",
@@ -10844,7 +11103,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "e-03-6": [
     {
       "line": "../assets/image/char/char_e-03-6_1.png",
       "path": "../assets/image/char",
@@ -10929,7 +11190,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "child"
-    },
+    }
+  ],
+  "e-03-7": [
     {
       "line": "../assets/image/char/char_e-03-7_1.png",
       "path": "../assets/image/char",
@@ -11014,7 +11277,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "child"
-    },
+    }
+  ],
+  "f-03-0": [
     {
       "line": "../assets/image/char/char_f-03-0_1.png",
       "path": "../assets/image/char",
@@ -11099,7 +11364,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "f-03-1": [
     {
       "line": "../assets/image/char/char_f-03-1_1.png",
       "path": "../assets/image/char",
@@ -11184,7 +11451,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "f-03-2": [
     {
       "line": "../assets/image/char/char_f-03-2_1.png",
       "path": "../assets/image/char",
@@ -11269,7 +11538,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "f-03-3": [
     {
       "line": "../assets/image/char/char_f-03-3_1.png",
       "path": "../assets/image/char",
@@ -11354,7 +11625,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "f-03-4": [
     {
       "line": "../assets/image/char/char_f-03-4_1.png",
       "path": "../assets/image/char",
@@ -11439,7 +11712,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "f-03-5": [
     {
       "line": "../assets/image/char/char_f-03-5_1.png",
       "path": "../assets/image/char",
@@ -11524,7 +11799,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "f-03-6": [
     {
       "line": "../assets/image/char/char_f-03-6_1.png",
       "path": "../assets/image/char",
@@ -11609,7 +11886,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "child"
-    },
+    }
+  ],
+  "f-03-7": [
     {
       "line": "../assets/image/char/char_f-03-7_1.png",
       "path": "../assets/image/char",
@@ -11694,7 +11973,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "child"
-    },
+    }
+  ],
+  "g-03-0": [
     {
       "line": "../assets/image/char/char_g-03-0_1.png",
       "path": "../assets/image/char",
@@ -11779,7 +12060,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "senior"
-    },
+    }
+  ],
+  "g-03-1": [
     {
       "line": "../assets/image/char/char_g-03-1_1.png",
       "path": "../assets/image/char",
@@ -11864,7 +12147,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "g-03-2": [
     {
       "line": "../assets/image/char/char_g-03-2_1.png",
       "path": "../assets/image/char",
@@ -11949,7 +12234,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "middle"
-    },
+    }
+  ],
+  "g-03-3": [
     {
       "line": "../assets/image/char/char_g-03-3_1.png",
       "path": "../assets/image/char",
@@ -12034,7 +12321,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "g-03-4": [
     {
       "line": "../assets/image/char/char_g-03-4_1.png",
       "path": "../assets/image/char",
@@ -12119,7 +12408,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "g-03-5": [
     {
       "line": "../assets/image/char/char_g-03-5_1.png",
       "path": "../assets/image/char",
@@ -12204,7 +12495,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "adult"
-    },
+    }
+  ],
+  "g-03-6": [
     {
       "line": "../assets/image/char/char_g-03-6_1.png",
       "path": "../assets/image/char",
@@ -12289,7 +12582,9 @@
       "attr_type": "human",
       "attr_sex": "male",
       "attr_age": "child"
-    },
+    }
+  ],
+  "g-03-7": [
     {
       "line": "../assets/image/char/char_g-03-7_1.png",
       "path": "../assets/image/char",
@@ -12374,7 +12669,9 @@
       "attr_type": "human",
       "attr_sex": "female",
       "attr_age": "child"
-    },
+    }
+  ],
+  "w-Ex-0": [
     {
       "line": "../assets/image/char/char_w-Ex-0_1.png",
       "path": "../assets/image/char",
@@ -12391,7 +12688,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "x-Ex-x": [
     {
       "line": "../assets/image/char/char_x-Ex-x_0.png",
       "path": "../assets/image/char",
@@ -12476,7 +12775,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "y-Ex-y": [
     {
       "line": "../assets/image/char/char_y-Ex-y_0.png",
       "path": "../assets/image/char",
@@ -12561,7 +12862,9 @@
       "attr_type": "animal",
       "attr_sex": "",
       "attr_age": ""
-    },
+    }
+  ],
+  "z-Ex-z": [
     {
       "line": "../assets/image/char/char_z-Ex-z_0.png",
       "path": "../assets/image/char",
@@ -12648,3 +12951,4 @@
       "attr_age": ""
     }
   ]
+}

@@ -1,8 +1,12 @@
+import { CharFactory } from "../lib/CharFactory";
+import { CharEntity } from "../lib/CharEntity";
+
 function main(param: g.GameMainParameterObject): void {
 	const scene = new g.Scene({
 		game: g.game,
 		// このシーンで利用するアセットのIDを列挙し、シーンに通知します
-		assetIds: ["player", "shot", "se"]
+		assetIds: ["player", "shot", "se"],
+		assetPaths: ["/assets/**/*"]
 	});
 	scene.onLoad.add(() => {
 		// ここからゲーム内容を記述します
@@ -61,6 +65,45 @@ function main(param: g.GameMainParameterObject): void {
 		});
 		scene.append(player);
 		// ここまでゲーム内容を記述します
+
+		const hero = CharFactory.getCharObject("hero");
+		scene.append(hero);
+
+		const directions = ["back", "right", "fore", "left"];
+		const actions = ["stop", "walk", "jump", "attack", "die"];
+
+		const common_rect_params = {scene: scene, touchable: true, width: 30, height: 30, /*x: 20,*/ y:70, /*cssColor: "red"*/}
+
+
+		const rect1 = new g.FilledRect({...common_rect_params, x: 20, cssColor: "red"});
+		scene.append(rect1);
+		rect1.onPointDown.add(function () {
+			//@ts-ignore
+			hero.setDirection(directions[0]);
+			directions.push(directions.shift());
+		});
+
+		const rect2 = new g.FilledRect({...common_rect_params, x: 80, cssColor: "blue"});
+		scene.append(rect2);
+		rect2.onPointDown.add(function () {
+			//@ts-ignore
+			hero.setAction(actions[0]);
+			actions.push(actions.shift());
+		});
+		
+		let flag = false;
+		const rect3 = new g.FilledRect({...common_rect_params, x: 140, cssColor: "green"});
+		scene.append(rect3);
+		rect3.onPointDown.add(function () {flag = !flag;});
+		hero.onUpdate.add(() => {
+			// in hero(=this)
+			if (flag) {
+				console.debug({
+					frameNumber: hero.sprite.frameNumber,
+				});
+			}
+		});
+
 	});
 	g.game.pushScene(scene);
 }
