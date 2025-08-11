@@ -91,6 +91,9 @@ export class CharEntity extends g.E {
         });
     }
 
+    public getHitArea():g.E{
+        return this.hitarea;
+    }
     public setDirection(direction:char_directions):void{
         this.direction = direction;
         this.setSpriteAnimation();
