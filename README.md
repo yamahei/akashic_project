@@ -72,8 +72,8 @@ PRJ_NAME=PRJ_NAME
 mkdir ../prj/${PRJ_NAME}
 cd ../prj/${PRJ_NAME}
 akashic init -t typescript
-# prompt: width:  (1280) 320
-# prompt: height:  (720) 512
+# prompt: width:  (1280) 320 / 256
+# prompt: height:  (720) 512 / 400
 # prompt: fps:  (30) 
 npm install # VSCode用型定義参照
 ln -s ../../assets assets

@@ -1,6 +1,6 @@
 {
-	"width": 320,
-	"height": 512,
+	"width": 256,
+	"height": 400,
 	"fps": 30,
 	"main": "./script/src/main.js",
 	"assets": {

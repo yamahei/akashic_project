@@ -67,10 +67,13 @@ function main(param: g.GameMainParameterObject): void {
 		// ここまでゲーム内容を記述します
 
 		const hero = CharFactory.getCharObject("hero");
+		hero.x = 64;
+		hero.y = 256;
 		scene.append(hero);
 
 		const directions = ["back", "right", "fore", "left"];
 		const actions = ["stop", "walk", "jump", "attack", "die"];
+		const effects = ["normal", "silent", "sleep", "angry", "trouble", "emergency", "shine1", "shine2", "shine3", "shine4"];
 
 		const common_rect_params = {scene: scene, touchable: true, width: 30, height: 30, /*x: 20,*/ y:70, /*cssColor: "red"*/}
 
@@ -91,17 +94,18 @@ function main(param: g.GameMainParameterObject): void {
 			actions.push(actions.shift());
 		});
 		
-		let flag = false;
 		const rect3 = new g.FilledRect({...common_rect_params, x: 140, cssColor: "green"});
 		scene.append(rect3);
-		rect3.onPointDown.add(function () {flag = !flag;});
-		hero.onUpdate.add(() => {
-			// in hero(=this)
-			if (flag) {
-				console.debug({
-					frameNumber: hero.sprite.frameNumber,
-				});
-			}
+		rect3.onPointDown.add(function () {
+			//@ts-ignore
+			hero.setMental(effects[0]);
+			effects.push(effects.shift());
+		});
+
+		const rect4 = new g.FilledRect({...common_rect_params, x: 200, cssColor: "cyan"});
+		scene.append(rect4);
+		rect4.onPointDown.add(function () {
+			hero.setDamage();
 		});
 
 	});

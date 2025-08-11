@@ -2,6 +2,8 @@
 
 import { CharEntity } from "./CharEntity";
 
+const EFFECT_ASSET_PATH = "/assets/image/obj/effects.png";
+
 const CHAR_SETTING_PATH = "/assets/data/char_sprite_settings.json";
 const CHAR_IMAGE_WIDTH = 72;//px
 const CHAR_IMAGE_HEIGHT = 128;//px
@@ -53,7 +55,6 @@ export class CharFactory{
             src: g.game.scene().asset.getImage(asset_path),
             width: CHAR_CHIP_WIDTH,
             height: CHAR_CHIP_HEIGHT,
-            interval: 10,//frame in 30fps
             x: 0,
             y: 0
         });
@@ -80,7 +81,7 @@ export class CharFactory{
 
         const sprite = CharFactory.createCharSprite(setting);
         const hitarea = CharFactory.createCollisionArea(setting);
-        const effect = new g.E({scene: g.game.scene()});//TODO
+        const effect = CharFactory.createEffectSprite();
 
         const char_object = new CharEntity({
             scene: g.game.scene()}, 
@@ -88,6 +89,18 @@ export class CharFactory{
         );
 
         return char_object;
+    }
+    static createEffectSprite(): g.FrameSprite {
+        return new g.FrameSprite({
+            tag: "effect",
+            scene: g.game.scene(),
+            src: g.game.scene().asset.getImage(EFFECT_ASSET_PATH),
+            width: CHAR_CHIP_WIDTH,
+            height: CHAR_CHIP_HEIGHT,
+            x: 0,
+            y: 0,
+            hidden: true,
+        });
     }
 
 
