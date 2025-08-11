@@ -490,7 +490,7 @@
                     this.setCharSetting();
                 },
                 exportCharData(){
-                    const char_list = [];
+                    let char_list = [];
                     Object.keys(this.chars).forEach(k=>{
                         char_list = char_list.concat(this.chars[k]);
                     });
