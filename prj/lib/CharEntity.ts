@@ -1,7 +1,10 @@
 "use strict";
 
+/** キャラクタの向き指定子 */
 type char_directions = "fore" | "back" | "left" | "right";
+/** キャラクタのアクション指定子 */
 type char_actions = "stop" | "walk" | "jump" | "attack" | "die";
+/** キャラクタのメンタル指定子 */
 type char_mental = "normal" | "silent" | "sleep" | "angry" | "trouble" | "emergency" | "shine1" | "shine2" | "shine3" | "shine4";
 
 const char_interval = 120;//ms
@@ -51,17 +54,27 @@ const effect_animation_patterns = [
     { mental:"shine4",    show: true,  frames_offset: 8, y_offset: 0, interval: effect_interval_fast },
 ];
 
+/**
+ * キャラクタオブジェクトクラス
+ */
 export class CharEntity extends g.E {
-    private sprite: g.FrameSprite;//ATTENTION: to debug
+    private sprite: g.FrameSprite;
     private hitarea: g.E;
     private effect: g.FrameSprite;
     private direction: char_directions = "fore";
     private action: char_actions = "stop";
     private mental: char_mental = "normal";
     private mental_counter = 0;//frame
-    private is_damaged: boolean = false;
     private damage_counter = 0;//frame
 
+    /**
+     * コンストラクタ
+     * @param {g.EParameterObject} param 
+     * @param {g.FrameSprite} sprite 
+     * @param {g.E} hitarea 
+     * @param {g.FrameSprite} effect 
+     * @returns {CharEntity} 生成したキャラクタオブジェクト
+     */
     constructor(param: g.EParameterObject, sprite: g.FrameSprite, hitarea: g.E, effect: g.FrameSprite) {
         super(param);
         this.sprite = sprite;this.append(this.sprite);
@@ -91,22 +104,43 @@ export class CharEntity extends g.E {
         });
     }
 
+    /**
+     * 衝突判定用エリアを取得する
+     * @return {g.E} 衝突判定用エリア
+     * */
     public getHitArea():g.E{
         return this.hitarea;
     }
+    /**
+     * キャラクタの向き指定
+     * @param {char_directions} direction 
+     */
     public setDirection(direction:char_directions):void{
         this.direction = direction;
         this.setSpriteAnimation();
     }
+    /**
+     * キャラクタのアクション指定
+     * @param {char_actions} action 
+     */
     public setAction(action:char_actions):void{
         this.action = action;
         this.setSpriteAnimation();
     }
+    /**
+     * キャラクタのメンタル指定
+     * @param {char_mental} mental 
+     * @param {number} mentaling_sec メンタル状態を維持する秒数（デフォルト1.2秒）
+     */
     public setMental(mental:char_mental, mentaling_sec=default_mentaling_sec):void{
         this.mental = mental;
         this.setMentalAnimation();
         this.mental_counter = g.game.fps * mentaling_sec;
     }
+    /**
+     * キャラクタがダメージを受けた状態にする
+     * @param {number} damaging_sec ダメージ状態を維持する秒数（デフォルト1.2秒）
+     */
     public setDamage(damaging_sec=default_damagling_sec):void{
         this.damage_counter = g.game.fps * damaging_sec;
     }

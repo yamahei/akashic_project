@@ -2,14 +2,20 @@
 
 import { CharEntity } from "./CharEntity";
 
+/** エフェクト画像アセットのパス */
 const EFFECT_ASSET_PATH = "/assets/image/obj/effects.png";
-
+/** キャラクタ設定アセットのパス（01.collision_editor で作成した設定json） */
 const CHAR_SETTING_PATH = "/assets/data/char_sprite_settings.json";
+/** キャラクタ画像の幅 */
 const CHAR_IMAGE_WIDTH = 72;//px
+/** キャラクタ画像の高さ */
 const CHAR_IMAGE_HEIGHT = 128;//px
+/** キャラクタチップの幅 */
 const CHAR_CHIP_WIDTH = 24;//px
+/** キャラクタチップの高さ */
 const CHAR_CHIP_HEIGHT = 32;//px
 
+/** キャラクタ設定のjsonレイアウト（1行） */
 type CharFactorySetting = {
       "line": string, //ex: "../assets/image/char/char_a-01-0_1.png",
       "path": string, //ex: "../assets/image/char",
@@ -29,6 +35,10 @@ type CharFactorySetting = {
 };
 type CharFactorySettings = CharFactorySetting[];
 
+/**
+ * キャラクタ生成クラス
+ * スタティックメソッドのみで構成され、インスタンス化しない
+ */
 export class CharFactory{
 
     private static findSetting(settings:CharFactorySettings, name_or_id: string, color_index: string): CharFactorySetting | undefined {
@@ -72,6 +82,26 @@ export class CharFactory{
         return collision_area;
     }
 
+    private static createEffectSprite(): g.FrameSprite {
+        return new g.FrameSprite({
+            tag: "effect",
+            scene: g.game.scene(),
+            src: g.game.scene().asset.getImage(EFFECT_ASSET_PATH),
+            width: CHAR_CHIP_WIDTH,
+            height: CHAR_CHIP_HEIGHT,
+            x: 0,
+            y: 0,
+            hidden: true,
+        });
+    }
+
+    /**
+     * キャラクタオブジェクトを生成して返す
+     * name_or_id と color_index は CharFactorySettings のフィールドを参照して指定する
+     * @param {string} name_or_id キャラクタ名またはID
+     * @param {string} color_index カラーインデックス（デフォルト"1"）※数字文字列
+     * @returns {CharEntity} 生成したキャラクタオブジェクト
+     */
     public static getCharObject(name_or_id: string, color_index: string = "1"): CharEntity {
         const settings: CharFactorySettings = g.game.scene().asset.getJSONContent(CHAR_SETTING_PATH);
         const setting = CharFactory.findSetting(settings, name_or_id, color_index);
@@ -90,18 +120,5 @@ export class CharFactory{
 
         return char_object;
     }
-    static createEffectSprite(): g.FrameSprite {
-        return new g.FrameSprite({
-            tag: "effect",
-            scene: g.game.scene(),
-            src: g.game.scene().asset.getImage(EFFECT_ASSET_PATH),
-            width: CHAR_CHIP_WIDTH,
-            height: CHAR_CHIP_HEIGHT,
-            x: 0,
-            y: 0,
-            hidden: true,
-        });
-    }
-
 
 }
