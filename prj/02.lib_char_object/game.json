@@ -4708,6 +4708,11 @@
 		"assets/data/char_sprite_settings.json": {
 			"type": "text",
 			"path": "assets/data/char_sprite_settings.json"
+		},
+		"UiSimpleButton": {
+			"type": "script",
+			"path": "script/lib/UiSimpleButton.js",
+			"global": true
 		}
 	},
 	"environment": {

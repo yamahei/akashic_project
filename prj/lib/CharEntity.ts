@@ -5,7 +5,7 @@ type char_actions = "stop" | "walk" | "jump" | "attack" | "die";
 type char_mental = "normal" | "silent" | "sleep" | "angry" | "trouble" | "emergency" | "shine1" | "shine2" | "shine3" | "shine4";
 
 const char_interval = 120;//ms
-const char_interval_fast = 60;//ms
+const char_interval_fast = 30;//ms
 const char_animation_patterns = [
     // stop
     { direction:"back",  action:"stop", frames: [ 1], loop: true, interval: char_interval },

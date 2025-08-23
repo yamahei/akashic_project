@@ -1,87 +1,90 @@
-# typescript-game-sample
+キャラクタ制御クラスとサンプル
+==============================
 
-**typescript-game-sample**はTypeScriptでAkashicのゲームを作る際のサンプルプロジェクトです。
+概要
+----
 
-## 利用方法
+- キャラクタの生成（`prj/lib/CharFactory.ts`）
+- キャラクタの制御（`prj/lib/CharEntity.ts`）
+- 上記の動作確認（`prj/02.lib_char_object/src/main.ts`）
 
- `typescript-game-sample` を利用するにはNode.jsが必要です。
+使い方
+------
 
-初回のみ、以下のコマンドを実行して、ビルドに必要なパッケージをインストールしてください。
-この作業は `typescript-game-sample` を新しく生成するごとに必要です。
-
-```sh
-npm install
-```
-
-### ビルド方法
-
-`typescript-game-sample` はTypeScriptで書かれているため、以下のコマンドでJavaScriptファイルに変換する必要があります。
+### 起動
 
 ```sh
-npm run build
+npm run debug # access to http://localhost:3000
 ```
 
-`src` ディレクトリ以下のTypeScriptファイルがコンパイルされ、`script` ディレクトリ以下にJavaScriptファイルが生成されます。
+### 画面
 
-`npm run build` は自動的に `akashic scan asset script` を実行するので、`game.json` の更新が行われます。
+![スクリーンショット](./screen.png)
 
-### 動作確認方法
+<dl>
+  <dt style="color:red">■ Direction</dt>
+  <dd>向きを変える</dd>
+  <dt style="color:blue">■ Action</dt>
+  <dd>アクションを切り替える</dd>
+  <dt style="color:green">■ Mental</dt>
+  <dd>エフェクトを切り替える</dd>
+  <dt style="color:cyan">■ Damage</dt>
+  <dd>ダメージ状態（点滅）</dd>
+  <dt style="color:gray">■ Collision</dt>
+  <dd>当たり判定確認要（ドラッグ可能）</dd>
+  <dt>上下に揺れるキャラクタ</dt>
+  <dd>公式のサンプル（削除してないだけ）</dd>
+  <dt>マントを着けたキャラクタ</dt>
+  <dd>生成したキャラクタ</dd>
+</dl>
 
-以下のどちらかを実行後、ブラウザで `http://localhost:3000/game/` にアクセスすることでゲームを実行できます。
+詳細
+----
 
-* `npm start`
-* `npm install -g @akashic/akashic-cli` 後、 `akashic sandbox .`
+### キャラクタの生成（`prj/lib/CharFactory.ts`）
 
-また、マルチプレイゲームの動作確認は `akashic-cli-serve` を利用します。以下のどちらかを実行後、ブラウザで `http://localhost:3300` にアクセスすることでゲームを実行できます。
-
-* `npm run start:multi`
-* `npm install -g @akashic/akashic-cli` 後、 `akashic serve .`
-
-### テンプレートの使い方
-
-* `src/main.ts` を編集することでゲームの作成が可能です。
-  * スプライトの表示、音を鳴らす、タッチイベント定義等が、最初からこのテンプレートで行われています。
-
-### アセットの更新方法
-
-各種アセットを追加したい場合は、それぞれのアセットファイルを以下のディレクトリに格納します。
-
-* 画像アセット: `image`
-* スクリプトアセット: `script`
-* テキストアセット: `text`
-* オーディオアセット: `audio`
-
-これらのアセットを追加・変更したあとに `npm run update` をすると、アセットの変更内容をもとに `game.json` を書き換えることができます。
-
-### npm モジュールの追加・削除
-
-`typescript-game-sample` でnpmモジュールを利用する場合、このディレクトリで `akashic install <package_name>` することで npm モジュールを追加することができます。
-
-また `akashic uninstall <package_name>` すると npm モジュールを削除することができます。
-
-## エクスポート方法
-
-`typescript-game-sample` をエクスポートするときは以下のコマンドを利用します。
-
-### htmlファイルのエクスポート
-
-`npm run export-html` のコマンドを利用することで `game` ディレクトリにエクスポートすることができます。
-
-`game/index.html` をブラウザで開くと単体動作させることができます。
-
-### zipファイルのエクスポート
-
-`npm run export-zip` のコマンドを利用することで `game.zip` という名前のzipファイルを出力できます。
-
-## テスト方法
-
-1. [TSLint](https://github.com/palantir/tslint "TSLint")を使ったLint
-2. [Jest](https://jestjs.io/ "Jest")を使ったテスト
-
-がそれぞれ実行されます。
-
-```sh
-npm test
+```ts
+/**
+ * 前提：アセットが読み込まれていること
+ * - エフェクト用画像：/assets/image/obj/effects.png
+ * - キャラクタ設定json：/assets/data/char_sprite_settings.json
+ *   （prj/01.collision_editor で作成した設定json）
+ */
+const scene = new g.Scene({
+  game: g.game,
+  assetPaths: ["/assets/**/*"]
+});
+```
+```ts
+/**
+ * 適切にアセットが読み込まれていれば、名前を指定してインスタンスが取得できる
+ */
+const hero:CharEntity = CharFactory.getCharObject("hero");
 ```
 
-テストコードのサンプルとして `spec/testSpec.js` を用意していますので参考にしてテストコードを記述して下さい。
+### キャラクタの制御（`prj/lib/CharEntity.ts`）
+
+```ts
+// CharFactory 参照
+const hero:CharEntity = CharFactory.getCharObject("hero");
+```
+```ts
+// キャラクタのアニメーションなどを指定する
+hero.setDirection("left");
+hero.setAction("walk");
+hero.setMental("sleep");
+hero.setDamage();
+// 移動は他のエンティティと同様
+hero.x += 10;
+hero.modified();
+```
+```ts
+// 当たり判定のサンプルコード
+const hit = g.Collision.intersectEntities(rect, hero.getHitArea());
+rect.cssColor = hit ? "yellow" : "black";
+rect.modified();
+```
+
+### 上記の動作確認（`prj/02.lib_char_object/src/main.ts`）
+
+[画面](#画面)参照

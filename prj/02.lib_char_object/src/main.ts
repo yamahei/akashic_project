@@ -66,7 +66,7 @@ function main(param: g.GameMainParameterObject): void {
 		scene.append(player);
 		// ここまでゲーム内容を記述します
 
-		const hero = CharFactory.getCharObject("hero");
+		const hero:CharEntity = CharFactory.getCharObject("hero");
 		hero.x = 64;
 		hero.y = 256;
 		// scene.append(hero);
