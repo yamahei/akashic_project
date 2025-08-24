@@ -74,10 +74,8 @@ export class CharFactory{
         const collision_area = new g.E({
             tag: "hitarea",
             scene: g.game.scene(),
-            x: setting.collision_x,
-            y: setting.collision_y,
-            width: setting.collision_w,
-            height: setting.collision_h
+            x: setting.collision_x, y: setting.collision_y,
+            width: setting.collision_w, height: setting.collision_h
         });
         return collision_area;
     }
@@ -87,11 +85,8 @@ export class CharFactory{
             tag: "effect",
             scene: g.game.scene(),
             src: g.game.scene().asset.getImage(EFFECT_ASSET_PATH),
-            width: CHAR_CHIP_WIDTH,
-            height: CHAR_CHIP_HEIGHT,
-            x: 0,
-            y: 0,
-            hidden: true,
+            width: CHAR_CHIP_WIDTH, height: CHAR_CHIP_HEIGHT,
+            x: 0, y: 0, hidden: true,
         });
     }
 
@@ -113,12 +108,12 @@ export class CharFactory{
         const hitarea = CharFactory.createCollisionArea(setting);
         const effect = CharFactory.createEffectSprite();
 
-        const char_object = new CharEntity({
+        const entity = new CharEntity({
             scene: g.game.scene()}, 
             sprite, hitarea, effect
         );
 
-        return char_object;
+        return entity;
     }
 
 }
