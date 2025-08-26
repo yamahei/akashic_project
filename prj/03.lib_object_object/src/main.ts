@@ -1,8 +1,12 @@
+import { ObjectEntity } from "../lib/ObjectEntity"
+import { ObjectFactory } from "../lib/ObjectFactory";
+
 function main(param: g.GameMainParameterObject): void {
 	const scene = new g.Scene({
 		game: g.game,
 		// このシーンで利用するアセットのIDを列挙し、シーンに通知します
-		assetIds: ["player", "shot", "se"]
+		assetIds: ["player", "shot", "se"],
+        assetPaths: ["/assets/**/*"]
 	});
 	scene.onLoad.add(() => {
 		// ここからゲーム内容を記述します
@@ -61,6 +65,27 @@ function main(param: g.GameMainParameterObject): void {
 		});
 		scene.append(player);
 		// ここまでゲーム内容を記述します
+
+		/**
+		 * ここからオブジェクトオブジェクトの利用例
+		 */
+		const names = [
+            "blue_book","red_book","green_book",
+            "chest_bright","chest_red","chest_gold","chest_wood","chest_bronze",
+            "flag_red","flag_magenda","flag_blue","flag_yellow",
+            "door_wood1","door_wood1_bright","door_wood2","door_wood2_bright","door_wood3","door_wood3_bright","door_wood4","door_wood4_bright","door_iron","door_iron_bright",
+            "switch_p","switch_ud","switch_lr","switch_fb",
+            "treasure_pendant","treasure_key_heart","treasure_key_silver","treasure_jewel"
+        ];
+		names.forEach((name, index) => {
+			const setting = ObjectEntity.getObjectSetting(name);
+			const obj = ObjectFactory.getObjectObject(name);
+			obj.x = (index % 5) * 34 + 10;
+			obj.y = Math.floor(index / 5) * 42 + 10;
+			scene.append(obj);
+		});
+
+
 	});
 	g.game.pushScene(scene);
 }

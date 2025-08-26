@@ -1,9 +1,6 @@
 "use strict";
 
-import { ObjectEntity } from "./ObjectEntity";
-
-/** 画像アセットのパス */
-const xxx_ASSET_PATH = "/assets/image/obj/xxxx.png";
+import { ObjectEntity, animationPattern } from "./ObjectEntity";
 
 /** キャラクタ画像の幅 */
 const OBJECT_IMAGE_WIDTH = 72;//px
@@ -40,6 +37,14 @@ export class ObjectFactory{
         return collision_area;
     }
 
+    private static getAnimationPatterns(patterns:animationPattern[], offset:number): animationPattern[] {
+        const clone = JSON.parse(JSON.stringify(patterns)) as animationPattern[];
+        clone.forEach(pattern => {
+            pattern.frames = pattern.frames.map(f => f + offset);
+        });
+        return clone;
+    }
+
 
     /**
      * オブジェクトオブジェクトを生成して返す
@@ -49,7 +54,7 @@ export class ObjectFactory{
      */
     public static getObjectObject(name: string): ObjectEntity {
         const setting = ObjectEntity.getObjectSetting(name);
-        const patterns = setting.animation_patterns;
+        const patterns = ObjectFactory.getAnimationPatterns(setting.animation_patterns, setting.animation_offset);
         const sprite = ObjectFactory.createObjectSprite(setting.asset_path);
         const hitarea = ObjectFactory.createCollisionArea(setting.collision_x, setting.collision_y, setting.collision_w, setting.collision_h);
 
