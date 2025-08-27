@@ -16,8 +16,8 @@ export type objectTypeSetting = {
     "collision_h"?: number;
     "animation_patterns": animationPattern[];
 };
-const object_interval = 120;//ms
-const object_interval_fast = 30;//ms
+const object_interval = 200;//ms
+const object_interval_fast = 90;//ms
 const object_type_settings:objectTypeSetting[] = [
     {
         type: "book", asset_path: "/assets/image/obj/books.png", 
@@ -41,29 +41,30 @@ const object_type_settings:objectTypeSetting[] = [
         collision_x: 8, collision_y: 6, collision_w: 7, collision_h: 24,
         animation_patterns: [
             { name: "stop", frames: [1], loop: false, default: true },
-            { name: "wave", frames: [1, 0, 1, 2], loop: true },
+            { name: "wave", frames: [1, 0, 1, 2], loop: true, interval: object_interval },
+            { name: "flutter", frames: [1, 0, 1, 2], loop: true, interval: object_interval_fast },
         ],
     }, {
         type: "door", asset_path: "/assets/image/obj/doors.png",
         collision_x: 0, collision_y: 0, collision_w: 23, collision_h: 31,
         animation_patterns: [
-            { name: "open", frames: [24, 18, 12, 6, 0], loop: false },
-            { name: "close", frames: [0, 6, 12, 18, 24], loop: false, default: true },
+            { name: "open", frames: [18, 12, 6, 0], loop: false, interval: object_interval_fast },
+            { name: "close", frames: [0, 6, 12, 18], loop: false, interval: object_interval_fast, default: true },
         ],
     }, {
         type: "switch", asset_path: "/assets/image/obj/switches.png",
         // collision rect set in object_setting
         animation_patterns: [
-            { name: "on",  frames: [2, 1, 0], loop: false },
-            { name: "off", frames: [0, 1, 2], loop: false, default: true },
+            { name: "on",  frames: [2, 1, 0], loop: false, interval: object_interval_fast },
+            { name: "off", frames: [0, 1, 2], loop: false, interval: object_interval_fast, default: true },
         ],
     }, {
         type: "treasure", asset_path: "/assets/image/obj/treasures.png",
         // collision rect set in object_setting
         animation_patterns: [
-            { name: "stop", frames: [2], loop: false, default: true },
-            { name: "bright", frames: [2, 1, 0], loop: false },
-            { name: "brighting", frames: [2, 1, 0, 2, 1, 0, 0, 0, 0], loop: true },
+            { name: "stop", frames: [2], loop: false, interval: object_interval_fast, default: true },
+            { name: "bright", frames: [0, 1, 2], loop: false, interval: object_interval_fast },
+            { name: "brighting", frames: [0, 1, 2, 0, 1, 2, 2, 2, 2], loop: true, interval: object_interval_fast },
         ],
     },
 ];
@@ -96,10 +97,8 @@ const object_settings:object_setting[] = [
     { type: "door", name: "door_wood2_bright", animation_offset: 25 },
     { type: "door", name: "door_wood3", animation_offset: 2 },
     { type: "door", name: "door_wood3_bright", animation_offset: 26 },
-    { type: "door", name: "door_wood4", animation_offset: 3 },
-    { type: "door", name: "door_wood4_bright", animation_offset: 27 },
-    { type: "door", name: "door_iron",  animation_offset: 4 },
-    { type: "door", name: "door_iron_bright", animation_offset: 28 },
+    { type: "door", name: "door_iron",  animation_offset: 3 },
+    { type: "door", name: "door_iron_bright", animation_offset: 27 },
     { type: "switch",   name: "switch_p",  animation_offset: 0, collision_x: 4, collision_y: 20, collision_w: 16, collision_h: 11 },
     { type: "switch",   name: "switch_ud", animation_offset: 3, collision_x: 6, collision_y: 4,  collision_w: 12, collision_h: 17 },
     { type: "switch",   name: "switch_lr", animation_offset: 6, collision_x: 5, collision_y: 17, collision_w: 14, collision_h: 14 },
@@ -152,8 +151,9 @@ export class ObjectEntity extends g.E {
 
         // build actions
         patterns.sort((a,b)=>{
-            return (a?.default ? 1:0) - (b?.default ? 1:0);
+            return (a?.default ? 0:1) - (b?.default ? 0:1);
         })
+        console.log(patterns);
         this.actions = patterns.map(p => p.name);
         // set first action
         const actions = this.getActions();

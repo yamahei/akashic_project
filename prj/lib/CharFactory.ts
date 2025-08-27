@@ -97,7 +97,7 @@ export class CharFactory{
      * @param {string} color_index カラーインデックス（デフォルト"1"）※数字文字列
      * @returns {CharEntity} 生成したキャラクタオブジェクト
      */
-    public static getCharObject(name_or_id: string, color_index: string = "1"): CharEntity {
+    public static getCharObject(name_or_id: string, color_index: string = "1", param:g.EParameterObject={scene:g.game.scene()}): CharEntity {
         const settings: CharFactorySettings = g.game.scene().asset.getJSONContent(CHAR_SETTING_PATH);
         const setting = CharFactory.findSetting(settings, name_or_id, color_index);
         if (!setting) {
@@ -108,8 +108,8 @@ export class CharFactory{
         const hitarea = CharFactory.createCollisionArea(setting);
         const effect = CharFactory.createEffectSprite();
 
-        const entity = new CharEntity({
-            scene: g.game.scene()}, 
+        const entity = new CharEntity(
+            { scene: g.game.scene(), ...param }, 
             sprite, hitarea, effect
         );
 

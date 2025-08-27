@@ -52,16 +52,17 @@ export class ObjectFactory{
      * @param {string} name オブジェクト名
      * @returns {ObjectEntity} 生成したオブジェクトオブジェクト
      */
-    public static getObjectObject(name: string): ObjectEntity {
+    public static getObjectObject(name: string, param:g.EParameterObject = {scene:g.game.scene()}): ObjectEntity {
         const setting = ObjectEntity.getObjectSetting(name);
         const patterns = ObjectFactory.getAnimationPatterns(setting.animation_patterns, setting.animation_offset);
         const sprite = ObjectFactory.createObjectSprite(setting.asset_path);
         const hitarea = ObjectFactory.createCollisionArea(setting.collision_x, setting.collision_y, setting.collision_w, setting.collision_h);
 
         const entity = new ObjectEntity(
-            { scene: g.game.scene() }, sprite, hitarea, patterns
+            { scene: g.game.scene(), ...param }, sprite, hitarea, patterns
         );
 
+        console.log(`ObjectFactory: created object '${name}'`);
         return entity;
     }
 

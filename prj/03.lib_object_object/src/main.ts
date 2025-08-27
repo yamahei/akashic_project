@@ -73,16 +73,28 @@ function main(param: g.GameMainParameterObject): void {
             "blue_book","red_book","green_book",
             "chest_bright","chest_red","chest_gold","chest_wood","chest_bronze",
             "flag_red","flag_magenda","flag_blue","flag_yellow",
-            "door_wood1","door_wood1_bright","door_wood2","door_wood2_bright","door_wood3","door_wood3_bright","door_wood4","door_wood4_bright","door_iron","door_iron_bright",
+            "door_wood1","door_wood1_bright","door_wood2","door_wood2_bright","door_wood3","door_wood3_bright","door_iron","door_iron_bright",
             "switch_p","switch_ud","switch_lr","switch_fb",
             "treasure_pendant","treasure_key_heart","treasure_key_silver","treasure_jewel"
         ];
 		names.forEach((name, index) => {
 			const setting = ObjectEntity.getObjectSetting(name);
-			const obj = ObjectFactory.getObjectObject(name);
-			obj.x = (index % 5) * 34 + 10;
-			obj.y = Math.floor(index / 5) * 42 + 10;
+			const x = (index % 5) * 34 + 10;
+			const y = Math.floor(index / 5) * 42 + 10;
+			const param:g.EParameterObject = {
+				scene: g.game.scene(),
+				touchable: true, x: x, y: y,
+				width: 24, height: 32
+			};
+			const obj = ObjectFactory.getObjectObject(name, param);
 			scene.append(obj);
+			const actions = obj.getActions();
+			let action_index = 0;
+			obj.onPointDown.add(() => {
+				action_index = (action_index + 1) % actions.length;
+				obj.setAction(actions[action_index]);
+				console.log(`object '${name}' action: ${actions[action_index]}`);
+			});
 		});
 
 

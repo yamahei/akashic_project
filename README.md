@@ -69,39 +69,36 @@ sudo apt install jq
 （プロジェクト名は`${PRJ_NAME}`とする）
 ```sh
 PRJ_NAME=PRJ_NAME
-mkdir ../prj/${PRJ_NAME}
-cd ../prj/${PRJ_NAME}
+mkdir prj/${PRJ_NAME}
+cd prj/${PRJ_NAME}
 akashic init -t typescript
 # prompt: width:  (1280) 320 / 256
 # prompt: height:  (720) 512 / 400
 # prompt: fps:  (30) 
 npm install # VSCode用型定義参照
-ln -s ../../assets assets
-ln -s ../../lib lib
+ln -s ../assets assets
+ln -s ../lib lib
 cat tsconfig.json | jq '.include |= .+["lib/**/*.ts"]' > .jqtmp && mv .jqtmp tsconfig.json
-cat game.json | jq '.main |= "./script/src/main.js"' > .jqtmp && mv .jqtmp game.json
+cat package.json | jq '.scripts |= .+ {"debug":"npm run build && npm run start"}' > .jqtmp && mv .jqtmp package.json
+akashic scan asset
 ```
-
-注意事項
-
-初期状態では動くけど、ビルドすると動かなくなるのは、`game.json`のmain指定誤り
-```json
-  {
--   "main": "./script/main.js",
-+   "main": "./script/src/main.js",
-  }
+```
+- 	"main": "./script/main.js",
++ 	"main": "./script/src/main.js",
 ```
 
 #### プロジェクトの実行
 ```sh
 # プロジェクトディレクトリで実行する
 akashic sandbox #=> access to http://localhost:3000/
+# or below (scan - build - start)
+npm run debug
 ```
 
 #### リソース（アセット）の更新
 ```sh
 # プロジェクトディレクトリで実行する
-akashic scan assets
+akashic scan asset
 ```
 
 </details>
@@ -121,6 +118,8 @@ akashic-cliとDockerコンテナのテストを兼ねて作成。
 #### 02.lib_char_object
 `01.collision_editor`の`char_sprite_settings.json`を読み込んで、いい感じにキャラクタスプライトを制御するためのオブジェクトを開発する
 
+#### 03.lib_object_object
+オブジェクトスプライト制御クラスの開発と動作確認
 
 
 その他
