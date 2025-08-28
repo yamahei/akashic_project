@@ -4,71 +4,10 @@ import { ObjectFactory } from "../lib/ObjectFactory";
 function main(param: g.GameMainParameterObject): void {
 	const scene = new g.Scene({
 		game: g.game,
-		// このシーンで利用するアセットのIDを列挙し、シーンに通知します
-		assetIds: ["player", "shot", "se"],
         assetPaths: ["/assets/**/*"]
 	});
 	scene.onLoad.add(() => {
-		// ここからゲーム内容を記述します
-
-		// 各アセットオブジェクトを取得します
-		const playerImageAsset = scene.asset.getImageById("player");
-		const shotImageAsset = scene.asset.getImageById("shot");
-		const seAudioAsset = scene.asset.getAudioById("se");
-
-		// プレイヤーを生成します
-		const player = new g.Sprite({
-			scene: scene,
-			src: playerImageAsset,
-			width: playerImageAsset.width,
-			height: playerImageAsset.height
-		});
-
-		// プレイヤーの初期座標を、画面の中心に設定します
-		player.x = (g.game.width - player.width) / 2;
-		player.y = (g.game.height - player.height) / 2;
-		player.onUpdate.add(() => {
-			// 毎フレームでY座標を再計算し、プレイヤーの飛んでいる動きを表現します
-			// ここではMath.sinを利用して、時間経過によって増加するg.game.ageと組み合わせて
-			player.y = (g.game.height - player.height) / 2 + Math.sin(g.game.age % (g.game.fps * 10) / 4) * 10;
-
-			// プレイヤーの座標に変更があった場合、 modified() を実行して変更をゲームに通知します
-			player.modified();
-		});
-
-		// 画面をタッチしたとき、SEを鳴らします
-		scene.onPointDownCapture.add(() => {
-			seAudioAsset.play();
-
-			// プレイヤーが発射する弾を生成します
-			const shot = new g.Sprite({
-				scene: scene,
-				src: shotImageAsset,
-				width: shotImageAsset.width,
-				height: shotImageAsset.height
-			});
-
-			// 弾の初期座標を、プレイヤーの少し右に設定します
-			shot.x = player.x + player.width;
-			shot.y = player.y;
-			shot.onUpdate.add(() => {
-				// 毎フレームで座標を確認し、画面外に出ていたら弾をシーンから取り除きます
-				if (shot.x > g.game.width) shot.destroy();
-
-				// 弾を右に動かし、弾の動きを表現します
-				shot.x += 10;
-
-				// 変更をゲームに通知します
-				shot.modified();
-			});
-			scene.append(shot);
-		});
-		scene.append(player);
-		// ここまでゲーム内容を記述します
-
-		/**
-		 * ここからオブジェクトオブジェクトの利用例
-		 */
+		const objects:ObjectEntity[] = [];
 		const names = [
             "blue_book","red_book","green_book",
             "chest_bright","chest_red","chest_gold","chest_wood","chest_bronze",
@@ -79,8 +18,8 @@ function main(param: g.GameMainParameterObject): void {
         ];
 		names.forEach((name, index) => {
 			const setting = ObjectEntity.getObjectSetting(name);
-			const x = (index % 5) * 34 + 10;
-			const y = Math.floor(index / 5) * 42 + 10;
+			const x = (index % 4) * 60 + 10;
+			const y = Math.floor(index / 4) * 55 + 10;
 			const param:g.EParameterObject = {
 				scene: g.game.scene(),
 				touchable: true, x: x, y: y,
@@ -95,8 +34,28 @@ function main(param: g.GameMainParameterObject): void {
 				obj.setAction(actions[action_index]);
 				console.log(`object '${name}' action: ${actions[action_index]}`);
 			});
+			objects.push(obj);
 		});
 
+		const rect = new g.FilledRect({
+			scene: scene, touchable: true,
+			width: 24, height: 24, cssColor: "black", opacity: 0.5,
+			x: 128, y: 340,
+		});
+		scene.append(rect);
+		let dragging = false;
+		rect.onPointDown.add(function () { dragging = true; });
+		rect.onPointUp.add(function () { dragging = false; });
+		rect.onPointMove.add(function (e) {
+			if (dragging) {
+				rect.x += e.prevDelta.x;
+				rect.y += e.prevDelta.y;
+				rect.modified();
+			}
+			const hit = objects.some(o => g.Collision.intersectEntities(rect, o.getHitArea()));
+			rect.cssColor = hit ? "yellow" : "black";
+			rect.modified();
+		});
 
 	});
 	g.game.pushScene(scene);

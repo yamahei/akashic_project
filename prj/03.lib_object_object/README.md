@@ -1,87 +1,86 @@
-# typescript-game-sample
+オブジェクト制御クラスとサンプル
+================================
 
-**typescript-game-sample**はTypeScriptでAkashicのゲームを作る際のサンプルプロジェクトです。
+概要
+----
 
-## 利用方法
+- オブジェクトの生成（`prj/lib/ObjectFactory.ts`）
+- オブジェクトの制御（`prj/lib/ObjectEntity.ts`）
+- 上記の動作確認（`prj/03.lib_object_object/src/main.ts`）
 
- `typescript-game-sample` を利用するにはNode.jsが必要です。
 
-初回のみ、以下のコマンドを実行して、ビルドに必要なパッケージをインストールしてください。
-この作業は `typescript-game-sample` を新しく生成するごとに必要です。
+使い方
+------
 
-```sh
-npm install
-```
-
-### ビルド方法
-
-`typescript-game-sample` はTypeScriptで書かれているため、以下のコマンドでJavaScriptファイルに変換する必要があります。
+### 起動
 
 ```sh
-npm run build
+npm run debug # access to http://localhost:3000
 ```
 
-`src` ディレクトリ以下のTypeScriptファイルがコンパイルされ、`script` ディレクトリ以下にJavaScriptファイルが生成されます。
+### 画面
 
-`npm run build` は自動的に `akashic scan asset script` を実行するので、`game.json` の更新が行われます。
+![スクリーンショット](./screen.png)
 
-### 動作確認方法
 
-以下のどちらかを実行後、ブラウザで `http://localhost:3000/game/` にアクセスすることでゲームを実行できます。
+<dl>
+  <dt>オブジェクトをクリック</dt>
+  <dd>
+    アニメーション切り替え
+    （全パターンでローテーション）
+  </dd>
+  <dt style="color:gray">■ Collision</dt>
+  <dd>当たり判定確認要（ドラッグ可能）</dd>
+</dl>
 
-* `npm start`
-* `npm install -g @akashic/akashic-cli` 後、 `akashic sandbox .`
 
-また、マルチプレイゲームの動作確認は `akashic-cli-serve` を利用します。以下のどちらかを実行後、ブラウザで `http://localhost:3300` にアクセスすることでゲームを実行できます。
+詳細
+----
 
-* `npm run start:multi`
-* `npm install -g @akashic/akashic-cli` 後、 `akashic serve .`
+### キャラクタの生成（`prj/lib/ObjectFactory.ts`）
 
-### テンプレートの使い方
-
-* `src/main.ts` を編集することでゲームの作成が可能です。
-  * スプライトの表示、音を鳴らす、タッチイベント定義等が、最初からこのテンプレートで行われています。
-
-### アセットの更新方法
-
-各種アセットを追加したい場合は、それぞれのアセットファイルを以下のディレクトリに格納します。
-
-* 画像アセット: `image`
-* スクリプトアセット: `script`
-* テキストアセット: `text`
-* オーディオアセット: `audio`
-
-これらのアセットを追加・変更したあとに `npm run update` をすると、アセットの変更内容をもとに `game.json` を書き換えることができます。
-
-### npm モジュールの追加・削除
-
-`typescript-game-sample` でnpmモジュールを利用する場合、このディレクトリで `akashic install <package_name>` することで npm モジュールを追加することができます。
-
-また `akashic uninstall <package_name>` すると npm モジュールを削除することができます。
-
-## エクスポート方法
-
-`typescript-game-sample` をエクスポートするときは以下のコマンドを利用します。
-
-### htmlファイルのエクスポート
-
-`npm run export-html` のコマンドを利用することで `game` ディレクトリにエクスポートすることができます。
-
-`game/index.html` をブラウザで開くと単体動作させることができます。
-
-### zipファイルのエクスポート
-
-`npm run export-zip` のコマンドを利用することで `game.zip` という名前のzipファイルを出力できます。
-
-## テスト方法
-
-1. [TSLint](https://github.com/palantir/tslint "TSLint")を使ったLint
-2. [Jest](https://jestjs.io/ "Jest")を使ったテスト
-
-がそれぞれ実行されます。
-
-```sh
-npm test
+```ts
+/**
+ * 前提：アセットが読み込まれていること
+ * 
+ * - 各種画像：/assets/image/obj/
+ *   - book: /assets/image/obj/books.png 
+ *   - chest: /assets/image/obj/chests.png
+ *   - flag: /assets/image/obj/flags.png
+ *   - door: /assets/image/obj/doors.png
+ *   - switch: /assets/image/obj/switches.png
+ *   - treasure: /assets/image/obj/treasures.png
+ */
+const scene = new g.Scene({
+  game: g.game,
+  assetPaths: ["/assets/**/*"]
+});
+```
+```ts
+/**
+ * 適切にアセットが読み込まれていれば、名前を指定してインスタンスが取得できる
+ * 名前は`object_settings`（`ObjectEntity.ts`内）を参照
+ */
+const obj = ObjectFactory.getObjectObject("blue_book");
 ```
 
-テストコードのサンプルとして `spec/testSpec.js` を用意していますので参考にしてテストコードを記述して下さい。
+### キャラクタの制御（`prj/lib/ObjectEntity.ts`）
+
+```ts
+// ObjectFactory 参照
+const obj = ObjectFactory.getObjectObject("blue_book");
+```
+```ts
+// オブジェクトのアニメーションなどを指定する
+obj.setAction("flip");
+```
+```ts
+// 当たり判定のサンプルコード
+const hit = g.Collision.intersectEntities(rect, obj.getHitArea());
+rect.cssColor = hit ? "yellow" : "black";
+rect.modified();
+```
+
+### 上記の動作確認（`prj/03.lib_object_object/src/main.ts`）
+
+[画面](#画面)参照
