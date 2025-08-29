@@ -41,15 +41,26 @@ akashic_project
 ### Akashic Engine
 
 - [Akashic Engine のインストール](https://akashic-games.github.io/tutorial/v3/introduction.html#install-akashic-engine)
-- 公式のインストールコマンド
-- ATTENTION: VSCode名前解決のためにプロジェクトごとに`npm install`が必要（プロジェクト作成手順に含む
+
+```sh
+npm install -g @akashic/akashic-cli
+```
 
 ### jq
+
+- 設定ファイルの編集に使ってる
 
 ```sh
 sudo apt install jq
 ```
 
+### TODO: showdown
+
+- README.mdをHTMLするのに使う
+
+```sh
+sudo npm install showdown -g
+```
 
 プロジェクト
 ------------
@@ -116,16 +127,22 @@ akashic-cliとDockerコンテナのテストを兼ねて作成。
 （`prj/assets/data/`に配置する）
 
 #### 02.lib_char_object
+
 `01.collision_editor`の`char_sprite_settings.json`を読み込んで、いい感じにキャラクタスプライトを制御するためのオブジェクトを開発する
 
 #### 03.lib_object_object
+
 オブジェクトスプライト制御クラスの開発と動作確認
 
 
 その他
 ------
 
-### TODO: 自作ライブラリ(`/prj/lib`)
+### 自作ライブラリ(`/prj/lib`)
+
+- キャラクタ制御クラスとサンプル（`prj/02.lib_char_object/README.md`）
+- オブジェクト制御クラスとサンプル（`prj/03.lib_object_object/README.md`）
+
 ### コマンドラインツール(`/bin`)
 
 #### split_char_images.sh
@@ -133,15 +150,22 @@ akashic-cliとDockerコンテナのテストを兼ねて作成。
 `ORIGINAL_ASSETS/char_sheets`に配置されたキャラクターシート（PNG画像）を、ゲームで利用可能な32x32のキャラクター画像に分割し、`prj/assets/image/char`に出力します。透過の指定もここで。
 
 **実行方法**
+
 ```sh
-./bin/split_char_images.sh
+sh ./bin/split_char_images.sh
 ```
 
 **前提条件**
 
-*   `ORIGINAL_ASSETS/char_sheets`ディレクトリに、`charaXX.png`という形式で分割したい画像シートが配置されていること。
-*   実行環境にImageMagickがインストールされていること。
+* `ORIGINAL_ASSETS/char_sheets`ディレクトリに、`charaXX.png`という形式で分割したい画像シートが配置されていること。
+* 実行環境に`ImageMagick`がインストールされていること。
 
+#### TODO: publish.sh
+
+このリポジトリをGithubPagesで公開可能にするためのHTML生成やビルドを行なう。
+
+- markdownをhtmlに変換するツール：`showdown`
+- akashic engine製のプログラムをhtmlにビルド：`npm run export-html`
 
 #### ~~update_prj_symlinks.sh~~(廃止)
 

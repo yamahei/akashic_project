@@ -50,6 +50,7 @@ export class ObjectFactory{
      * オブジェクトオブジェクトを生成して返す
      * name は object_settings のフィールドを参照して指定する
      * @param {string} name オブジェクト名
+     * @param {g.EParameterObject} param g.E のパラメータ
      * @returns {ObjectEntity} 生成したオブジェクトオブジェクト
      */
     public static getObjectObject(name: string, param:g.EParameterObject = {scene:g.game.scene()}): ObjectEntity {
