@@ -1,0 +1,60 @@
+<h1 id="">オブジェクト制御クラスとサンプル</h1>
+<h2 id="-1">概要</h2>
+<ul>
+<li>オブジェクトの生成（<code>prj/lib/ObjectFactory.ts</code>）</li>
+<li>オブジェクトの制御（<code>prj/lib/ObjectEntity.ts</code>）</li>
+<li>上記の動作確認（<code>prj/03.lib_object_object/src/main.ts</code>）</li>
+</ul>
+<h2 id="-2">使い方</h2>
+<h3 id="-4">起動</h3>
+<pre><code class="sh language-sh">npm run debug # access to http://localhost:3000
+</code></pre>
+<h3 id="-5">画面</h3>
+<p><img src="./screen.png" alt="スクリーンショット" /></p>
+<dl>
+  <dt>オブジェクトをクリック</dt>
+  <dd>
+    アニメーション切り替え
+    （全パターンでローテーション）
+  </dd>
+  <dt style="color:gray">■ Collision</dt>
+  <dd>当たり判定確認要（ドラッグ可能）</dd>
+</dl>
+<h2 id="-3">詳細</h2>
+<h3 id="prjlibobjectfactoryts">キャラクタの生成（<code>prj/lib/ObjectFactory.ts</code>）</h3>
+<pre><code class="ts language-ts">/**
+ * 前提：アセットが読み込まれていること
+ * 
+ * - 各種画像：/assets/image/obj/
+ *   - book: /assets/image/obj/books.png 
+ *   - chest: /assets/image/obj/chests.png
+ *   - flag: /assets/image/obj/flags.png
+ *   - door: /assets/image/obj/doors.png
+ *   - switch: /assets/image/obj/switches.png
+ *   - treasure: /assets/image/obj/treasures.png
+ */
+const scene = new g.Scene({
+  game: g.game,
+  assetPaths: ["/assets/**/*"]
+});
+</code></pre>
+<pre><code class="ts language-ts">/**
+ * 適切にアセットが読み込まれていれば、名前を指定してインスタンスが取得できる
+ * 名前は`object_settings`（`ObjectEntity.ts`内）を参照
+ */
+const obj = ObjectFactory.getObjectObject("blue_book");
+</code></pre>
+<h3 id="prjlibobjectentityts">キャラクタの制御（<code>prj/lib/ObjectEntity.ts</code>）</h3>
+<pre><code class="ts language-ts">// ObjectFactory 参照
+const obj = ObjectFactory.getObjectObject("blue_book");
+</code></pre>
+<pre><code class="ts language-ts">// オブジェクトのアニメーションなどを指定する
+obj.setAction("flip");
+</code></pre>
+<pre><code class="ts language-ts">// 当たり判定のサンプルコード
+const hit = g.Collision.intersectEntities(rect, obj.getHitArea());
+rect.cssColor = hit ? "yellow" : "black";
+rect.modified();
+</code></pre>
+<h3 id="prj03lib_object_objectsrcmaints">上記の動作確認（<code>prj/03.lib_object_object/src/main.ts</code>）</h3>
+<p><a href="#画面">画面</a>参照</p>

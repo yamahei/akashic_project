@@ -1,0 +1,58 @@
+<h1 id="typescriptgamesample">typescript-game-sample</h1>
+<p><strong>typescript-game-sample</strong>はTypeScriptでAkashicのゲームを作る際のサンプルプロジェクトです。</p>
+<h2 id="">利用方法</h2>
+<p><code>typescript-game-sample</code> を利用するにはNode.jsが必要です。</p>
+<p>初回のみ、以下のコマンドを実行して、ビルドに必要なパッケージをインストールしてください。
+この作業は <code>typescript-game-sample</code> を新しく生成するごとに必要です。</p>
+<pre><code class="sh language-sh">npm install
+</code></pre>
+<h3 id="-1">ビルド方法</h3>
+<p><code>typescript-game-sample</code> はTypeScriptで書かれているため、以下のコマンドでJavaScriptファイルに変換する必要があります。</p>
+<pre><code class="sh language-sh">npm run build
+</code></pre>
+<p><code>src</code> ディレクトリ以下のTypeScriptファイルがコンパイルされ、<code>script</code> ディレクトリ以下にJavaScriptファイルが生成されます。</p>
+<p><code>npm run build</code> は自動的に <code>akashic scan asset script</code> を実行するので、<code>game.json</code> の更新が行われます。</p>
+<h3 id="-2">動作確認方法</h3>
+<p>以下のどちらかを実行後、ブラウザで <code>http://localhost:3000/game/</code> にアクセスすることでゲームを実行できます。</p>
+<ul>
+<li><code>npm start</code></li>
+<li><code>npm install -g @akashic/akashic-cli</code> 後、 <code>akashic sandbox .</code></li>
+</ul>
+<p>また、マルチプレイゲームの動作確認は <code>akashic-cli-serve</code> を利用します。以下のどちらかを実行後、ブラウザで <code>http://localhost:3300</code> にアクセスすることでゲームを実行できます。</p>
+<ul>
+<li><code>npm run start:multi</code></li>
+<li><code>npm install -g @akashic/akashic-cli</code> 後、 <code>akashic serve .</code></li>
+</ul>
+<h3 id="-3">テンプレートの使い方</h3>
+<ul>
+<li><code>src/main.ts</code> を編集することでゲームの作成が可能です。</li>
+<li>スプライトの表示、音を鳴らす、タッチイベント定義等が、最初からこのテンプレートで行われています。</li>
+</ul>
+<h3 id="-4">アセットの更新方法</h3>
+<p>各種アセットを追加したい場合は、それぞれのアセットファイルを以下のディレクトリに格納します。</p>
+<ul>
+<li>画像アセット: <code>image</code></li>
+<li>スクリプトアセット: <code>script</code></li>
+<li>テキストアセット: <code>text</code></li>
+<li>オーディオアセット: <code>audio</code></li>
+</ul>
+<p>これらのアセットを追加・変更したあとに <code>npm run update</code> をすると、アセットの変更内容をもとに <code>game.json</code> を書き換えることができます。</p>
+<h3 id="npm">npm モジュールの追加・削除</h3>
+<p><code>typescript-game-sample</code> でnpmモジュールを利用する場合、このディレクトリで <code>akashic install &lt;package_name&gt;</code> することで npm モジュールを追加することができます。</p>
+<p>また <code>akashic uninstall &lt;package_name&gt;</code> すると npm モジュールを削除することができます。</p>
+<h2 id="-5">エクスポート方法</h2>
+<p><code>typescript-game-sample</code> をエクスポートするときは以下のコマンドを利用します。</p>
+<h3 id="html">htmlファイルのエクスポート</h3>
+<p><code>npm run export-html</code> のコマンドを利用することで <code>game</code> ディレクトリにエクスポートすることができます。</p>
+<p><code>game/index.html</code> をブラウザで開くと単体動作させることができます。</p>
+<h3 id="zip">zipファイルのエクスポート</h3>
+<p><code>npm run export-zip</code> のコマンドを利用することで <code>game.zip</code> という名前のzipファイルを出力できます。</p>
+<h2 id="-6">テスト方法</h2>
+<ol>
+<li><a href="https://github.com/palantir/tslint" title="TSLint">TSLint</a>を使ったLint</li>
+<li><a href="https://jestjs.io/" title="Jest">Jest</a>を使ったテスト</li>
+</ol>
+<p>がそれぞれ実行されます。</p>
+<pre><code class="sh language-sh">npm test
+</code></pre>
+<p>テストコードのサンプルとして <code>spec/testSpec.js</code> を用意していますので参考にしてテストコードを記述して下さい。</p>
