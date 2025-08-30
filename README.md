@@ -171,7 +171,7 @@ sh ./bin/split_char_images.sh
 このリポジトリをGithubPagesで公開可能にするためのHTML生成やビルドを行なう。
 
 - markdownをhtmlに変換するツール：`showdown`
-- akashic engine製のプログラムをhtmlにビルド：`npm run export-html`
+- akashic engine製のプログラムをhtmlにビルド：`akashic export`
 
 #### ~~update_prj_symlinks.sh~~(廃止)
 

@@ -86,6 +86,16 @@ function proc_in_prj () {
 # 実処理
 ###########
 
+
+git checkout gh-pages # gh-pagesブランチに移動
+CLEAN=$(git status | grep "nothing to commit" | wc -l)
+if [ ${CLEAN} -ne 1 ]; then
+    echo "ERROR: gh-pages branch is not clean. Please commit or stash your changes."
+    read; exit 1
+fi
+git reset --hard main # mainブランチの最新に強制的に合わせる
+
+
 # 1. リポジトリのルートディレクトリで実行する
 cd "${ROOTDIR}"
 
@@ -112,6 +122,14 @@ do
     proc_in_prj "${PROJECTDIR}"
 done
 
+git status
+git add .
+git commit -m "Update publish at $(date +'%Y-%m-%d %H:%M:%S')"
+git push origin gh-pages
+git checkout main # gh-pagesブランチに移動
+
 
 # 実行時のディレクトリに戻る
 cd "${STARTDIR}"
+
+
