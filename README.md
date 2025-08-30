@@ -1,6 +1,10 @@
 akashic_project
 ===============
 
+> [!NOTE]
+> GitHub Pages
+> - https://yamahei.github.io/akashic_project/
+
 概要
 ----
 
@@ -23,6 +27,8 @@ akashic_project
 │   ├── lib          # 自作ライブラリ格納用ディレクトリ
 │   ├── projectA     # プロジェクトルート（A）
 │   ├── projectB     # プロジェクトルート（B）
+│   └── ...
+├── publish          # 生成したゲーム公開用
 │   └── ...
 ├── GEMINI.md        # Geminiへの基本指示
 ├── README.md        # このファイル
@@ -54,9 +60,9 @@ npm install -g @akashic/akashic-cli
 sudo apt install jq
 ```
 
-### TODO: showdown
+### showdown
 
-- README.mdをHTMLするのに使う
+- README.mdをHTML化するのに使う
 
 ```sh
 sudo npm install showdown -g
@@ -160,7 +166,7 @@ sh ./bin/split_char_images.sh
 * `ORIGINAL_ASSETS/char_sheets`ディレクトリに、`charaXX.png`という形式で分割したい画像シートが配置されていること。
 * 実行環境に`ImageMagick`がインストールされていること。
 
-#### TODO: publish.sh
+#### publish.sh
 
 このリポジトリをGithubPagesで公開可能にするためのHTML生成やビルドを行なう。
 
