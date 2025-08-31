@@ -122,6 +122,9 @@ do
     proc_in_prj "${PROJECTDIR}"
 done
 
+# 全てのシンボリックリンクを削除
+find . -type l | xargs rm
+
 git status
 git add .
 git commit -m "Update publish at $(date +'%Y-%m-%d %H:%M:%S')"
