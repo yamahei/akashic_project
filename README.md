@@ -88,7 +88,7 @@ sudo npm install showdown -g
 
 #### 新規プロジェクトの作成
 
-プロジェクト(`prj/`)配下で以下のコマンドを実行する。
+リポジトリのルートディレクトリで以下のコマンドを実行する。
 （プロジェクト名は`${PRJ_NAME}`とする）
 ```sh
 PRJ_NAME=PRJ_NAME
@@ -105,6 +105,7 @@ cat tsconfig.json | jq '.include |= .+["lib/**/*.ts"]' > .jqtmp && mv .jqtmp tsc
 cat package.json | jq '.scripts |= .+ {"debug":"npm run build && npm run start"}' > .jqtmp && mv .jqtmp package.json
 akashic scan asset
 ```
+自動生成されるサンプルプログラムの`main`設定が変な気がするけど、毎回ではなさそう…？
 ```
 - 	"main": "./script/main.js",
 + 	"main": "./script/src/main.js",
@@ -112,16 +113,21 @@ akashic scan asset
 
 #### プロジェクトの実行
 ```sh
-# プロジェクトディレクトリで実行する
 akashic sandbox #=> access to http://localhost:3000/
 # or below (scan - build - start)
 npm run debug
 ```
-
 #### リソース（アセット）の更新
 ```sh
-# プロジェクトディレクトリで実行する
 akashic scan asset
+```
+#### ゲームのビルド
+```sh
+npm run build
+```
+#### ゲーム(HTML)の出力
+```sh
+akashic export html --magnify --output "${OUTDIR}" --force
 ```
 
 </details>
@@ -131,7 +137,8 @@ akashic scan asset
 ### プロジェクト
 
 #### 00.hello-akashic
-akashic-cliとDockerコンテナのテストを兼ねて作成。
+`akashic init -t typescript`で生成されるサンプルプログラム。
+参考用に残している。
 
 #### 01.collision_editor
 キャラチップの当たり判定領域作成ツール。非Akashic。
