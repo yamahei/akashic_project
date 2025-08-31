@@ -1,9 +1,15 @@
 akashic_project
 ===============
 
+GitHub Pages
+
+- https://yamahei.github.io/akashic_project/
+
 > [!NOTE]
-> GitHub Pages
-> - https://yamahei.github.io/akashic_project/
+> - リポジトリにシンボリックリンクが含まれていると、静的なindex.htmlが配置されていてもGitHub Pagesは自動的にデプロイしてくれないらしい。
+> - `publish.sh`の中で、強制的にシンボリックリンクを削除することで、GitHub Pagesの自動デプロイが効くようにしている。
+> - GitHub Actionsの中でやりたかったが、上手く設定できなくて、取り急ぎローカルで実行する方式（`publish.sh`）で妥協している。
+
 
 概要
 ----
