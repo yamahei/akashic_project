@@ -5,91 +5,71 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="google" content="notranslate">
     <title>Hello world</title>
-    <link href="https://cdn.jsdelivr.net/npm/beercss@3.11.33/dist/cdn/beer.min.css" rel="stylesheet">
-    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.11.33/dist/cdn/beer.min.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+    <!-- <link href="https://cdn.jsdelivr.net/npm/beercss@3.11.33/dist/cdn/beer.min.css" rel="stylesheet"> -->
+    <link href="WEB_ASSETS/beer.min.css" rel="stylesheet">
+    <!-- <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.11.33/dist/cdn/beer.min.js"></script> -->
+    <script type="module" src="WEB_ASSETS/beer.min.js"></script>
+    <!-- <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script> -->
+    <script type="module" src="WEB_ASSETS/material-dynamic-colors.min.js"></script>
+
+    <script lang="javascript" src="WEB_ASSETS/script.js"></script>
+
   </head>
-  <body class="dark">
-    <nav class="left max l">
-      <header>
-        <nav>
-          <img src="https://www.beercss.com/favicon.png" class="circle extra">
-          <h6>Cheers</h6>
-        </nav>
-      </header>
-      <a>
-        <i>home</i>
-        <div>Home</div>
-      </a>
-      <a>
-        <i>search</i>
-        <div>Search</div>
-      </a>
-      <a>
-        <i>share</i>
-        <div>Share</div>
-      </a>
-      <a>
-        <i>more_vert</i>
-        <div>More</div>
-      </a>
-      <div class="divider"></div>
-      <a>
-        <i>widgets</i>
-        <div>Widgets</div>
-      </a>
-      <a>
-        <i>chat</i>
-        <div>Chat</div>
-      </a>
-      <a>
-        <i>help</i>
-        <div>Help</div>
-      </a>  
-    </nav>
+  <body class="">
 
-    <nav class="left m">
-      <header>
-        <img src="https://www.beercss.com/favicon.png" class="circle extra">
-      </header>
-      <a>
-        <i>home</i>
-        <div>Home</div>
-      </a>
-      <a>
-        <i>search</i>
-        <div>Search</div>
-      </a>
-      <a>
-        <i>share</i>
-        <div>Share</div>
-      </a>
-      <a>
-        <i>more_vert</i>
-        <div>More</div>
-      </a>
-    </nav>
 
-    <nav class="bottom s">
-      <a>
-        <i>home</i>
-      </a>
-      <a>
-        <i>search</i>
-      </a>
-      <a>
-        <i>share</i>
-      </a>
-      <a>
-        <i>more_vert</i>
-      </a>
-    </nav>
+    <main class="responsive scroll">
 
-    <main class="responsive">
-      <img src="https://www.beercss.com/beer-and-woman.svg" class="responsive round medium-height">
-      <h3>Welcome</h3>
-      <h5>hello, akashic!</h5>
+      <div class="large-padding" style="background-image:url(https://placehold.jp/256/888a85/eeeeec/480x480.png?text=%F0%9F%98%BA);background-position:center;background-size:cover;">
+        <header class="blur">
+          <nav><h1>Akashic Project</h1></nav>
+        </header>
+        <article class="blur">
+          <p>
+            <a href="https://akashic-games.github.io/">Akashic Engine</a>
+            を使ってゲームを作るべく、勉強を兼ねて試行錯誤した記録。
+          </p>
+          <ul>
+            <li><a class="link" href="./README.html">README</a></li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="grid" data-container="card-container">
+
+        <!-- card sample -->
+        <div class="s12 m12 l6" data-template="card">
+          <article class="no-padding">
+            <div class="grid no-space">
+              <div class="s6">
+                <img class="responsive" src="${IMGURL}">
+                <div class="absolute top left right padding top-shadow white-text">
+                  <h5>${TITLE}</h5>
+                  <p>${EXPLAIN}</p>
+                </div>
+              </div>
+              <div class="s6">
+                <div class="padding">
+                  <ul data-container="link-container">
+                    <!-- <li><a href=""></a></li> -->
+                     ${LISTMARKUP}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+        <!-- /card sample -->
+
+      </div>
+
+      <footer class="padding">
+        <h5 class="no-margin">footer</h5>
+      </footer>
+
     </main>
+
+
   </body>
 </html>
 

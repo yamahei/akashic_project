@@ -186,7 +186,7 @@ sh ./bin/split_char_images.sh
 - markdownをhtmlに変換するツール：`showdown`
 - akashic engine製のプログラムをhtmlにビルド：`akashic export`
 
-git周りで変な落ち方することがあるので、ログを残しつつ実行する
+git周りで変な落ち方することがあるので、成功しない場合はログを残しつつ実行するのが良さそう。
 
 ```sh
 . bin/publish.sh | tee /tmp/publish.sh.log
@@ -204,6 +204,20 @@ git周りで変な落ち方することがあるので、ログを残しつつ�
 ~~ORIGINAL_ASSETS/内の画像をprj/assets/image/にコピーし、PNG形式に変換します。その際、色`#007575`を透過します。~~
 役割を終えて、そのままでは使えなくなっているので、廃止扱い。
 
+
+Webサイト（GitHub Pages）
+-------------------------
+
+### Beer CSSを使ってみる
+
+シンプルで良さそう
+
+- [公式サイト](https://www.beercss.com/)
+- [GitHub](https://github.com/beercss/beercss)
+
+### デプロイ
+
+- [publish.sh](#publish.sh)参照
 
 保守
 ----
