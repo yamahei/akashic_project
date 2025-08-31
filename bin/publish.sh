@@ -139,7 +139,7 @@ find . -type l | xargs rm
 git status
 git add .
 git commit -m "Update publish at $(date +'%Y-%m-%d %H:%M:%S')"
-git push origin gh-pages
+git push -f origin gh-pages
 
 
 
