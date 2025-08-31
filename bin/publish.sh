@@ -80,6 +80,8 @@ proc_in_prj () {
         local OUTDIR=${PUBLISHDIR}/$(basename ${PJDIR})
         local OUTDIR_REL=${PUBLISHDIR_REL}/$(basename ${PJDIR})
         mkdir -p "${OUTDIR}"
+        npm install
+        npm run build
         akashic export html --magnify --output "${OUTDIR}" --force
         cat ${PROJECTINFO} | \
         jq --arg key "${PJDIR}" --arg value "${OUTDIR_REL}/index.html" '.[$key] += [$value]' > \
