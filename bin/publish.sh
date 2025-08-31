@@ -38,6 +38,7 @@ PROJECTINFO="${ROOTDIR}/prj-info.json" # full path
 #######
 
 error_handler() {
+    git checkout . # 変更を破棄
     git checkout main # gh-pagesブランチに移動
     cd "${STARTDIR}" # 実行時のディレクトリに戻る
 }
