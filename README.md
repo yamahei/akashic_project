@@ -173,6 +173,12 @@ sh ./bin/split_char_images.sh
 - markdownをhtmlに変換するツール：`showdown`
 - akashic engine製のプログラムをhtmlにビルド：`akashic export`
 
+git周りで変な落ち方することがあるので、ログを残しつつ実行する
+
+```sh
+. bin/publish.sh | tee /tmp/publish.sh.log
+```
+
 #### ~~update_prj_symlinks.sh~~(廃止)
 
 ~~`prj/`配下の（`assets`, `lib`以外の）ディレクトリ内に`prj/assets`, `prj/lib`へのシンボリックリンクを作成する。~~
