@@ -36,7 +36,15 @@ PROJECTINFO="${ROOTDIR}/prj-info.json" # full path
 #######
 # 関数
 #######
-function proc_in_prj () {
+
+error_handler() {
+    git checkout main # gh-pagesブランチに移動
+    cd "${STARTDIR}" # 実行時のディレクトリに戻る
+}
+trap error_handler ERR
+trap error_handler EXIT 
+
+proc_in_prj () {
     local PJDIR=$1
     
     cd "${PJDIR}"
@@ -91,7 +99,7 @@ git checkout gh-pages # gh-pagesブランチに移動
 CLEAN=$(git status | grep "nothing to commit" | wc -l)
 if [ ${CLEAN} -ne 1 ]; then
     echo "ERROR: gh-pages branch is not clean. Please commit or stash your changes."
-    read; exit 1
+    return
 fi
 git reset --hard main # mainブランチの最新に強制的に合わせる
 
@@ -129,10 +137,6 @@ git status
 git add .
 git commit -m "Update publish at $(date +'%Y-%m-%d %H:%M:%S')"
 git push origin gh-pages
-git checkout main # gh-pagesブランチに移動
 
-
-# 実行時のディレクトリに戻る
-cd "${STARTDIR}"
 
 
