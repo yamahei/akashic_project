@@ -29,6 +29,8 @@
         return searchProc(items, /publish\/.+index\.html/, null);
     };
 
+    // HTMLでテンプレートをつくってコンポーネントを使い回す方法【templateタグ】
+    // https://zenn.dev/yurukei20/articles/209109e0178ea1
     const createHtml = (data, cardTemplateHTML, $cardContainer) => {
         const keys = Object.keys(data);
         keys.sort();

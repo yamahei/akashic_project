@@ -69,7 +69,7 @@ proc_in_prj () {
         jq --arg key "${PJDIR}" --arg value "#${TITLE}" '.[$key] += [$value]' > \
         .jqtmp && mv .jqtmp ${PROJECTINFO}
         # npx showdown makehtml -i README.md -o README.html
-        markdown-to-html-cli --output README.html --style https://unpkg.com/mvp.css
+        markdown-to-html-cli --output README.html --style=https://unpkg.com/mvp.css
         cat ${PROJECTINFO} | \
         jq --arg key "${PJDIR}" --arg value "${PJDIR}README.html" '.[$key] += [$value]' > \
         .jqtmp && mv .jqtmp ${PROJECTINFO}
@@ -119,7 +119,7 @@ fi
 mkdir -p ${PUBLISHDIR}
 
 # トップレベルのREADME.mdをhtmlに変換する
-markdown-to-html-cli --output README.html --style https://unpkg.com/mvp.css
+markdown-to-html-cli --output README.html --style=https://unpkg.com/mvp.css
 
 #    1. `prj-info.json`を初期化する（配下の情報を保持するリスト）
 echo "{}" > ${PROJECTINFO}
