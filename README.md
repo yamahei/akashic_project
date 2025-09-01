@@ -193,10 +193,10 @@ sh ./bin/split_char_images.sh
 
 このリポジトリをGithubPagesで公開可能にするためのHTML生成やビルドを行なう。
 
-- markdownをhtmlに変換するツール：`showdown`
+- markdownをhtmlに変換するツール：`markdown-to-html-cli` ~~`showdown`~~
 - akashic engine製のプログラムをhtmlにビルド：`akashic export`
 
-git周りで変な落ち方することがあるので、成功しない場合はログを残しつつ実行するのが良さそう。
+git周り？で変な落ち方することがあるので、成功しない場合はログを残しつつ実行するのが良さそう。
 
 ```sh
 . bin/publish.sh | tee /tmp/publish.sh.log

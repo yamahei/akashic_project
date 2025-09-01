@@ -28,6 +28,9 @@
     const findGame = (items) => {
         return searchProc(items, /publish\/.+index\.html/, null);
     };
+    const findImage = (items) => {
+        return searchProc(items, /\.png$/, null);
+    };
 
     // HTMLでテンプレートをつくってコンポーネントを使い回す方法【templateタグ】
     // https://zenn.dev/yurukei20/articles/209109e0178ea1
@@ -40,6 +43,8 @@
             const items = data[key];
             const explain = findExplain(items);
             if(explain) { template = template.replace(PLACE_HOLDEER.EXPLAIN, explain); }
+            const image = findImage(items);
+            if(image) { template = template.replace(PLACE_HOLDEER.IMGURL, image); }
             const links = [
                 { text: "📖プロジェクトの仕様（README）", path: findReadme(items) },
                 { text: "🌏ページ（非Akashic Engine）", path: findIndex(items) },

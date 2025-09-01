@@ -89,6 +89,15 @@ proc_in_prj () {
         .jqtmp && mv .jqtmp ${PROJECTINFO}
     fi
 
+    # png画像があれば背景画像用にパスを記録
+    IMGFILE=$(ls -1 *.png | head -n 1)
+    if [ -f ${IMGFILE} ]; then
+        cat ${PROJECTINFO} | \
+        jq --arg key "${PJDIR}" --arg value "${OUTDIR_REL}/${IMGFILE}" '.[$key] += [$value]' > \
+        .jqtmp && mv .jqtmp ${PROJECTINFO}
+    fi
+
+
     # ディレクトリ戻しておく
     cd -
 }
