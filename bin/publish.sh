@@ -93,7 +93,7 @@ proc_in_prj () {
     IMGFILE=$(ls -1 *.png | head -n 1)
     if [ -f ${IMGFILE} ]; then
         cat ${PROJECTINFO} | \
-        jq --arg key "${PJDIR}" --arg value "${OUTDIR_REL}/${IMGFILE}" '.[$key] += [$value]' > \
+        jq --arg key "${PJDIR}" --arg value "${PJDIR}${IMGFILE}" '.[$key] += [$value]' > \
         .jqtmp && mv .jqtmp ${PROJECTINFO}
     fi
 
