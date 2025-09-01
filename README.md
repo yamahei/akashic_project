@@ -38,19 +38,20 @@ GitHub Pages
 │   └── ...
 ├── GEMINI.md        # Geminiへの基本指示
 ├── README.md        # このファイル
+├── WEB_ASSETS       # GitHub Pages用CSSとかスクリプト
 └── index.html       # Github公開トップページ
 ```
 
 環境構築
 --------
 
-### NVM
+### [NVM](https://github.com/nvm-sh/nvm)
 
-- https://github.com/nvm-sh/nvm
+- 
 - `README.md`記載のインストールスクリプトを実行すればインストール完了
 - `nvm use node`で安定版を指定する（時々再実行する必要あるのか？
 
-### Akashic Engine
+### [Akashic Engine](https://akashic-games.github.io/)
 
 - [Akashic Engine のインストール](https://akashic-games.github.io/tutorial/v3/introduction.html#install-akashic-engine)
 
@@ -66,9 +67,18 @@ npm install -g @akashic/akashic-cli
 sudo apt install jq
 ```
 
-### showdown
+### [markdown-to-html-cli](https://github.com/jaywcjlove/markdown-to-html-cli/)
 
 - README.mdをHTML化するのに使う
+
+```sh
+npm install markdown-to-html-cli -g
+```
+
+### ~~showdown~~
+
+- ~~README.mdをHTML化するのに使う~~
+CSSが指定できないのでやめる
 
 ```sh
 sudo npm install showdown -g
