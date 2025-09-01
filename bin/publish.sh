@@ -37,13 +37,13 @@ PROJECTINFO="${ROOTDIR}/prj-info.json" # full path
 # 関数
 #######
 
-error_handler() {
-    git checkout . # 変更を破棄
-    git checkout main # gh-pagesブランチに移動
-    cd "${STARTDIR}" # 実行時のディレクトリに戻る
-}
-trap error_handler ERR
-trap error_handler EXIT 
+# error_handler() {
+#     git checkout . # 変更を破棄
+#     git checkout main # gh-pagesブランチに移動
+#     cd "${STARTDIR}" # 実行時のディレクトリに戻る
+# }
+# trap error_handler ERR
+# trap error_handler EXIT 
 
 proc_in_prj () {
     local PJDIR=$1
@@ -144,6 +144,11 @@ git status
 git add .
 git commit -m "Update publish at $(date +'%Y-%m-%d %H:%M:%S')"
 git push -f origin gh-pages
+
+git checkout . # 変更を破棄
+git checkout main # gh-pagesブランチに移動
+
+cd "${STARTDIR}" # 実行時のディレクトリに戻る
 
 
 
