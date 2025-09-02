@@ -201,6 +201,9 @@ git周り？で変な落ち方することがあるので、成功しない場�
 . bin/publish.sh | tee /tmp/publish.sh.log
 ```
 
+<details>
+<summary>廃止になったスクリプト</summary>
+
 #### ~~update_prj_symlinks.sh~~(廃止)
 
 ~~`prj/`配下の（`assets`, `lib`以外の）ディレクトリ内に`prj/assets`, `prj/lib`へのシンボリックリンクを作成する。~~
@@ -212,6 +215,8 @@ git周り？で変な落ち方することがあるので、成功しない場�
 
 ~~ORIGINAL_ASSETS/内の画像をprj/assets/image/にコピーし、PNG形式に変換します。その際、色`#007575`を透過します。~~
 役割を終えて、そのままでは使えなくなっているので、廃止扱い。
+
+</details>
 
 
 Webサイト（GitHub Pages）
@@ -226,7 +231,7 @@ Webサイト（GitHub Pages）
 
 ### デプロイ
 
-- [publish.sh](#publish.sh)参照
+- [publish.sh](#publishsh)参照 `TODO:` GitHub Action化したい
 
 保守
 ----
