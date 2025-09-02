@@ -4,10 +4,10 @@ set -eu
 
 ROOTDIR=$(pwd)
 PROJECTROOT=./prj
-PUBLISHDIR=${ROOTDIR}/publish
 PROJECTINFO="${ROOTDIR}/prj-info.json"
+PUBLISHDIR_REL=./publish # ゲームの出力先
 
-# 関数定義
+# --- 関数定義 ---
 proc_in_prj () {
     local PJDIR_REL=$1 # ex: ./prj/00.hello-akashic/
     local PJDIR_ABS=${ROOTDIR}/${PJDIR_REL}
@@ -18,44 +18,38 @@ proc_in_prj () {
     # `prj-info.json`にプロジェクトのキーを作成
     jq --arg dir "${PJDIR_REL}" '.[$dir] = []' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
 
-    # index.htmlがあればコピー
+    # index.htmlがあれば情報を記録 (コピーは不要、リポジトリのものがそのまま使われる)
     if [ -f index.html ]; then
         echo "  - Processing index.html"
-        # `prj-info.json`に記録
         jq --arg key "${PJDIR_REL}" --arg value "${PJDIR_REL}index.html" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
     fi
 
-    # README.mdがあればHTMLに変換
+    # README.mdがあればHTMLに変換してルートに配置
     if [ -f README.md ]; then
         echo "  - Processing README.md"
         local TITLE=$(head -n 1 README.md)
-        # `prj-info.json`にタイトルを記録
         jq --arg key "${PJDIR_REL}" --arg value "#${TITLE}" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
         
-        # HTMLに変換してpublishディレクトリに配置
-        markdown-to-html-cli --output "${PUBLISHDIR}/$(basename ${PJDIR_REL}).html" --style=https://unpkg.com/mvp.css
-        
-        # `prj-info.json`にHTMLファイルへのパスを記録
-        jq --arg key "${PJDIR_REL}" --arg value "./publish/$(basename ${PJDIR_REL}).html" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
+        # README.htmlは同じディレクトリに生成
+        markdown-to-html-cli --output "README.html" --style=https://unpkg.com/mvp.css
+        jq --arg key "${PJDIR_REL}" --arg value "${PJDIR_REL}README.html" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
     fi
 
     # game.jsonがあればakashic export
     if [ -f game.json ]; then
         echo "  - Processing game.json"
-        local OUTDIR=${PUBLISHDIR}/$(basename ${PJDIR_REL})
+        local OUTDIR=${ROOTDIR}/${PUBLISHDIR_REL}/$(basename ${PJDIR_REL})
         
         npm install
-        npm run build
+        # npm run build # publish.shにはbuildコマンドがなかったので削除
         akashic export html --magnify --output "${OUTDIR}" --force
         
-        # `prj-info.json`に記録
-        jq --arg key "${PJDIR_REL}" --arg value "./publish/$(basename ${PJDIR_REL})/index.html" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
+        jq --arg key "${PJDIR_REL}" --arg value "${PUBLISHDIR_REL}/$(basename ${PJDIR_REL})/index.html" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
     fi
 
-    # png画像があれば背景画像用にパスを記録
+    # png画像があれば情報を記録 (コピーは不要)
     IMGFILE=$(ls -1 *.png | head -n 1 || true)
     if [ -f "${IMGFILE}" ]; then
-        # `prj-info.json`に記録
         jq --arg key "${PJDIR_REL}" --arg value "${PJDIR_REL}${IMGFILE}" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
     fi
 
@@ -64,13 +58,13 @@ proc_in_prj () {
 
 # --- 実処理 ---
 
-# 出力用ディレクトリを初期化
-echo "Preparing ${PUBLISHDIR}"
-rm -rf ${PUBLISHDIR}
-mkdir -p ${PUBLISHDIR}
+# ゲーム出力用ディレクトリを作成
+mkdir -p ${PUBLISHDIR_REL}
 
 # トップレベルのREADME.mdをhtmlに変換
-markdown-to-html-cli --output ${PUBLISHDIR}/README.html --style=https://unpkg.com/mvp.css
+if [ -f README.md ]; then
+    markdown-to-html-cli --output README.html --style=https://unpkg.com/mvp.css
+fi
 
 # `prj-info.json`を初期化
 echo "{}" > "${PROJECTINFO}"
@@ -90,10 +84,5 @@ done
 if [ -n "$(find . -type l)" ]; then
     find . -type l | xargs rm
 fi
-
-# 生成物をpublishディレクトリに移動
-mv "${PROJECTINFO}" ${PUBLISHDIR}/
-# `publish`ディレクトリ以外のシンボリックリンクや生成物をコピー
-# (今回はactions-gh-pagesがpublish_dirのみを見るので不要)
 
 echo "Build finished."
