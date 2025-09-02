@@ -9,15 +9,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write # この行を追加
+      contents: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
 
       - name: Install dependencies and run deploy script
         run: |
@@ -29,4 +24,3 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./publish
