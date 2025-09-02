@@ -47,7 +47,6 @@ GitHub Pages
 
 ### [NVM](https://github.com/nvm-sh/nvm)
 
-- 
 - `README.md`記載のインストールスクリプトを実行すればインストール完了
 - `nvm use node`で安定版を指定する（時々再実行する必要あるのか？
 

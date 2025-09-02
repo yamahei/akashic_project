@@ -4663,7 +4663,7 @@
 		"assets/image/obj/doors.png": {
 			"type": "image",
 			"path": "assets/image/obj/doors.png",
-			"width": 144,
+			"width": 96,
 			"height": 256
 		},
 		"assets/image/obj/effects.png": {
@@ -4682,7 +4682,7 @@
 			"type": "image",
 			"path": "assets/image/obj/switches.png",
 			"width": 72,
-			"height": 128
+			"height": 160
 		},
 		"assets/image/obj/treasures.png": {
 			"type": "image",
