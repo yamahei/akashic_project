@@ -17,14 +17,14 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install dependencies and build
-        working-directory: ./prj/00.hello-akashic
+      - name: Install dependencies and run deploy script
         run: |
-          npm install
-          npm run export-html
+          sudo apt-get update && sudo apt-get install -y jq
+          npm install -g markdown-to-html-cli @akashic/akashic-cli
+          ./.github/scripts/deploy.sh
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./prj/00.hello-akashic/game
+          publish_dir: ./publish
