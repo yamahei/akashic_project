@@ -30,9 +30,9 @@ proc_in_prj () {
         local TITLE=$(head -n 1 README.md)
         jq --arg key "${PJDIR_REL}" --arg value "#${TITLE}" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
         
-        # README.htmlはプロジェクトのルートに生成
-        markdown-to-html-cli --output "${ROOTDIR}/README.html" --style=https://unpkg.com/mvp.css
-        jq --arg key "${PJDIR_REL}" --arg value "README.html" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
+        # README.htmlは同じディレクトリに生成
+        markdown-to-html-cli --output "README.html" --style=https://unpkg.com/mvp.css
+        jq --arg key "${PJDIR_REL}" --arg value "${PJDIR_REL}README.html" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
     fi
 
     # game.jsonがあればakashic export
