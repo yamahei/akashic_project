@@ -14,6 +14,14 @@
 
     <script lang="javascript" src="WEB_ASSETS/script.js"></script>
 
+    <style>
+      *[data-style="prjectbg"] {
+        background-size: auto auto;
+        background-repeat: round;
+        background-position: center center;
+        background-attachment: fixed;        
+      }
+    </style>
   </head>
   <body class="">
 
@@ -36,30 +44,33 @@
         </article>
       </div>
 
-      <div class="grid" data-container="card-container">
+      <div class="grid" id="card_container">
 
         <!-- card sample -->
-        <div class="s12 m12 l6" data-template="card">
-          <article class="no-padding">
-            <div class="grid no-space">
-              <div class="s6">
-                <img class="responsive" src="${IMGURL}">
-                <div class="absolute top left right padding top-shadow white-text">
-                  <h5>${TITLE}</h5>
-                  <p>${EXPLAIN}</p>
+        <template id="card_template">
+
+          <div class="s12 m12 l6">
+            <article class="no-padding">
+              <div class="grid no-space">
+                <div class="s6 card_image" data-style="prjectbg">
+                  <div class="absolute top left right padding top-shadow white-text">
+                    <h5 class="card_title"></h5>
+                    <p class="card_explain"></p>
+                  </div>
+                </div>
+                <div class="s6">
+                  <div class="padding">
+                    <ul class="card_link_continer"></ul>
+                  </div>
                 </div>
               </div>
-              <div class="s6">
-                <div class="padding">
-                  <ul data-container="link-container">
-                    <!-- <li><a href=""></a></li> -->
-                     ${LISTMARKUP}
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </article>
-        </div>
+            </article>
+          </div>
+
+        </template>
+        <template id="link_template">
+          <li><a></a></li>
+        </template>
         <!-- /card sample -->
 
       </div>
