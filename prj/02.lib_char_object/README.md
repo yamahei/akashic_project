@@ -32,8 +32,6 @@ npm run debug # access to http://localhost:3000
   <dd>ダメージ状態（点滅）</dd>
   <dt style="color:gray">■ Collision</dt>
   <dd>当たり判定確認要（ドラッグ可能）</dd>
-  <dt>上下に揺れるキャラクタ</dt>
-  <dd>公式のサンプル（削除してないだけ）</dd>
   <dt>マントを着けたキャラクタ</dt>
   <dd>生成したキャラクタ</dd>
 </dl>

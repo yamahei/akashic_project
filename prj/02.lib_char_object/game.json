@@ -4678,8 +4678,8 @@
 		"assets/image/obj/doors.png": {
 			"type": "image",
 			"path": "assets/image/obj/doors.png",
-			"width": 192,
-			"height": 128
+			"width": 96,
+			"height": 256
 		},
 		"assets/image/obj/effects.png": {
 			"type": "image",
@@ -4709,9 +4709,14 @@
 			"type": "text",
 			"path": "assets/data/char_sprite_settings.json"
 		},
-		"UiSimpleButton": {
+		"ObjectEntity": {
 			"type": "script",
-			"path": "script/lib/UiSimpleButton.js",
+			"path": "script/lib/ObjectEntity.js",
+			"global": true
+		},
+		"ObjectFactory": {
+			"type": "script",
+			"path": "script/lib/ObjectFactory.js",
 			"global": true
 		}
 	},
