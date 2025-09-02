@@ -8,6 +8,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # この行を追加
     steps:
       - name: Checkout
         uses: actions/checkout@v4
