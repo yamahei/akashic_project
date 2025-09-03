@@ -225,6 +225,7 @@ Webサイト（GitHub Pages）
 ### Beer CSSを使ってみる
 
 シンプルで良さそう
+→シンプルで良いのは間違いないが、、余白多めなので、カッチリしたレイアウトのツール的な画面には向かない
 
 - [公式サイト](https://www.beercss.com/)
 - [GitHub](https://github.com/beercss/beercss)

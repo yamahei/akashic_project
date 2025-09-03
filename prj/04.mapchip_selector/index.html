@@ -1,95 +1,105 @@
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="google" content="notranslate">
-    <title>mapchip selector</title>
-    <link href="https://cdn.jsdelivr.net/npm/beercss@3.11.33/dist/cdn/beer.min.css" rel="stylesheet">
-    <script type="module" src="https://cdn.jsdelivr.net/npm/beercss@3.11.33/dist/cdn/beer.min.js"></script>
-    <script type="module" src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
-  </head>
-  <body class="dark">
-    <nav class="left max l">
-      <header>
-        <nav>
-          <img src="https://www.beercss.com/favicon.png" class="circle extra">
-          <h6>Cheers</h6>
-        </nav>
-      </header>
-      <a>
-        <i>home</i>
-        <div>Home</div>
-      </a>
-      <a>
-        <i>search</i>
-        <div>Search</div>
-      </a>
-      <a>
-        <i>share</i>
-        <div>Share</div>
-      </a>
-      <a>
-        <i>more_vert</i>
-        <div>More</div>
-      </a>
-      <div class="divider"></div>
-      <a>
-        <i>widgets</i>
-        <div>Widgets</div>
-      </a>
-      <a>
-        <i>chat</i>
-        <div>Chat</div>
-      </a>
-      <a>
-        <i>help</i>
-        <div>Help</div>
-      </a>  
-    </nav>
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="google" content="notranslate">
+        <title>mapchip selector</title>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"></link>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-list/css/bulma-list.css"></link>
+        <style>
+            
+            .is-self-grid { display: grid; }
+            .is-self-grid.chip-setting-layout {
+                grid-template-rows: 1fr;
+                grid-template-columns: 50px 1fr;
+            }
+            .delete.is-mapchip-delete{
+                position: relative;
+                top: -1rem; left: -1rem;                
+            }
 
-    <nav class="left m">
-      <header>
-        <img src="https://www.beercss.com/favicon.png" class="circle extra">
-      </header>
-      <a>
-        <i>home</i>
-        <div>Home</div>
-      </a>
-      <a>
-        <i>search</i>
-        <div>Search</div>
-      </a>
-      <a>
-        <i>share</i>
-        <div>Share</div>
-      </a>
-      <a>
-        <i>more_vert</i>
-        <div>More</div>
-      </a>
-    </nav>
+        </style>
+    </head>
 
-    <nav class="bottom s">
-      <a>
-        <i>home</i>
-      </a>
-      <a>
-        <i>search</i>
-      </a>
-      <a>
-        <i>share</i>
-      </a>
-      <a>
-        <i>more_vert</i>
-      </a>
-    </nav>
+<body>
 
-    <main class="responsive">
-      <img src="https://www.beercss.com/beer-and-woman.svg" class="responsive round medium-height">
-      <h3>Welcome</h3>
-      <h5>The beer is ready!</h5>
-      <p>mapchip selector</p>
-    </main>
-  </body>
+    <div id="app" class="container is-fluid">
+
+        <div class="columns">
+            
+            <!-- chip-list -->
+            <div class="column is-narrow">
+                <h2 class="subtitle">Chips</h2>
+                <div class="block" style="width: 192px;">
+                    <div class="box self-grid">
+                        <button class="delete is-mapchip-delete"></button>
+                        <span class="is-size-7">mapchip_image.png#12</span>
+                        <div class="is-self-grid chip-setting-layout">
+                            <figure class="image is-48x48 mr-1">
+                                <img src="https://placehold.co/64x64?text=(^_^)">
+                            </figure>
+                            <p class="control">
+                                <input class="input" type="number" placeholder="dst index"/>
+                            </p>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- edit canvas -->
+            <div class="column">
+                Flexible column1
+            </div>
+        </div>
+
+    </div>    
+
+    <script type="importmap">
+        {"imports": {"vue": "https://cdn.jsdelivr.net/npm/vue@3.2/dist/vue.esm-browser.prod.js" }}
+    </script>
+
+    <script type="module">
+        const LOCAL_STORAGE_KEY = "mapchip_selector_chips";
+        const SOURCE_IMAGES_FILENAME = "original_mapchips.json";
+
+        import { createApp } from 'vue';
+
+        createApp({
+            async beforeMount(){
+                const self = this;
+                const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+                if (raw) {
+                    //Load chars to LocalStorage (if exists)
+                    self.$data.chips = JSON.parse(raw);
+                }else{
+                    //Load filenames from text file (initialize data)
+                    await fetch(CHARCHIP_LIST_FILENAME)
+                    .then(response => response.text())
+                    .then(raw => {
+                        const sources = JSON.parse(raw);
+                        self.$data.chips = {
+                            sources: sources,//[filepath, ...]
+                            chips: [/*{ source, from_index, to_index }*/],
+                        };
+                    })
+                    .catch(error => console.error('Error fetching filenames:', error));
+                }
+                self.$data.source_index = 0;
+            },
+            data() {
+                return {
+                };
+            },
+            methods:{
+                saveData(){
+                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(self.$data.chips));
+                },
+            }
+        }).mount('#app');
+
+    </script>
+</body>
 </html>
