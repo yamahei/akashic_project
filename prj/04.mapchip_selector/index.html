@@ -8,52 +8,31 @@
         <title>mapchip selector</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css"></link>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma-list/css/bulma-list.css"></link>
-        <style>
-            
-            .is-self-grid { display: grid; }
-            .is-self-grid.chip-setting-layout {
-                grid-template-rows: 1fr;
-                grid-template-columns: 50px 1fr;
-            }
-            .delete.is-mapchip-delete{
-                position: relative;
-                top: -1rem; left: -1rem;                
-            }
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yamahei/akashic_project@latest/prj/05.flexbox_css/justflex.css"></link>
 
+        <style>
         </style>
     </head>
 
 <body>
 
-    <div id="app" class="container is-fluid">
-
-        <div class="columns">
-            
-            <!-- chip-list -->
-            <div class="column is-narrow">
-                <h2 class="subtitle">Chips</h2>
-                <div class="block" style="width: 192px;">
-                    <div class="box self-grid">
-                        <button class="delete is-mapchip-delete"></button>
-                        <span class="is-size-7">mapchip_image.png#12</span>
-                        <div class="is-self-grid chip-setting-layout">
-                            <figure class="image is-48x48 mr-1">
-                                <img src="https://placehold.co/64x64?text=(^_^)">
-                            </figure>
-                            <p class="control">
-                                <input class="input" type="number" placeholder="dst index"/>
-                            </p>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            <!-- edit canvas -->
-            <div class="column">
-                Flexible column1
-            </div>
+    <div id="app" justflex-v>
+        <!-- header -->
+        <div>
+            header
         </div>
+
+        <!-- body -->
+        <div justflex-h just-strech>
+            <!-- side panel -->
+            <div>side panel</div>
+
+            <!-- main panel -->
+            <div just-strech>main panel</div>
+        </div>
+
+        <!-- footer -->
+        <div>footer</div>
 
     </div>    
 
