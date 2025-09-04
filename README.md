@@ -5,11 +5,6 @@ GitHub Pages
 
 - https://yamahei.github.io/akashic_project/
 
-> [!NOTE]
-> - リポジトリにシンボリックリンクが含まれていると、静的なindex.htmlが配置されていてもGitHub Pagesは自動的にデプロイしてくれないらしい。
-> - `publish.sh`の中で、強制的にシンボリックリンクを削除することで、GitHub Pagesの自動デプロイが効くようにしている。
-> - GitHub Actionsの中でやりたかったが、上手く設定できなくて、取り急ぎローカルで実行する方式（`publish.sh`）で妥協している。
-
 
 概要
 ----
@@ -69,19 +64,12 @@ sudo apt install jq
 ### [markdown-to-html-cli](https://github.com/jaywcjlove/markdown-to-html-cli/)
 
 - README.mdをHTML化するのに使う
+`TODO:` 外部CSSが適用できない問題あり
 
 ```sh
 npm install markdown-to-html-cli -g
 ```
 
-### ~~showdown~~
-
-- ~~README.mdをHTML化するのに使う~~
-CSSが指定できないのでやめる
-
-```sh
-sudo npm install showdown -g
-```
 
 プロジェクト
 ------------
@@ -188,7 +176,34 @@ sh ./bin/split_char_images.sh
 * `ORIGINAL_ASSETS/char_sheets`ディレクトリに、`charaXX.png`という形式で分割したい画像シートが配置されていること。
 * 実行環境に`ImageMagick`がインストールされていること。
 
+
+<details>
+<summary>廃止になったスクリプト</summary>
+
+#### update_prj_symlinks.sh
+
+```
+プロジェクト作成時に作成する方針に変えたので廃止。
+```
+
+`prj/`配下の（`assets`, `lib`以外の）ディレクトリ内に`prj/assets`, `prj/lib`へのシンボリックリンクを作成する。
+既に存在する場合は、削除して再作成する。
+スクリプトファイルの置き場を基準にパスを組み立てるので、どこから実行しても正しく動く。
+
+
+#### convert_images.sh
+
+```
+役割を終えて、そのままでは使えなくなっているので、廃止扱い。
+```
+
+ORIGINAL_ASSETS/内の画像をprj/assets/image/にコピーし、PNG形式に変換します。その際、色`#007575`を透過します。
+
 #### publish.sh
+
+```
+GitHub Actionsに移行したので廃止
+```
 
 このリポジトリをGithubPagesで公開可能にするためのHTML生成やビルドを行なう。
 
@@ -200,21 +215,6 @@ git周り？で変な落ち方することがあるので、成功しない場�
 ```sh
 . bin/publish.sh | tee /tmp/publish.sh.log
 ```
-
-<details>
-<summary>廃止になったスクリプト</summary>
-
-#### ~~update_prj_symlinks.sh~~(廃止)
-
-~~`prj/`配下の（`assets`, `lib`以外の）ディレクトリ内に`prj/assets`, `prj/lib`へのシンボリックリンクを作成する。~~
-~~既に存在する場合は、削除して再作成する。~~
-~~スクリプトファイルの置き場を基準にパスを組み立てるので、どこから実行しても正しく動く。~~
-プロジェクト作成時に作成する方針に変えたので廃止。
-
-#### ~~convert_images.sh~~(廃止)
-
-~~ORIGINAL_ASSETS/内の画像をprj/assets/image/にコピーし、PNG形式に変換します。その際、色`#007575`を透過します。~~
-役割を終えて、そのままでは使えなくなっているので、廃止扱い。
 
 </details>
 
