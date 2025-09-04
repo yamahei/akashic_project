@@ -24,11 +24,10 @@ Flexレイアウトだけを提供するCSS
 ------
 
 ### import
-
 ```html
-TODO: from cdn
 <link rel="stylesheet" href="justflex.css"></link>
 ```
+`TODO:` CDNに入れたい
 
 ### FlexBox Container
 
