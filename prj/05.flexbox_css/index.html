@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="justflex.css"></link>
+<style>
+	#panel {
+		position: absolute;
+		bottom: 2rem; left: 2rem;
+		padding: 0.5rem;
+		background-color: rgba(0,0,0,0.5);
+		text-align: center;
+		color: white;
+	}
+	.hoge { width: 120px; }
+	.fuga { height: 120px;}
+</style>
+
+<div horizontal-flex-container id="horizontal">
+	<div class="hoge" style="background-color:red;">
+		RED<span>redredred</span>
+	</div>
+	<div strech-flex-item style="background-color:blue;">
+		BLUE<span>blueblueblue</span>
+	</div>
+	<div  strech-flex-item="0.2" style="background-color:green;">
+		GREEN<span>greengreengreen</span>
+	</div>
+</div>
+
+<div vertical-flex-container id="vertical">
+	<div class="fuga" style="background-color:red;">
+		RED
+		<p>redredred</p>
+	</div>
+	<div strech-flex-item style="background-color:blue;">
+		BLUE
+		<p>blueblueblue</p><br/>
+	</div>
+	<div strech-flex-item="0.2" style="background-color:green;">
+		GREEN<p>greengreengreen</p>
+	</div>
+</div>
+
+<div id="panel">
+	<div id="message">message</div>
+	<button id="button">Toggle!</button>
+</div>
+
+<script>
+	const $horizontal=document.getElementById("horizontal");
+	const $vertical=document.getElementById("vertical");
+	const $message=document.getElementById("message");
+	const $button=document.getElementById("button");
+	const candi=[$horizontal, $vertical];
+
+	const clickEventHandler = () => {
+		const $fore=candi[0];
+		const $back=candi[1];
+		$fore.style.display='flex';
+		$back.style.display='none';
+		$message.textContent=$fore.id;
+		candi.push(candi.shift());
+	};
+	clickEventHandler();
+	$button.addEventListener('click', clickEventHandler);
+</script>
