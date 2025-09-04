@@ -30,7 +30,6 @@ Flexレイアウトだけを提供するCSS
 <!-- CDN（jsDelivr） -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yamahei/akashic_project@latest/prj/05.flexbox_css/justflex.css"></link>
 ```
-`TODO:` CDNに入れたい
 
 ### FlexBox Container
 
