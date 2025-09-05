@@ -11,6 +11,47 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yamahei/akashic_project@latest/prj/05.flexbox_css/justflex.css"></link>
 
         <style>
+            #source-mapchip-panel {
+                margin: 0;
+                padding: 1rem;
+                min-width: 100%; min-height: 100%;
+            }
+            #source-mapchip-canvas {
+                position: relative;
+                display: inline-block;
+                padding: 0;
+                margin: 0;
+                overflow: auto;
+                background-image: url(bgtile.png);
+                background-repeat: repeat;
+            }
+            img {
+                image-rendering: pixelated;
+                width: auto; height: auto;
+                margin: 0; padding: 0;
+            }
+            img.x10 {
+                width: attr(source_width px, 480px);
+                height: attr(source_height px, 256px);
+            }
+            img.x15 {
+                width: calc(attr(source_width px, 480px) * 1.5);
+                height: calc(attr(source_height px, 256px) * 1.5);
+            }
+            img.x20 {
+                width: calc(attr(source_width px, 480px) * 2);
+                height: calc(attr(source_height px, 256px) * 2);
+            }
+            .mapchippane {
+                border: 0.5px dotted white;
+                outline: 0.5px dotted black;
+                opacity: 0.25;
+            }
+            .mapchippane:hover {
+                opacity: 0.5;
+                background-color: rgb(255, 255, 0, 1);
+                border: 0.5px solid rgba(255, 0, 0, 0.5);
+            }
         </style>
     </head>
 
@@ -19,20 +60,99 @@
     <div id="app" justflex-v>
         <!-- header -->
         <div>
-            header
+            <header>
+                <h1 class="title is-3">mapchip selector</h1>
+                <h2 class="subtitle is-5">select mapchips from source images</h2>
+            </header>
         </div>
 
         <!-- body -->
-        <div justflex-h just-strech>
+        <div justflex-h juststrech>
+
             <!-- side panel -->
-            <div>side panel</div>
+            <div>
+                <div class="container">
+
+                    <div class="field has-addons">
+                        <p class="control">
+                            <button class="button is-small">SideView</button>
+                        </p>                    
+                        <p class="control">
+                            <button class="button is-small">TopView</button>
+                        </p>
+                    </div>
+
+                    <h3 class="is-size-4">Chips</h3>
+
+                    <div class="block">
+
+                        <div class="tag">
+                            <span class="ellipsis">mapchip-a01.png</span>
+                        </div>
+                        <div>
+                            <img class="is-48x48" src="https://bulma.io/assets/images/placeholders/48x48.png" />
+                            <img class="is-48x48" src="https://bulma.io/assets/images/placeholders/48x48.png" />
+                            <img class="is-48x48" src="https://bulma.io/assets/images/placeholders/48x48.png" />
+                            <img class="is-48x48" src="https://bulma.io/assets/images/placeholders/48x48.png" />
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
             <!-- main panel -->
-            <div just-strech>main panel</div>
+            <div>
+                <div class="container">
+                    <div class="content">
+
+                        <div class="field has-addons">
+                            <p class="control">
+                                <button class="button" @click="addSourceIndex(-1)">&lt;&lt;</button>
+                            </p>
+                            <p class="control">
+                                <a class="button is-static">#01</a>
+                            </p>
+                            <p class="control">
+                                <input class="input" type="tel" :value="getFilenameFromPath(source_panel.path)" readonly />
+                            </p>
+                            <p class="control">
+                                <div class="select">
+                                    <select v-model="source_panel.scale">
+                                        <option :value="scale" v-for="scale in IMAGE_SCALES">{{ scale }}</option>
+                                    </select>
+                                </div>
+                            </p>
+                            <p class="control">
+                                <button class="button"@click="addSourceIndex(1)">&gt;&gt;</button>
+                            </p>
+                        </div>
+                        <div id="source-mapchip-panel">
+                            <div id="source-mapchip-canvas">
+                                <img :class="source_panel.scale" :src="source_panel.path" :source_width="SOURCE_WIDTH" :source_height="SOURCE_HEIGHT" />
+                                <div class="mapchippane" v-for="chip in source_panel.chips" :style="getSourceChipStyle(chip)"></div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
         </div>
 
         <!-- footer -->
-        <div>footer</div>
+        <div>
+            <footer class="footer">
+                <div class="content has-text-centered">
+                    <p>
+                        <strong>mapchip selector</strong>
+                        by
+                        <a href="https://github.com/yamahei">Yamahei</a>
+                    </p>
+                </div>
+            </footer>
+        </div>
 
     </div>    
 
@@ -43,39 +163,99 @@
     <script type="module">
         const LOCAL_STORAGE_KEY = "mapchip_selector_chips";
         const SOURCE_IMAGES_FILENAME = "original_mapchips.json";
+        const IMAGE_SCALES = ["x10", "x15", "x20"];
+        const SOURCE_WIDTH = 480;
+        const SOURCE_HEIGHT = 256;
+        const CHIP_SIZE = 16;
 
         import { createApp } from 'vue';
 
         createApp({
             async beforeMount(){
                 const self = this;
-                const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-                if (raw) {
-                    //Load chars to LocalStorage (if exists)
-                    self.$data.chips = JSON.parse(raw);
-                }else{
-                    //Load filenames from text file (initialize data)
-                    await fetch(CHARCHIP_LIST_FILENAME)
-                    .then(response => response.text())
-                    .then(raw => {
-                        const sources = JSON.parse(raw);
-                        self.$data.chips = {
-                            sources: sources,//[filepath, ...]
-                            chips: [/*{ source, from_index, to_index }*/],
-                        };
-                    })
-                    .catch(error => console.error('Error fetching filenames:', error));
-                }
-                self.$data.source_index = 0;
+                // load chips from local storage
+                const lsraw = localStorage.getItem(LOCAL_STORAGE_KEY);
+                self.$data.chips = lsraw ? JSON.parse(lsraw) : { topview: [], sideview: [] };
+
+                // load source image filenames
+                await fetch(SOURCE_IMAGES_FILENAME)
+                .then(response => response.text())
+                .then(ifraw => {
+                    self.$data.sources = JSON.parse(ifraw);
+                })
+                .catch(error => console.error('Error fetching filenames:', error));
+
+                self.$data.source_panel.scale = self.$data.IMAGE_SCALES[0];
+                self.$data.source_panel.index = 0;
+                self.$data.source_panel.path = self.$data.sources[self.$data.source_panel.index];
+
+                const ABSOLUTE_ERROR = 1.4;//縦方向のナゾの誤差を補正する
+                const wper = CHIP_SIZE / SOURCE_WIDTH;
+                const hper = CHIP_SIZE / SOURCE_HEIGHT;
+                const chip_width = Math.floor(SOURCE_WIDTH / CHIP_SIZE);
+                const chip_height = Math.floor(SOURCE_HEIGHT / CHIP_SIZE);
+                const chip_length = chip_width * chip_height;
+                const chips = [...Array(chip_length)].map((_, index)=>{
+                    const x = index % chip_width;
+                    const y = Math.floor(index / chip_width);
+                    const left = (x * CHIP_SIZE) / SOURCE_WIDTH * 100 + "%";
+                    const top = (y * CHIP_SIZE) / SOURCE_HEIGHT * (100 - ABSOLUTE_ERROR) + "%";
+                    const width = CHIP_SIZE / SOURCE_WIDTH * 100 + "%";
+                    const height = CHIP_SIZE / SOURCE_HEIGHT * (100 - ABSOLUTE_ERROR) + "%";
+                    console.log({ index, left, top, width, height });
+                    return { index, left, top, width, height };
+                });
+                self.$data.source_panel.chips = chips;
             },
             data() {
                 return {
+                    // constants
+                    IMAGE_SCALES,
+                    SOURCE_WIDTH, SOURCE_HEIGHT, CHIP_SIZE,
+                    // from file
+                    sources: [/* filepath, ... */],//[filepath, ...]
+                    // from local storage
+                    chips: {/*
+                        topview: [{ source, from_index, to_index }, ...],
+                        sideview: [{ source, from_index, to_index }, ...],
+                    */},
+                    // 
+                    source_panel: {
+                        scale: "",
+                        index: 0,
+                        path: null,
+                        chips: [/* { index, left, top, width, height }, ... */],
+                    },
+                    chips_panel: {},
                 };
             },
             methods:{
+                // General
                 saveData(){
                     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(self.$data.chips));
                 },
+                // Source panel
+                getFilenameFromPath(path){
+                    return path?.split('/').pop();
+                },
+                addSourceIndex(delta){
+                    const sources = this.$data.sources;
+                    const index = this.$data.source_panel.index;
+                    if(sources[index + delta] !== undefined){
+                        this.$data.source_panel.index += delta;
+                        this.$data.source_panel.path = sources[this.$data.source_panel.index];
+                    }
+                },
+                getSourceChipStyle(chip){
+                    return {
+                        position: "absolute",
+                        left: chip.left,
+                        top: chip.top,
+                        width: chip.width,
+                        height: chip.height,
+                    };
+                },
+
             }
         }).mount('#app');
 

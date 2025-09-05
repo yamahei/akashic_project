@@ -79,5 +79,5 @@ Flexレイアウトだけを提供するCSS
 
 エイリアス
 ```html
-<div just-strech />
+<div juststrech />
 ```

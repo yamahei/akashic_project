@@ -23,8 +23,8 @@
 @supports (x: attr(x type(*))) {
     [horizontal-flex-container] > [strech-flex-item],
     [vertical-flex-container] > [strech-flex-item],
-    [justflex-h] > [just-strech],
-    [justflex-v] > [just-strech]  {
+    [justflex-h] > [juststrech],
+    [justflex-v] > [juststrech]  {
         flex-grow: attr(strech-flex-item type(<number>), 1);
         flex-shrink: attr(strech-flex-item type(<number>), 1);
     }
@@ -32,8 +32,8 @@
 @supports not (x: attr(x type(*))) {
     [horizontal-flex-container] > [strech-flex-item],
     [vertical-flex-container] > [strech-flex-item],
-    [justflex-h] > [just-strech],
-    [justflex-v] > [just-strech] {
+    [justflex-h] > [juststrech],
+    [justflex-v] > [juststrech] {
         flex-grow: 1;
         flex-shrink: 1;
     }
