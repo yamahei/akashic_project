@@ -75,10 +75,10 @@
 
                     <div class="field has-addons">
                         <p class="control">
-                            <button class="button is-small">SideView</button>
+                            <button class="button is-small" @click="switchView('sideview')" :class="getViewActiveClass('sideview')">SideView</button>
                         </p>                    
                         <p class="control">
-                            <button class="button is-small">TopView</button>
+                            <button class="button is-small" @click="switchView('topview')" :class="getViewActiveClass('topview')">TopView</button>
                         </p>
                     </div>
 
@@ -110,7 +110,9 @@
                                 <button class="button" @click="addSourceIndex(-1)">&lt;&lt;</button>
                             </p>
                             <p class="control">
-                                <a class="button is-static">#01</a>
+                                <a class="button is-static" content="content">
+                                    {{ getSourceIndexLabel() }}
+                                </a>
                             </p>
                             <p class="control">
                                 <input class="input" type="tel" :value="getFilenameFromPath(source_panel.path)" readonly />
@@ -129,7 +131,7 @@
                         <div id="source-mapchip-panel">
                             <div id="source-mapchip-canvas">
                                 <img :class="source_panel.scale" :src="source_panel.path" :source_width="SOURCE_WIDTH" :source_height="SOURCE_HEIGHT" />
-                                <div class="mapchippane" v-for="chip in source_panel.chips" :style="getSourceChipStyle(chip)"></div>
+                                <div class="mapchippane" v-for="(chip, index) in source_panel.chips" :style="getSourceChipStyle(chip)" :title="index" @click="selectChip(chip)"></div>
                             </div>
                         </div>
 
@@ -167,6 +169,7 @@
         const SOURCE_WIDTH = 480;
         const SOURCE_HEIGHT = 256;
         const CHIP_SIZE = 16;
+        const VIEWS = ["sideview", "topview"]
 
         import { createApp } from 'vue';
 
@@ -175,7 +178,8 @@
                 const self = this;
                 // load chips from local storage
                 const lsraw = localStorage.getItem(LOCAL_STORAGE_KEY);
-                self.$data.chips = lsraw ? JSON.parse(lsraw) : { topview: [], sideview: [] };
+                const has_savedata = !!lsraw;
+                self.$data.chips = has_savedata ? JSON.parse(lsraw) : { topview: [], sideview: [] };
 
                 // load source image filenames
                 await fetch(SOURCE_IMAGES_FILENAME)
@@ -189,6 +193,7 @@
                 self.$data.source_panel.index = 0;
                 self.$data.source_panel.path = self.$data.sources[self.$data.source_panel.index];
 
+                // set chip frames on source image
                 const ABSOLUTE_ERROR = 1.4;//縦方向のナゾの誤差を補正する
                 const wper = CHIP_SIZE / SOURCE_WIDTH;
                 const hper = CHIP_SIZE / SOURCE_HEIGHT;
@@ -202,10 +207,15 @@
                     const top = (y * CHIP_SIZE) / SOURCE_HEIGHT * (100 - ABSOLUTE_ERROR) + "%";
                     const width = CHIP_SIZE / SOURCE_WIDTH * 100 + "%";
                     const height = CHIP_SIZE / SOURCE_HEIGHT * (100 - ABSOLUTE_ERROR) + "%";
-                    console.log({ index, left, top, width, height });
-                    return { index, left, top, width, height };
+                    //TODO: selected
+                    const selected = has_savedata ? false : false;
+                    return { index, left, top, width, height, x, y, selected };
                 });
                 self.$data.source_panel.chips = chips;
+
+                // set current view
+                self.$data.chips_panel.view = VIEWS[0];
+
             },
             data() {
                 return {
@@ -216,7 +226,7 @@
                     sources: [/* filepath, ... */],//[filepath, ...]
                     // from local storage
                     chips: {/*
-                        topview: [{ source, from_index, to_index }, ...],
+                        topview: [{ view, source,  }, ...],
                         sideview: [{ source, from_index, to_index }, ...],
                     */},
                     // 
@@ -226,7 +236,9 @@
                         path: null,
                         chips: [/* { index, left, top, width, height }, ... */],
                     },
-                    chips_panel: {},
+                    chips_panel: {
+                        view: "",// topview or sideview
+                    },
                 };
             },
             methods:{
@@ -246,6 +258,9 @@
                         this.$data.source_panel.path = sources[this.$data.source_panel.index];
                     }
                 },
+                getSourceIndexLabel(){
+                    return "#" + this.source_panel.index.toString().padStart(2, '0');
+                },
                 getSourceChipStyle(chip){
                     return {
                         position: "absolute",
@@ -254,6 +269,26 @@
                         width: chip.width,
                         height: chip.height,
                     };
+                },
+                switchView(view){
+                    this.chips_panel.view = view;
+                },
+                getViewActiveClass(view){
+                    return this.chips_panel.view == view ? "is-active" : "";
+                },
+                selectChip(chip){
+                    const view = this.chips_panel.view;
+                    const path = this.source_panel.path;
+                    const parts = {
+                        view: view, path: path, attr: "",
+                        rect: {
+                            p1: { index: chip.index, x: chip.x, y: chip.y },
+                            p2: { index: chip.index, x: chip.x, y: chip.y },
+                        },
+                    };
+                    this.chips[view].push(parts);
+                    //TODO: selected
+                    //TODO: save
                 },
 
             }
