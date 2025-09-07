@@ -11,6 +11,12 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yamahei/akashic_project@latest/prj/05.flexbox_css/justflex.css"></link>
 
         <style>
+            /* #headeer {
+                position: fixed;
+            } */
+            #chip_list {
+                min-height: calc(100vh - 40px);
+            }
             .force-fore {
                 z-index: 1024;
             }
@@ -22,11 +28,16 @@
             }
             #chip-panel {
                 width: 192px;
+                /* max-height: calc(100vh - 101px); */
+            }
+            #chip_list > .block {
+                clear: both;
             }
             #source-mapchip-panel {
                 margin: 0;
                 padding: 1rem;
                 min-width: 100%; min-height: 100%;
+                position: fixed;
             }
             #source-mapchip-canvas {
                 position: relative;
@@ -88,19 +99,10 @@
 
     <div id="app" justflex-v>
         <!-- header -->
-        <div>
-            <header>
-                <h1 class="title is-3">mapchip selector</h1>
-                <h2 class="subtitle is-5">select mapchips from source images</h2>
-            </header>
-        </div>
+        <div id="header">
 
-        <!-- body -->
-        <div justflex-h juststrech>
-
-            <!-- side panel -->
-            <div id="chip-panel">
-                <div class="container">
+            <div class="field is-horizontal">
+                <div class="field-body">
 
                     <div class="field has-addons">
                         <p class="control">
@@ -111,30 +113,81 @@
                         </p>
                     </div>
 
-                    <h3 class="is-size-4">Chips</h3>
-
-                    <div class="block" v-for="(chip, index) in chips[chips_panel.view]">
-                        <p v-if="chip.attr" class="chip-attribute" :title="chip.attr">
-                            {{ chip.attr }}
+                    <div class="field has-addons">
+                        <p class="control">
+                            <button class="button" @click="addSourceIndex(-1)">&lt;&lt;</button>
                         </p>
-                        <figure class="image is-96x96 is-pulled-left" :class="source_panel.bg">
-                            <img :src="chip.path" :style="getChipSprite(chip)" />
-                        </figure>
-                        <code>#{{ chip.rect.p1.index }}~#{{ chip.rect.p2.index }}</code><br/>
-                        <code>({{ chip.rect.p2.x - chip.rect.p1.x + 1 }}x{{ chip.rect.p2.y - chip.rect.p1.y + 1 }})</code><br/>
+                        <p class="control">
+                            <a class="button is-static" content="content">
+                                {{ getSourceIndexLabel() }}
+                            </a>
+                        </p>
+                        <p class="control">
+                            <input class="input" type="tel" :value="getFilenameFromPath(source_panel.path)" readonly />
+                        </p>
+                        <p class="control">
+                            <button class="button"@click="addSourceIndex(1)">&gt;&gt;</button>
+                        </p>
+                    </div>
 
-                        <div class="dropdown is-hoverable is-up force-fore">
-                            <div class="dropdown-trigger">
-                                <button class="button is-small" aria-haspopup="true" :aria-controls="`dropdown-menu${index}`">⠇</button>
+                    <div class="field has-addons">
+                        <p class="control">
+                            <div class="select">
+                                <select v-model="source_panel.scale">
+                                    <option :value="scale" v-for="scale in IMAGE_SCALES">{{ scale }}</option>
+                                </select>
                             </div>
-                            <div class="dropdown-menu" :id="`dropdown-menu${index}`" role="menu">
-                                <div class="dropdown-content">
-                                    <a class="dropdown-item" @click="editChipAttr(chip)"> 📝 Edit Attribute </a>
-                                    <a class="dropdown-item" @click="editChipRect(chip)"> 📍 Edit Rect p2 </a>
-                                    <hr class="dropdown-divider" />
-                                    <a class="dropdown-item" @click="removeChipRect(chip)"> 🗑️ Remove Chip </a>
+                        </p>
+                    </div>
+
+                    <div class="field has-addons">
+                        <p class="control">
+                            <div class="select">
+                                <select v-model="source_panel.bg">
+                                    <option :value="klass" v-for="klass in BG_CLASSES">{{ klass }}</option>
+                                </select>
+                            </div>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <!-- body -->
+        <div justflex-h juststrech>
+
+            <!-- side panel -->
+            <div id="chip-panel">
+                <div class="container">
+                    <div id="chip_list">
+
+                        <div class="block" v-for="(chip, index) in chips[chips_panel.view]">
+                            <p v-if="chip.attr" class="chip-attribute" :title="chip.attr">
+                                {{ chip.attr }}
+                            </p>
+                            <figure class="image is-96x96 is-pulled-left" :class="source_panel.bg">
+                                <img :src="chip.path" :style="getChipSprite(chip)" />
+                            </figure>
+
+                            <div class="dropdown is-hoverable force-fore">
+                                <div class="dropdown-trigger">
+                                    <button class="button is-small" aria-haspopup="true" :aria-controls="`dropdown-menu${index}`">⠇</button>
+                                </div>
+                                <div class="dropdown-menu" :id="`dropdown-menu${index}`" role="menu">
+                                    <div class="dropdown-content">
+                                        <a class="dropdown-item" @click="editChipAttr(chip)"> 📝 Edit Attribute </a>
+                                        <a class="dropdown-item" @click="editChipRect(chip)"> 📍 Edit Rect p2 </a>
+                                        <hr class="dropdown-divider" />
+                                        <a class="dropdown-item" @click="removeChipRect(chip)"> 🗑️ Remove Chip </a>
+                                    </div>
                                 </div>
                             </div>
+
+                            <code>#{{ chip.rect.p1.index }}~#{{ chip.rect.p2.index }}</code><br/>
+                            <code>({{ chip.rect.p2.x - chip.rect.p1.x + 1 }}x{{ chip.rect.p2.y - chip.rect.p1.y + 1 }})</code><br/>
+
                         </div>
 
                     </div>
@@ -146,49 +199,6 @@
             <div>
                 <div class="container">
                     <div class="content">
-
-                        <div class="field is-horizontal">
-                            <div class="field-body">
-
-                                <div class="field has-addons">
-                                    <p class="control">
-                                        <button class="button" @click="addSourceIndex(-1)">&lt;&lt;</button>
-                                    </p>
-                                    <p class="control">
-                                        <a class="button is-static" content="content">
-                                            {{ getSourceIndexLabel() }}
-                                        </a>
-                                    </p>
-                                    <p class="control">
-                                        <input class="input" type="tel" :value="getFilenameFromPath(source_panel.path)" readonly />
-                                    </p>
-                                    <p class="control">
-                                        <button class="button"@click="addSourceIndex(1)">&gt;&gt;</button>
-                                    </p>
-                                </div>
-
-                                <div class="field has-addons">
-                                    <p class="control">
-                                        <div class="select">
-                                            <select v-model="source_panel.scale">
-                                                <option :value="scale" v-for="scale in IMAGE_SCALES">{{ scale }}</option>
-                                            </select>
-                                        </div>
-                                    </p>
-                                </div>
-
-                                <div class="field has-addons">
-                                    <p class="control">
-                                        <div class="select">
-                                            <select v-model="source_panel.bg">
-                                                <option :value="klass" v-for="klass in BG_CLASSES">{{ klass }}</option>
-                                            </select>
-                                        </div>
-                                    </p>
-                                </div>
-
-                            </div>
-                        </div>
 
                         <div id="source-mapchip-panel">
                             <div id="source-mapchip-canvas" :class="source_panel.bg">
@@ -367,6 +377,7 @@
                     return this.chips_panel.view == view ? "is-active" : "";
                 },
                 selectChip(chip){
+                    if( !this.source_panel.path ){ return; }
                     if(this.isChipSelected(chip)){
                         //TODO: focus chips istem
                     }else{
