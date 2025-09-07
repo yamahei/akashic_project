@@ -16,7 +16,7 @@
             }
             .chip-attribute{
                 margin: 0; padding: 0;
-                padding-bottom: 0.2rem;
+                padding-top: 0.2rem;
                 font-size: 0.6rem;
                 color: darkslategrey;
             }
@@ -326,9 +326,9 @@
                 },
                 refreshSourceImageForAnimation(){
                     const self = this;
-                    const _path = self.source_panel.path;
+                    const index = self.source_panel.index;
                     self.source_panel.path = "";
-                    setTimeout(()=>{ self.source_panel.path = _path; }, 0);
+                    setTimeout(()=>{ self.source_panel.path = self.sources[index]; }, 0);
                 },
                 getSourceIndexLabel(){
                     return "#" + this.source_panel.index.toString().padStart(2, '0');
