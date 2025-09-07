@@ -11,6 +11,18 @@
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/yamahei/akashic_project@latest/prj/05.flexbox_css/justflex.css"></link>
 
         <style>
+            .force-fore {
+                z-index: 1024;
+            }
+            .chip-attribute{
+                margin: 0; padding: 0;
+                padding-bottom: 0.2rem;
+                font-size: 0.6rem;
+                color: darkslategrey;
+            }
+            #chip-panel {
+                width: 192px;
+            }
             #source-mapchip-panel {
                 margin: 0;
                 padding: 1rem;
@@ -22,9 +34,14 @@
                 padding: 0;
                 margin: 0;
                 overflow: auto;
-                background-image: url(bgtile.png);
                 background-repeat: repeat;
             }
+            .bgtile{ background-image: url(bgtile.gif); }
+            .bgwhite{ background-image: url(bgwhite.gif); }
+            .bgblack{ background-image: url(bgblack.gif); }
+            .bgred{ background-image: url(bgred.gif); }
+            .bggreen{ background-image: url(bggreen.gif); }
+            .bgblue{ background-image: url(bgblue.gif); }
             img {
                 image-rendering: pixelated;
                 width: auto; height: auto;
@@ -49,8 +66,20 @@
             }
             .mapchippane:hover {
                 opacity: 0.5;
-                background-color: rgb(255, 255, 0, 1);
-                border: 0.5px solid rgba(255, 0, 0, 0.5);
+                background-color: yellow;
+                border: 0.5px solid red;
+                outline: none;
+            }
+            .mapchippane.selected {
+                opacity: 0.25;
+                animation: bgcolor 2s infinite;
+                border: none;
+                outline: none;
+            }
+            @keyframes bgcolor {
+                0% { background-color: yellow; }
+                50% { background-color: black; }
+                100% { background-color: yellow; }
             }
         </style>
     </head>
@@ -70,7 +99,7 @@
         <div justflex-h juststrech>
 
             <!-- side panel -->
-            <div>
+            <div id="chip-panel">
                 <div class="container">
 
                     <div class="field has-addons">
@@ -84,17 +113,30 @@
 
                     <h3 class="is-size-4">Chips</h3>
 
-                    <div class="block">
+                    <div class="block" v-for="(chip, index) in chips[chips_panel.view]">
+                        <p v-if="chip.attr" class="chip-attribute" :title="chip.attr">
+                            {{ chip.attr }}
+                        </p>
+                        <figure class="image is-96x96 is-pulled-left" :class="source_panel.bg">
+                            <img :src="chip.path" :style="getChipSprite(chip)" />
+                        </figure>
+                        <code>#{{ chip.rect.p1.index }}~#{{ chip.rect.p2.index }}</code><br/>
+                        <code>({{ chip.rect.p2.x - chip.rect.p1.x + 1 }}x{{ chip.rect.p2.y - chip.rect.p1.y + 1 }})</code><br/>
 
-                        <div class="tag">
-                            <span class="ellipsis">mapchip-a01.png</span>
+                        <div class="dropdown is-hoverable is-up force-fore">
+                            <div class="dropdown-trigger">
+                                <button class="button is-small" aria-haspopup="true" :aria-controls="`dropdown-menu${index}`">⠇</button>
+                            </div>
+                            <div class="dropdown-menu" :id="`dropdown-menu${index}`" role="menu">
+                                <div class="dropdown-content">
+                                    <a class="dropdown-item" @click="editChipAttr(chip)"> 📝 Edit Attribute </a>
+                                    <a class="dropdown-item" @click="editChipRect(chip)"> 📍 Edit Rect p2 </a>
+                                    <hr class="dropdown-divider" />
+                                    <a class="dropdown-item" @click="removeChipRect(chip)"> 🗑️ Remove Chip </a>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <img class="is-48x48" src="https://bulma.io/assets/images/placeholders/48x48.png" />
-                            <img class="is-48x48" src="https://bulma.io/assets/images/placeholders/48x48.png" />
-                            <img class="is-48x48" src="https://bulma.io/assets/images/placeholders/48x48.png" />
-                            <img class="is-48x48" src="https://bulma.io/assets/images/placeholders/48x48.png" />
-                        </div>
+
                     </div>
 
                 </div>
@@ -105,33 +147,53 @@
                 <div class="container">
                     <div class="content">
 
-                        <div class="field has-addons">
-                            <p class="control">
-                                <button class="button" @click="addSourceIndex(-1)">&lt;&lt;</button>
-                            </p>
-                            <p class="control">
-                                <a class="button is-static" content="content">
-                                    {{ getSourceIndexLabel() }}
-                                </a>
-                            </p>
-                            <p class="control">
-                                <input class="input" type="tel" :value="getFilenameFromPath(source_panel.path)" readonly />
-                            </p>
-                            <p class="control">
-                                <div class="select">
-                                    <select v-model="source_panel.scale">
-                                        <option :value="scale" v-for="scale in IMAGE_SCALES">{{ scale }}</option>
-                                    </select>
+                        <div class="field is-horizontal">
+                            <div class="field-body">
+
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <button class="button" @click="addSourceIndex(-1)">&lt;&lt;</button>
+                                    </p>
+                                    <p class="control">
+                                        <a class="button is-static" content="content">
+                                            {{ getSourceIndexLabel() }}
+                                        </a>
+                                    </p>
+                                    <p class="control">
+                                        <input class="input" type="tel" :value="getFilenameFromPath(source_panel.path)" readonly />
+                                    </p>
+                                    <p class="control">
+                                        <button class="button"@click="addSourceIndex(1)">&gt;&gt;</button>
+                                    </p>
                                 </div>
-                            </p>
-                            <p class="control">
-                                <button class="button"@click="addSourceIndex(1)">&gt;&gt;</button>
-                            </p>
+
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <div class="select">
+                                            <select v-model="source_panel.scale">
+                                                <option :value="scale" v-for="scale in IMAGE_SCALES">{{ scale }}</option>
+                                            </select>
+                                        </div>
+                                    </p>
+                                </div>
+
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <div class="select">
+                                            <select v-model="source_panel.bg">
+                                                <option :value="klass" v-for="klass in BG_CLASSES">{{ klass }}</option>
+                                            </select>
+                                        </div>
+                                    </p>
+                                </div>
+
+                            </div>
                         </div>
+
                         <div id="source-mapchip-panel">
-                            <div id="source-mapchip-canvas">
+                            <div id="source-mapchip-canvas" :class="source_panel.bg">
                                 <img :class="source_panel.scale" :src="source_panel.path" :source_width="SOURCE_WIDTH" :source_height="SOURCE_HEIGHT" />
-                                <div class="mapchippane" v-for="(chip, index) in source_panel.chips" :style="getSourceChipStyle(chip)" :title="index" @click="selectChip(chip)"></div>
+                                <div class="mapchippane" v-for="(chip, index) in source_panel.chips" :class="getChipSelectedClass(chip)" :style="getSourceChipStyle(chip)" :title="index" @click="selectChip(chip)"></div>
                             </div>
                         </div>
 
@@ -169,7 +231,9 @@
         const SOURCE_WIDTH = 480;
         const SOURCE_HEIGHT = 256;
         const CHIP_SIZE = 16;
-        const VIEWS = ["sideview", "topview"]
+        const CHIP_SHOW_SIZE = 96;
+        const VIEWS = ["sideview", "topview"];
+        const BG_CLASSES = ["bgtile", "bgwhite", "bgblack", "bgred", "bggreen", "bgblue"];
 
         import { createApp } from 'vue';
 
@@ -192,6 +256,7 @@
                 self.$data.source_panel.scale = self.$data.IMAGE_SCALES[0];
                 self.$data.source_panel.index = 0;
                 self.$data.source_panel.path = self.$data.sources[self.$data.source_panel.index];
+                self.$data.source_panel.bg = self.$data.BG_CLASSES[0];
 
                 // set chip frames on source image
                 const ABSOLUTE_ERROR = 1.4;//縦方向のナゾの誤差を補正する
@@ -207,9 +272,7 @@
                     const top = (y * CHIP_SIZE) / SOURCE_HEIGHT * (100 - ABSOLUTE_ERROR) + "%";
                     const width = CHIP_SIZE / SOURCE_WIDTH * 100 + "%";
                     const height = CHIP_SIZE / SOURCE_HEIGHT * (100 - ABSOLUTE_ERROR) + "%";
-                    //TODO: selected
-                    const selected = has_savedata ? false : false;
-                    return { index, left, top, width, height, x, y, selected };
+                    return { index, left, top, width, height, x, y };
                 });
                 self.$data.source_panel.chips = chips;
 
@@ -221,7 +284,9 @@
                 return {
                     // constants
                     IMAGE_SCALES,
-                    SOURCE_WIDTH, SOURCE_HEIGHT, CHIP_SIZE,
+                    SOURCE_WIDTH, SOURCE_HEIGHT, 
+                    CHIP_SIZE, CHIP_SHOW_SIZE,
+                    BG_CLASSES,
                     // from file
                     sources: [/* filepath, ... */],//[filepath, ...]
                     // from local storage
@@ -234,6 +299,7 @@
                         scale: "",
                         index: 0,
                         path: null,
+                        bg:"",
                         chips: [/* { index, left, top, width, height }, ... */],
                     },
                     chips_panel: {
@@ -258,8 +324,32 @@
                         this.$data.source_panel.path = sources[this.$data.source_panel.index];
                     }
                 },
+                refreshSourceImageForAnimation(){
+                    const self = this;
+                    const _path = self.source_panel.path;
+                    self.source_panel.path = "";
+                    setTimeout(()=>{ self.source_panel.path = _path; }, 0);
+                },
                 getSourceIndexLabel(){
                     return "#" + this.source_panel.index.toString().padStart(2, '0');
+                },
+                getChipSelectedClass(chip){
+                    return this.isChipSelected(chip) ? "selected" : "";
+                },
+                isChipSelected(chip){
+                    const view = this.chips_panel.view
+                    const path = this.source_panel.path;
+                    const { x, y, index } = chip;
+                    const find = this.chips[view].some(c => {
+                        if(c.path != path){ return false; }
+                        return c.indexes.indexOf(index) >= 0;
+                    });
+                    return find;
+                },
+                selectChipFrameInformation(func){
+                    return this.source_panel.chips.filter(c => {
+                        return func(c);
+                    });
                 },
                 getSourceChipStyle(chip){
                     return {
@@ -277,19 +367,105 @@
                     return this.chips_panel.view == view ? "is-active" : "";
                 },
                 selectChip(chip){
-                    const view = this.chips_panel.view;
-                    const path = this.source_panel.path;
-                    const parts = {
-                        view: view, path: path, attr: "",
-                        rect: {
-                            p1: { index: chip.index, x: chip.x, y: chip.y },
-                            p2: { index: chip.index, x: chip.x, y: chip.y },
-                        },
-                    };
-                    this.chips[view].push(parts);
-                    //TODO: selected
-                    //TODO: save
+                    if(this.isChipSelected(chip)){
+                        //TODO: focus chips istem
+                    }else{
+                        const view = this.chips_panel.view;
+                        const path = this.source_panel.path;
+                        const parts = {
+                            view: view, path: path, attr: "",
+                            rect: {
+                                p1: { index: chip.index, x: chip.x, y: chip.y },
+                                p2: { index: chip.index, x: chip.x, y: chip.y },
+                            },
+                            indexes: [chip.index],
+                        };
+                        this.chips[view].unshift(parts);
+                        //TODO: save
+                        this.refreshSourceImageForAnimation();
+                    }
                 },
+                getChipSprite(chip){
+                    const p1 = chip.rect.p1;
+                    const p2 = chip.rect.p2;
+                    const posx = p1.x * CHIP_SIZE;
+                    const posy = p1.y * CHIP_SIZE;
+                    const width = (p2.x - p1.x + 1) * CHIP_SIZE;
+                    const height = (p2.y - p1.y + 1) * CHIP_SIZE;
+                    const showsize = CHIP_SHOW_SIZE;
+                    const scale = showsize / Math.max(width, height);
+
+                    const style = {
+                        "object-fit": "none",
+                        "object-position": `-${ posx }px -${ posy }px`,
+                        "width": `${ width }px`,
+                        "height": `${ height }px`,
+                        "transform-origin": "top left",
+                        "transform": `scale(${scale})`,
+                    };
+                    return style;
+                },
+                 editChipRect(chip){
+                    const p1 = chip.rect.p1;
+                    const index_p1 = p1.index;
+                    const prompt_message = `Input rect P2's index(number <= ${index_p1})`;
+                    const _index_p2 = prompt(prompt_message);
+                    const index_p2 = parseInt(_index_p2);
+                    const isValid = !Number.isNaN(index_p2) && Number.isInteger(index_p2) && (index_p1 <= index_p2);
+
+                    if(!isValid){
+                        const error_message = `Oops.. input[${_index_p2}] is not valid index.`;
+                        alert(error_message);
+                    }else{
+                        const func_find_p2 = (cf) => { return cf.index == index_p2; };
+                        const cf_select_p2 = this.selectChipFrameInformation(func_find_p2);
+                        if(cf_select_p2.length <= 0){
+                            const error_message = `Oops.. input[${_index_p2}] is not found.`;
+                            alert(error_message);
+                        }else{
+                            const cfp2 = cf_select_p2[0];
+                            const p1x = p1.x;
+                            const p1y = p1.y;
+                            const p2x = cfp2.x;
+                            const p2y = cfp2.y;
+                            if(p1x > p2x || p1y > p2y){
+                                const error_message = `Oops.. input[${_index_p2}] is not valid position.`;
+                                alert(error_message);
+                            }
+
+                            const func_select_rect = (cf) => {
+                                if(p1x > cf.x){ return false; }
+                                if(p2x < cf.x){ return false; }
+                                if(p1y > cf.y){ return false; }
+                                if(p2y < cf.y){ return false; }
+                                return true;
+                            };
+                            const cf_select_rect = this.selectChipFrameInformation(func_select_rect);
+                            chip.indexes = cf_select_rect.map(cf => cf.index);
+                            chip.rect.p2 = { index: index_p2, x: p2x, y: p2y };
+                            console.log(chip);
+
+                            this.refreshSourceImageForAnimation();
+                        }
+                    }
+                 },
+                 removeChipRect(chip){
+                    const view = this.chips_panel.view;
+                    const chips = this.chips[view];
+                    const index = chips.indexOf(chip);
+                    if(index >= 0){
+                        const message = "Confirm deletion?";
+                        if(confirm(message)){ chips.splice(index, 1); }
+                    }
+                 },
+                 editChipAttr(chip){
+                    const message = "input chip attribute.";
+                    const default_value = chip.attr;
+                    const new_attr = prompt(message, default_value);
+                    if(new_attr !== null){
+                        chip.attr = new_attr;
+                    }
+                 },
 
             }
         }).mount('#app');
