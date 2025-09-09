@@ -15,7 +15,8 @@
                 position: fixed;
             } */
             #chip_list {
-                min-height: calc(100vh - 40px);
+                padding: 0.25rem;
+                margin-bottom: 0.25rem;
             }
             .force-fore {
                 z-index: 1024;
@@ -29,9 +30,6 @@
             #chip-panel {
                 width: 192px;
                 /* max-height: calc(100vh - 101px); */
-            }
-            #chip_list > .block {
-                clear: both;
             }
             #source-mapchip-panel {
                 margin: 0;
@@ -150,6 +148,13 @@
                         </p>
                     </div>
 
+                    <div class="tabs">
+                        <ul>
+                            <li class="is-active"><a>Source</a></li>
+                            <li><a>Destination</a></li>
+                        </ul>
+                    </div>
+                    
                 </div>
             </div>
 
@@ -161,36 +166,47 @@
             <!-- side panel -->
             <div id="chip-panel">
                 <div class="container">
-                    <div id="chip_list">
+                    <div id="chip_list" class="is-clearfix">
 
-                        <div class="block" v-for="(chip, index) in chips[chips_panel.view]">
-                            <p v-if="chip.attr" class="chip-attribute" :title="chip.attr">
-                                {{ chip.attr }}
-                            </p>
-                            <figure class="image is-96x96 is-pulled-left" :class="source_panel.bg">
-                                <img :src="chip.path" :style="getChipSprite(chip)" />
+                        <div class="is-pulled-left" v-for="(chip, index) in chips[chips_panel.view]" @click="setCurrentChip(chip)">
+                            <figure class="image is-32x32" :class="source_panel.bg">
+                                <img :src="chip.path" :style="getChipSprite(chip, 32)" />
                             </figure>
-
-                            <div class="dropdown is-hoverable force-fore">
-                                <div class="dropdown-trigger">
-                                    <button class="button is-small" aria-haspopup="true" :aria-controls="`dropdown-menu${index}`">⠇</button>
-                                </div>
-                                <div class="dropdown-menu" :id="`dropdown-menu${index}`" role="menu">
-                                    <div class="dropdown-content">
-                                        <a class="dropdown-item" @click="editChipAttr(chip)"> 📝 Edit Attribute </a>
-                                        <a class="dropdown-item" @click="editChipRect(chip)"> 📍 Edit Rect p2 </a>
-                                        <hr class="dropdown-divider" />
-                                        <a class="dropdown-item" @click="removeChipRect(chip)"> 🗑️ Remove Chip </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <code>#{{ chip.rect.p1.index }}~#{{ chip.rect.p2.index }}</code><br/>
-                            <code>({{ chip.rect.p2.x - chip.rect.p1.x + 1 }}x{{ chip.rect.p2.y - chip.rect.p1.y + 1 }})</code><br/>
-
                         </div>
 
                     </div>
+
+                    <div id="chip_detail" v-if="current_chip">
+                        <figure class="image is-128x128" :class="source_panel.bg">
+                            <img :src="current_chip.path" :style="getChipSprite(current_chip, 128)" />
+                        </figure>
+                        <p>
+                            <code>{{ current_chip.view }}@{{ getFilenameFromPath(current_chip.path) }}</code>
+                        </p>
+                        <p>
+                            <code>
+                                #{{ current_chip.rect.p1.index }}~#{{ current_chip.rect.p2.index }}
+                                ({{ current_chip.rect.p2.x - current_chip.rect.p1.x + 1 }}x{{ current_chip.rect.p2.y - current_chip.rect.p1.y + 1 }})
+                            </code>
+                        </p>
+                        <p class="chip-attribute" :title="current_chip.attr">
+                            {{ current_chip.attr }}
+                        </p>
+                        <div>
+                            <button class="button is-small" @click="editChipAttr(current_chip)">
+                                📝 attr
+                            </button>
+                            <button class="button is-small" @click="editChipRect(current_chip)">
+                                📍 p2
+                            </button>
+                            <button class="button is-small" @click="removeChipRect(current_chip)">
+                                🗑️ del
+                            </button>
+                        </div>
+                    </div>
+                    <div v-else class="notification">
+                        no chip
+                    </div>                    
 
                 </div>
             </div>
@@ -241,7 +257,7 @@
         const SOURCE_WIDTH = 480;
         const SOURCE_HEIGHT = 256;
         const CHIP_SIZE = 16;
-        const CHIP_SHOW_SIZE = 96;
+        const CHIP_SHOW_SIZE = 32;
         const VIEWS = ["sideview", "topview"];
         const BG_CLASSES = ["bgtile", "bgwhite", "bgblack", "bgred", "bggreen", "bgblue"];
 
@@ -314,6 +330,7 @@
                     },
                     chips_panel: {
                         view: "",// topview or sideview
+                        current_chip: null,
                     },
                 };
             },
@@ -396,14 +413,17 @@
                         this.refreshSourceImageForAnimation();
                     }
                 },
-                getChipSprite(chip){
+                setCurrentChip(chip){
+                    this.current_chip = (this.current_chip == chip) ? null : chip;
+                    this.$forceUpdate();
+                },
+                getChipSprite(chip, showsize=CHIP_SHOW_SIZE){
                     const p1 = chip.rect.p1;
                     const p2 = chip.rect.p2;
                     const posx = p1.x * CHIP_SIZE;
                     const posy = p1.y * CHIP_SIZE;
                     const width = (p2.x - p1.x + 1) * CHIP_SIZE;
                     const height = (p2.y - p1.y + 1) * CHIP_SIZE;
-                    const showsize = CHIP_SHOW_SIZE;
                     const scale = showsize / Math.max(width, height);
 
                     const style = {
@@ -466,7 +486,10 @@
                     const index = chips.indexOf(chip);
                     if(index >= 0){
                         const message = "Confirm deletion?";
-                        if(confirm(message)){ chips.splice(index, 1); }
+                        if(confirm(message)){
+                            chips.splice(index, 1);
+                            this.current_chip = null;
+                        }
                     }
                  },
                  editChipAttr(chip){
