@@ -45,6 +45,22 @@
                 overflow: auto;
                 background-repeat: repeat;
             }
+            #destination-mapchip-panel{
+                margin: 0;
+                padding: 1rem;
+                min-width: 100%; min-height: 100%;
+                position: fixed;
+            }
+            #destination-mapchip-canvas{
+                position: relative;
+                display: inline-block;
+                padding: 0;
+                margin: 0;
+                overflow: auto;
+                background-repeat: repeat;
+                width: 1024px;
+                height: 800px;
+            }
             .bgtile{ background-image: url(bgtile.gif); }
             .bgwhite{ background-image: url(bgwhite.gif); }
             .bgblack{ background-image: url(bgblack.gif); }
@@ -150,8 +166,8 @@
 
                     <div class="tabs">
                         <ul>
-                            <li class="is-active"><a>Source</a></li>
-                            <li><a>Destination</a></li>
+                            <li :class="current_main_panel=='source'?'is-active':''" @click="current_main_panel='source'"><a>Source</a></li>
+                            <li :class="current_main_panel=='destination'?'is-active':''" @click="current_main_panel='destination'"><a>Destination</a></li>
                         </ul>
                     </div>
                     
@@ -176,33 +192,40 @@
 
                     </div>
 
-                    <div id="chip_detail" v-if="current_chip">
+                    <div id="chip_detail" v-if="chips_panel.current_chip">
                         <figure class="image is-128x128" :class="source_panel.bg">
-                            <img :src="current_chip.path" :style="getChipSprite(current_chip, 128)" />
+                            <img :src="chips_panel.current_chip.path" :style="getChipSprite(chips_panel.current_chip, 128)" />
                         </figure>
+                        <h4>Source</h4>
                         <p>
-                            <code>{{ current_chip.view }}@{{ getFilenameFromPath(current_chip.path) }}</code>
+                            <code>
+                                {{ chips_panel.current_chip.view }}
+                                @{{ getFilenameFromPath(chips_panel.current_chip.path) }}
+                            </code>
                         </p>
                         <p>
                             <code>
-                                #{{ current_chip.rect.p1.index }}~#{{ current_chip.rect.p2.index }}
-                                ({{ current_chip.rect.p2.x - current_chip.rect.p1.x + 1 }}x{{ current_chip.rect.p2.y - current_chip.rect.p1.y + 1 }})
+                                #{{ chips_panel.current_chip.rect.p1.index }}~#{{ chips_panel.current_chip.rect.p2.index }}
+                                ({{ chips_panel.current_chip.rect.p2.x - chips_panel.current_chip.rect.p1.x + 1 }}x{{ chips_panel.current_chip.rect.p2.y - chips_panel.current_chip.rect.p1.y + 1 }})
                             </code>
                         </p>
-                        <p class="chip-attribute" :title="current_chip.attr">
-                            {{ current_chip.attr }}
+                        <p class="chip-attribute" :title="chips_panel.current_chip.attr">
+                            {{ chips_panel.current_chip.attr }}
                         </p>
                         <div>
-                            <button class="button is-small" @click="editChipAttr(current_chip)">
+                            <button class="button is-small" @click="editChipAttr(chips_panel.current_chip)">
                                 📝 attr
                             </button>
-                            <button class="button is-small" @click="editChipRect(current_chip)">
+                            <button class="button is-small" @click="editChipRect(chips_panel.current_chip)">
                                 📍 p2
                             </button>
-                            <button class="button is-small" @click="removeChipRect(current_chip)">
+                            <button class="button is-small" @click="removeChipRect(chips_panel.current_chip)">
                                 🗑️ del
                             </button>
                         </div>
+                        <h4>Destination</h4>
+                        <code>no set</code>
+
                     </div>
                     <div v-else class="notification">
                         no chip
@@ -216,13 +239,21 @@
                 <div class="container">
                     <div class="content">
 
-                        <div id="source-mapchip-panel">
+                        <div id="source-mapchip-panel" v-if="current_main_panel=='source'">
                             <div id="source-mapchip-canvas" :class="source_panel.bg">
                                 <img :class="source_panel.scale" :src="source_panel.path" :source_width="SOURCE_WIDTH" :source_height="SOURCE_HEIGHT" />
-                                <div class="mapchippane" v-for="(chip, index) in source_panel.chips" :class="getChipSelectedClass(chip)" :style="getSourceChipStyle(chip)" :title="index" @click="selectChip(chip)"></div>
+                                <div class="mapchippane" v-for="(chip, index) in source_panel.chips" :class="getChipSelectedClass(chip)" :style="getSourceChipStyle(chip)" :title="index" @click="selectChip($event, chip)"></div>
                             </div>
                         </div>
 
+                        <div id="destination-mapchip-panel" v-if="current_main_panel=='destination'">
+                            <div id="destination-mapchip-canvas" :class="source_panel.bg" @mouseenter="showCursor" @mouseleave="hideCursor" @mousemove.capture.stop="moveCursor">
+                                <div v-for="(chip, index) in chips[chips_panel.view]" :class="source_panel.bg" :style="getDestinationChipPositionStyle(chip)" style="position: absolute;">
+                                    <img :src="chip.path" v-if="chip.out" :style="getChipSprite(chip, 0)"  @click="setCurrentChip(chip)" />
+                                </div>
+                                <div id="dst-chip-cursor" :style="getDestinationCursorStyle()" style="position: absolute;" @click="setOutputPosition"></div>
+                            </div>
+                        </div>
                     </div>
 
 
@@ -232,7 +263,7 @@
         </div>
 
         <!-- footer -->
-        <div>
+        <!-- <div>
             <footer class="footer">
                 <div class="content has-text-centered">
                     <p>
@@ -242,7 +273,8 @@
                     </p>
                 </div>
             </footer>
-        </div>
+        </div> -->
+
 
     </div>    
 
@@ -321,12 +353,16 @@
                         sideview: [{ source, from_index, to_index }, ...],
                     */},
                     // 
+                    current_main_panel: "source",// source or destination
                     source_panel: {
                         scale: "",
                         index: 0,
                         path: null,
                         bg:"",
                         chips: [/* { index, left, top, width, height }, ... */],
+                    },
+                    destination_panel: {
+                        cursor: { x: 0, y: 0, show: false },
                     },
                     chips_panel: {
                         view: "",// topview or sideview
@@ -360,14 +396,17 @@
                 getSourceIndexLabel(){
                     return "#" + this.source_panel.index.toString().padStart(2, '0');
                 },
-                getChipSelectedClass(chip){
-                    return this.isChipSelected(chip) ? "selected" : "";
+                getChipSelectedClass(chipFrame){
+                    return this.isChipSelected(chipFrame) ? "selected" : "";
                 },
-                isChipSelected(chip){
+                isChipSelected(chipFrame){
+                    return !!this.selectChipFromFrame(chipFrame);
+                },
+                selectChipFromFrame(chipFrame){
                     const view = this.chips_panel.view
                     const path = this.source_panel.path;
-                    const { x, y, index } = chip;
-                    const find = this.chips[view].some(c => {
+                    const { x, y, index } = chipFrame;
+                    const find = this.chips[view].find(c => {
                         if(c.path != path){ return false; }
                         return c.indexes.indexOf(index) >= 0;
                     });
@@ -393,28 +432,40 @@
                 getViewActiveClass(view){
                     return this.chips_panel.view == view ? "is-active" : "";
                 },
-                selectChip(chip){
+                selectChip(e, chipFrame){
                     if( !this.source_panel.path ){ return; }
-                    if(this.isChipSelected(chip)){
-                        //TODO: focus chips istem
-                    }else{
-                        const view = this.chips_panel.view;
-                        const path = this.source_panel.path;
-                        const parts = {
-                            view: view, path: path, attr: "",
-                            rect: {
-                                p1: { index: chip.index, x: chip.x, y: chip.y },
-                                p2: { index: chip.index, x: chip.x, y: chip.y },
-                            },
-                            indexes: [chip.index],
-                        };
-                        this.chips[view].unshift(parts);
-                        //TODO: save
-                        this.refreshSourceImageForAnimation();
+
+                    const current_chip = this.chips_panel.current_chip;
+                    if(this.isChipSelected(chipFrame)){
+                        const chip = this.selectChipFromFrame(chipFrame);
+                        if(current_chip != chip){
+                            this.chips_panel.current_chip = chip;
+                        }
+                        return;
                     }
+                    if(e.shiftKey){
+                        this.setChipRectP2(current_chip, chipFrame.index);
+                        return;
+                    }
+
+                    const view = this.chips_panel.view;
+                    const path = this.source_panel.path;
+                    const parts = {
+                        view: view, path: path, attr: "",
+                        rect: {
+                            p1: { index: chipFrame.index, x: chipFrame.x, y: chipFrame.y },
+                            p2: { index: chipFrame.index, x: chipFrame.x, y: chipFrame.y },
+                        },
+                        indexes: [chipFrame.index],
+                        out: null,//{x, y}
+                    };
+                    this.chips[view].unshift(parts);
+                    //TODO: save
+                    this.setCurrentChip(parts);
+                    this.refreshSourceImageForAnimation();
                 },
                 setCurrentChip(chip){
-                    this.current_chip = (this.current_chip == chip) ? null : chip;
+                    this.chips_panel.current_chip = (this.chips_panel.current_chip == chip) ? null : chip;
                     this.$forceUpdate();
                 },
                 getChipSprite(chip, showsize=CHIP_SHOW_SIZE){
@@ -424,7 +475,7 @@
                     const posy = p1.y * CHIP_SIZE;
                     const width = (p2.x - p1.x + 1) * CHIP_SIZE;
                     const height = (p2.y - p1.y + 1) * CHIP_SIZE;
-                    const scale = showsize / Math.max(width, height);
+                    const scale = showsize > 0 ? (showsize / Math.max(width, height)) : 1;
 
                     const style = {
                         "object-fit": "none",
@@ -436,7 +487,7 @@
                     };
                     return style;
                 },
-                 editChipRect(chip){
+                editChipRect(chip){
                     const p1 = chip.rect.p1;
                     const index_p1 = p1.index;
                     const prompt_message = `Input rect P2's index(number <= ${index_p1})`;
@@ -448,38 +499,41 @@
                         const error_message = `Oops.. input[${_index_p2}] is not valid index.`;
                         alert(error_message);
                     }else{
-                        const func_find_p2 = (cf) => { return cf.index == index_p2; };
-                        const cf_select_p2 = this.selectChipFrameInformation(func_find_p2);
-                        if(cf_select_p2.length <= 0){
-                            const error_message = `Oops.. input[${_index_p2}] is not found.`;
-                            alert(error_message);
-                        }else{
-                            const cfp2 = cf_select_p2[0];
-                            const p1x = p1.x;
-                            const p1y = p1.y;
-                            const p2x = cfp2.x;
-                            const p2y = cfp2.y;
-                            if(p1x > p2x || p1y > p2y){
-                                const error_message = `Oops.. input[${_index_p2}] is not valid position.`;
-                                alert(error_message);
-                            }
-
-                            const func_select_rect = (cf) => {
-                                if(p1x > cf.x){ return false; }
-                                if(p2x < cf.x){ return false; }
-                                if(p1y > cf.y){ return false; }
-                                if(p2y < cf.y){ return false; }
-                                return true;
-                            };
-                            const cf_select_rect = this.selectChipFrameInformation(func_select_rect);
-                            chip.indexes = cf_select_rect.map(cf => cf.index);
-                            chip.rect.p2 = { index: index_p2, x: p2x, y: p2y };
-                            console.log(chip);
-
-                            this.refreshSourceImageForAnimation();
-                        }
+                        this.setChipRectP2(chip, index_p2);
                     }
-                 },
+                },
+                setChipRectP2(chip_p1, chip_p2_index){
+                    const func_find_p2 = (cf) => { return cf.index == chip_p2_index; };
+                    const cf_select_p2 = this.selectChipFrameInformation(func_find_p2);
+                    if(cf_select_p2.length <= 0){
+                        const error_message = `Oops.. input[${chip_p2_index}] is not found.`;
+                        alert(error_message);
+                    }else{
+                        const p1 = chip_p1.rect.p1;
+                        const cfp2 = cf_select_p2[0];
+                        const p1x = p1.x;
+                        const p1y = p1.y;
+                        const p2x = cfp2.x;
+                        const p2y = cfp2.y;
+                        if(p1x > p2x || p1y > p2y){
+                            const error_message = `Oops.. input[${chip_p2_index}] is not valid position.`;
+                            alert(error_message);
+                        }
+
+                        const func_select_rect = (cf) => {
+                            if(p1x > cf.x){ return false; }
+                            if(p2x < cf.x){ return false; }
+                            if(p1y > cf.y){ return false; }
+                            if(p2y < cf.y){ return false; }
+                            return true;
+                        };
+                        const cf_select_rect = this.selectChipFrameInformation(func_select_rect);
+                        chip_p1.indexes = cf_select_rect.map(cf => cf.index);
+                        chip_p1.rect.p2 = { index: chip_p2_index, x: p2x, y: p2y };
+                        this.refreshSourceImageForAnimation();
+                    }
+
+                },
                  removeChipRect(chip){
                     const view = this.chips_panel.view;
                     const chips = this.chips[view];
@@ -488,7 +542,7 @@
                         const message = "Confirm deletion?";
                         if(confirm(message)){
                             chips.splice(index, 1);
-                            this.current_chip = null;
+                            this.chips_panel.current_chip = null;
                         }
                     }
                  },
@@ -499,6 +553,54 @@
                     if(new_attr !== null){
                         chip.attr = new_attr;
                     }
+                 },
+                 getDestinationChipPositionStyle(chip){
+                    const out = chip.out;
+                    const size = this.CHIP_SIZE;
+
+                    if(!out){ return {}; }
+                    return {
+                        // position: "absolute",//not work .. write direct.
+                        left: `${out.x * size}px`,
+                        top: `${out.y * size}px`,
+                    };
+                 },
+                 getDestinationCursorStyle(){
+                    const cursor = this.destination_panel.cursor;
+                    return {
+                        // position: "absolue",//not work.. write direct
+                        margin: 0, padding: 0,
+                        width: `${this.CHIP_SIZE}px`,
+                        height: `${this.CHIP_SIZE}px`,
+                        display: cursor.show ? "block" : "none",
+                        border: "solid 1px red",
+                        left: `${cursor.x}px`,
+                        top: `${cursor.y}px`,
+                    }
+                 },
+                 showCursor(e){
+                    this.destination_panel.cursor.show = true;
+                 },
+                 hideCursor(e){
+                    this.destination_panel.cursor.show = false;
+                 },
+                 moveCursor(e){
+                    const cursor = this.destination_panel.cursor;
+                    const size = this.CHIP_SIZE;
+                    if(e?.target.id != "destination-mapchip-canvas"){ return; }
+                    cursor.x = Math.floor(e.layerX / size) * size;
+                    cursor.y = Math.floor(e.layerY / size) * size;
+                 },
+                 setOutputPosition(){
+                    if(!this.chips_panel.current_chip){ return; }
+                    if(!this.destination_panel.cursor.show){ return; }
+                    const size = this.CHIP_SIZE;
+                    const chip = this.chips_panel.current_chip;
+                    const cursor = this.destination_panel.cursor;
+                    chip.out = {
+                        x: Math.floor(cursor.x / size),
+                        y: Math.floor(cursor.y / size),
+                    };
                  },
 
             }
