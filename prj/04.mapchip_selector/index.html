@@ -251,7 +251,7 @@
 
                         <div id="destination-mapchip-panel" v-if="current_main_panel=='destination'">
                             <div id="destination-mapchip-canvas" :class="source_panel.bg" @mouseenter="showCursor" @mouseleave="hideCursor" @mousemove.capture.stop="moveCursor">
-                                <div v-for="(chip, index) in chips[chips_panel.view]" :class="source_panel.bg" :style="getDestinationChipPositionStyle(chip)" style="position: absolute;">
+                                <div v-for="(chip, index) in chips[chips_panel.view]" :style="getDestinationChipPositionStyle(chip)" style="position: absolute;">
                                     <img :src="chip.path" v-if="chip.out" :style="getChipSprite(chip, 0)"  @click="setCurrentChip(chip)" />
                                 </div>
                                 <div id="dst-chip-cursor" :style="getDestinationCursorStyle()" style="position: absolute;" @click="setOutputPosition"></div>
