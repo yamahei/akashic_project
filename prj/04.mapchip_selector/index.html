@@ -224,7 +224,10 @@
                             </button>
                         </div>
                         <h4>Destination</h4>
-                        <code>no set</code>
+                        <code v-if="chips_panel.current_chip.out">
+                            ({{ chips_panel.current_chip.out.x }}, {{ chips_panel.current_chip.out.y }})
+                        </code>
+                        <code v-else>not set</code>
 
                     </div>
                     <div v-else class="notification">
@@ -242,7 +245,7 @@
                         <div id="source-mapchip-panel" v-if="current_main_panel=='source'">
                             <div id="source-mapchip-canvas" :class="source_panel.bg">
                                 <img :class="source_panel.scale" :src="source_panel.path" :source_width="SOURCE_WIDTH" :source_height="SOURCE_HEIGHT" />
-                                <div class="mapchippane" v-for="(chip, index) in source_panel.chips" :class="getChipSelectedClass(chip)" :style="getSourceChipStyle(chip)" :title="index" @click="selectChip($event, chip)"></div>
+                                <div class="mapchippane" v-for="(chipframe, index) in source_panel.chipframes" :class="getChipSelectedClass(chipframe)" :style="getSourceChipStyle(chipframe)" :title="index" @click="selectChip($event, chipframe)"></div>
                             </div>
                         </div>
 
@@ -323,7 +326,7 @@
                 const chip_width = Math.floor(SOURCE_WIDTH / CHIP_SIZE);
                 const chip_height = Math.floor(SOURCE_HEIGHT / CHIP_SIZE);
                 const chip_length = chip_width * chip_height;
-                const chips = [...Array(chip_length)].map((_, index)=>{
+                const chipframes = [...Array(chip_length)].map((_, index)=>{
                     const x = index % chip_width;
                     const y = Math.floor(index / chip_width);
                     const left = (x * CHIP_SIZE) / SOURCE_WIDTH * 100 + "%";
@@ -332,7 +335,7 @@
                     const height = CHIP_SIZE / SOURCE_HEIGHT * (100 - ABSOLUTE_ERROR) + "%";
                     return { index, left, top, width, height, x, y };
                 });
-                self.$data.source_panel.chips = chips;
+                self.$data.source_panel.chipframes = chipframes;
 
                 // set current view
                 self.$data.chips_panel.view = VIEWS[0];
@@ -373,7 +376,7 @@
             methods:{
                 // General
                 saveData(){
-                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(self.$data.chips));
+                    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(this.chips));
                 },
                 // Source panel
                 getFilenameFromPath(path){
@@ -382,8 +385,12 @@
                 addSourceIndex(delta){
                     const sources = this.$data.sources;
                     const index = this.$data.source_panel.index;
-                    if(sources[index + delta] !== undefined){
-                        this.$data.source_panel.index += delta;
+                    this.setSourceIndex(index + delta);
+                },
+                setSourceIndex(index){
+                    const sources = this.$data.sources;
+                    if(sources[index] !== undefined){
+                        this.$data.source_panel.index = index;
                         this.$data.source_panel.path = sources[this.$data.source_panel.index];
                     }
                 },
@@ -413,7 +420,7 @@
                     return find;
                 },
                 selectChipFrameInformation(func){
-                    return this.source_panel.chips.filter(c => {
+                    return this.source_panel.chipframes.filter(c => {
                         return func(c);
                     });
                 },
@@ -460,13 +467,19 @@
                         out: null,//{x, y}
                     };
                     this.chips[view].unshift(parts);
-                    //TODO: save
+                    this.saveData();
                     this.setCurrentChip(parts);
                     this.refreshSourceImageForAnimation();
                 },
                 setCurrentChip(chip){
-                    this.chips_panel.current_chip = (this.chips_panel.current_chip == chip) ? null : chip;
-                    this.$forceUpdate();
+                    if(this.chips_panel.current_chip == chip){
+                        this.chips_panel.current_chip = null;
+                    }else{
+                        this.chips_panel.current_chip = chip;
+                        const source_index = this.sources.indexOf(chip.src);
+                        this.setSourceIndex(source_index);
+                        this.$forceUpdate();
+                    }
                 },
                 getChipSprite(chip, showsize=CHIP_SHOW_SIZE){
                     const p1 = chip.rect.p1;
@@ -531,6 +544,7 @@
                         chip_p1.indexes = cf_select_rect.map(cf => cf.index);
                         chip_p1.rect.p2 = { index: chip_p2_index, x: p2x, y: p2y };
                         this.refreshSourceImageForAnimation();
+                        this.saveData();
                     }
 
                 },
@@ -543,6 +557,7 @@
                         if(confirm(message)){
                             chips.splice(index, 1);
                             this.chips_panel.current_chip = null;
+                            this.saveData();
                         }
                     }
                  },
@@ -552,6 +567,7 @@
                     const new_attr = prompt(message, default_value);
                     if(new_attr !== null){
                         chip.attr = new_attr;
+                        this.saveData();
                     }
                  },
                  getDestinationChipPositionStyle(chip){
@@ -601,7 +617,8 @@
                         x: Math.floor(cursor.x / size),
                         y: Math.floor(cursor.y / size),
                     };
-                 },
+                    this.saveData();
+                },
 
             }
         }).mount('#app');
