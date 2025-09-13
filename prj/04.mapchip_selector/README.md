@@ -179,8 +179,8 @@ convert -size "${WIDTH}x${HEIGHT}" xc:none "${CANVASFILE}"
 | 幅×高さ | 高さと幅の最大値が指定され、アスペクト比が維持されます。 |
 
 ```sh
-# crop ex: -crop '100x200'
-convert "${SRCFILE}" -crop "${WIDTH}x${HEIGHT}" +repage "${CHIPFILE}"
+# crop ex: -crop '100x200+20+40'
+convert "${SRCFILE}" -crop "${WIDTH}x${HEIGHT}+${X}+${Y}" +repage "${CHIPFILE}"
 ```
 
 
@@ -191,7 +191,7 @@ convert "${SRCFILE}" -crop "${WIDTH}x${HEIGHT}" +repage "${CHIPFILE}"
 - [Command-line Tools: Composite | ImageMagick](https://imagemagick.org/script/composite.php)
 
 ```sh
-composite -geometry +"${X}"+"${y}" "${CHIPFILE}" "${CANVASFILE}" "${OUTPUTFILE}"
+composite -geometry +"${X}"+"${Y}" "${CHIPFILE}" "${CANVASFILE}" "${OUTPUTFILE}"
 ```
 ※複数の`${CHIPFILE}`を`${CANVASFILE}`に重ねたい場合は、`${OUTPUTFILE}`に`${CANVASFILE}`を指定して上書きする。
 

@@ -289,13 +289,18 @@
             <div class="modal-background"></div>
                 <div class="modal-content">
                     <div class="box">
-                        <div class="field">
+                        <div class="field is-pulled-right">
                             <p class="control">
-                                <input class="input" placeholder="Output filename" />
+                                <button class="button" @click="copyToClipboard">📔 Copy</button>
+                            </p>
+                        </div>
+                        <div class="field is-clearfix">
+                            <p class="help">
+                                Run the code in bash console ( with ImageMagick! )
                             </p>
                         </div>
                         <div class="field">
-                            <pre><code v-text="getCommandDrawMyMapchip()"></code></pre>
+                            <pre><code id="command">{{ chips_panel.command_text }}</code></pre>
                         </div>
                     </div>
                 </div>
@@ -319,6 +324,7 @@
         const CHIP_SHOW_SIZE = 32;
         const VIEWS = ["sideview", "topview"];
         const BG_CLASSES = ["bgtile", "bgwhite", "bgblack", "bgred", "bggreen", "bgblue"];
+        const CANVAS_FILE = "./mapchip.png";
 
         import { createApp } from 'vue';
 
@@ -372,6 +378,7 @@
                     SOURCE_WIDTH, SOURCE_HEIGHT, 
                     CHIP_SIZE, CHIP_SHOW_SIZE,
                     BG_CLASSES,
+                    CANVAS_FILE,
                     // from file
                     sources: [/* filepath, ... */],//[filepath, ...]
                     // from local storage
@@ -395,6 +402,7 @@
                         view: "",// topview or sideview
                         current_chip: null,
                         show_modal: false,
+                        command_text: "",
                     },
                 };
             },
@@ -646,6 +654,7 @@
                 },
                 showCommandModal(){
                     console.log("showCommandModal");
+                    this.chips_panel.command_text = this.getCommandDrawMyMapchip();
                     this.chips_panel.show_modal = true;
                     this.$forceUpdate();
                 },
@@ -655,7 +664,40 @@
                     this.$forceUpdate();
                 },
                 getCommandDrawMyMapchip(){
-                    return "# Run in bash console with ImageMagick."
+                    const view = this.chips_panel.view;
+                    const chips = this.chips[view]?.filter(c=>!!c.out);
+                    if(!chips || chips.length <= 0){
+                        return "no chip, no command.";
+                    }
+                    
+                    const maxX = Math.max(...chips.map(c=>c.out.x));
+                    const maxY = Math.max(...chips.map(c=>c.out.y));
+                    const canvas_width = (maxX + 1) * CHIP_SIZE;//FIXME: multi size chip
+                    const canvas_height = (maxY + 1) * CHIP_SIZE;//FIXME: multi size chip
+                    const lines = [];
+                    lines.push(`convert -size "${canvas_width}x${canvas_height}" xc:none "${CANVAS_FILE}" \n`);
+                    lines.push(...chips.map(chip => {
+                        //convert "${SRCFILE}" -crop "${WIDTH}x${HEIGHT}+${X}+${Y}" +repage "${CHIPFILE}"
+                        const source = chip.path;
+                        const strip = source.replace(/[\.\/]+/g, "_");
+                        const p1 = chip.rect.p1;
+                        const p2 = chip.rect.p2;
+                        const width = (p2.x - p1.x + 1) * CHIP_SIZE;
+                        const height = (p2.y - p1.y + 1) * CHIP_SIZE;
+                        const cx = p1.x * CHIP_SIZE - 1;
+                        const cy = p1.y * CHIP_SIZE - 1;
+                        const geometory = `${width}x${height}+${cx}+${cy}`;
+                        const out = chip.out;
+                        const ox = out.x * CHIP_SIZE;
+                        const oy = out.y * CHIP_SIZE;
+                        const tmpfile = `/tmp/${strip}_${geometory}.png`;
+                        return `convert "${source}" -crop "${geometory}" +repage "${tmpfile}" \n`
+                            + `composite -geometry "+${ox}+${oy}" "${tmpfile}" "${CANVAS_FILE}" "${CANVAS_FILE}" \n`;
+                    }));
+                    return lines.join("\n");
+                },
+                copyToClipboard(){
+                    navigator.clipboard.writeText(this.chips_panel.command_text);
                 },
 
             }
