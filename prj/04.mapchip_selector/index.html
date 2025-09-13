@@ -228,10 +228,17 @@
                             ({{ chips_panel.current_chip.out.x }}, {{ chips_panel.current_chip.out.y }})
                         </code>
                         <code v-else>not set</code>
-
                     </div>
                     <div v-else class="notification">
                         no chip
+                    </div>
+
+                    <div v-if="chips[chips_panel.view]?.some(c=>!!c.out)" class="field">
+                        <p class="control">
+                            <button class="button is-primary" @click="showCommandModal">
+                                📜 Command
+                            </button>
+                        </p>
                     </div>                    
 
                 </div>
@@ -277,6 +284,23 @@
                 </div>
             </footer>
         </div> -->
+
+        <div class="modal" :class="chips_panel.show_modal ? 'is-active' : ''"><!-- is-active -->
+            <div class="modal-background"></div>
+                <div class="modal-content">
+                    <div class="box">
+                        <div class="field">
+                            <p class="control">
+                                <input class="input" placeholder="Output filename" />
+                            </p>
+                        </div>
+                        <div class="field">
+                            <pre><code v-text="getCommandDrawMyMapchip()"></code></pre>
+                        </div>
+                    </div>
+                </div>
+            <button class="modal-close is-large" aria-label="close" @click="hideCommandModal"></button>
+        </div>
 
 
     </div>    
@@ -370,6 +394,7 @@
                     chips_panel: {
                         view: "",// topview or sideview
                         current_chip: null,
+                        show_modal: false,
                     },
                 };
             },
@@ -618,6 +643,19 @@
                         y: Math.floor(cursor.y / size),
                     };
                     this.saveData();
+                },
+                showCommandModal(){
+                    console.log("showCommandModal");
+                    this.chips_panel.show_modal = true;
+                    this.$forceUpdate();
+                },
+                hideCommandModal(){
+                    console.log("hideCommandModal");
+                    this.chips_panel.show_modal = false;
+                    this.$forceUpdate();
+                },
+                getCommandDrawMyMapchip(){
+                    return "# Run in bash console with ImageMagick."
                 },
 
             }
