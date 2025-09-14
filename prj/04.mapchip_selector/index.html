@@ -289,18 +289,18 @@
             <div class="modal-background"></div>
                 <div class="modal-content">
                     <div class="box">
-                        <div class="field is-pulled-right">
-                            <p class="control">
-                                <button class="button" @click="copyToClipboard">📔 Copy</button>
-                            </p>
-                        </div>
-                        <div class="field is-clearfix">
+                        <div class="field">
                             <p class="help">
                                 Run the code in bash console ( with ImageMagick! )
                             </p>
                         </div>
                         <div class="field">
                             <pre><code id="command">{{ chips_panel.command_text }}</code></pre>
+                        </div>
+                        <div class="field">
+                            <p class="control">
+                                <button class="button" @click="copyToClipboard">📔 Copy</button>
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -670,8 +670,8 @@
                         return "no chip, no command.";
                     }
                     
-                    const maxX = Math.max(...chips.map(c=>c.out.x));
-                    const maxY = Math.max(...chips.map(c=>c.out.y));
+                    const maxX = Math.max(...chips.map(c=>c.out.x + (c.rect.p2.x - c.rect.p1.x)));
+                    const maxY = Math.max(...chips.map(c=>c.out.y + (c.rect.p2.y - c.rect.p1.y)));
                     const canvas_width = (maxX + 1) * CHIP_SIZE;//FIXME: multi size chip
                     const canvas_height = (maxY + 1) * CHIP_SIZE;//FIXME: multi size chip
                     const lines = [];
