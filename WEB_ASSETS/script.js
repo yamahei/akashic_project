@@ -41,7 +41,7 @@
         const $cardContainer = document.getElementById("card_container");
 
         const keys = Object.keys(data);
-        keys.sort();
+        keys.sort().reverse();
         keys.forEach(key  => {
             const $card = $$cardTemplate.content.cloneNode(true);
             const $linkContainer = $card.querySelector(".card_link_continer");
