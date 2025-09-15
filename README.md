@@ -102,9 +102,11 @@ ln -s ../assets assets
 ln -s ../lib lib
 cat tsconfig.json | jq '.include |= .+["lib/**/*.ts"]' > .jqtmp && mv .jqtmp tsconfig.json
 cat package.json | jq '.scripts |= .+ {"debug":"npm run build && npm run start"}' > .jqtmp && mv .jqtmp package.json
-akashic scan asset
+# akashic scan asset
+npm run build
 ```
 自動生成されるサンプルプログラムの`main`設定が変な気がするけど、毎回ではなさそう…？
+→毎回ダメかも。。
 ```
 - 	"main": "./script/main.js",
 + 	"main": "./script/src/main.js",

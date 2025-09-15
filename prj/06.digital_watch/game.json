@@ -2,7 +2,7 @@
 	"width": 320,
 	"height": 512,
 	"fps": 30,
-	"main": "./script/main.js",
+	"main": "./script/src/main.js",
 	"assets": {
 		"player": {
 			"type": "image",
@@ -27,11 +27,6 @@
 					".ogg"
 				]
 			}
-		},
-		"main": {
-			"type": "script",
-			"path": "script/main.js",
-			"global": true
 		},
 		"assets/image/char/char_a-01-0_1.png": {
 			"type": "image",
@@ -4740,6 +4735,31 @@
 		"assets/image/font/glyph_area_20.json": {
 			"type": "text",
 			"path": "assets/image/font/glyph_area_20.json"
+		},
+		"CharEntity": {
+			"type": "script",
+			"path": "script/lib/CharEntity.js",
+			"global": true
+		},
+		"CharFactory": {
+			"type": "script",
+			"path": "script/lib/CharFactory.js",
+			"global": true
+		},
+		"ObjectEntity": {
+			"type": "script",
+			"path": "script/lib/ObjectEntity.js",
+			"global": true
+		},
+		"ObjectFactory": {
+			"type": "script",
+			"path": "script/lib/ObjectFactory.js",
+			"global": true
+		},
+		"main": {
+			"type": "script",
+			"path": "script/src/main.js",
+			"global": true
 		}
 	},
 	"environment": {
