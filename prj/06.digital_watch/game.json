@@ -4492,30 +4492,6 @@
 			"width": 72,
 			"height": 128
 		},
-		"assets/image/font/font16_1.png": {
-			"type": "image",
-			"path": "assets/image/font/font16_1.png",
-			"width": 256,
-			"height": 96
-		},
-		"assets/image/font/font16_2.png": {
-			"type": "image",
-			"path": "assets/image/font/font16_2.png",
-			"width": 256,
-			"height": 96
-		},
-		"assets/image/font/font20_1.png": {
-			"type": "image",
-			"path": "assets/image/font/font20_1.png",
-			"width": 320,
-			"height": 120
-		},
-		"assets/image/font/font20_2.png": {
-			"type": "image",
-			"path": "assets/image/font/font20_2.png",
-			"width": 320,
-			"height": 120
-		},
 		"assets/image/map/castle01_a.png": {
 			"type": "image",
 			"path": "assets/image/map/castle01_a.png",
@@ -4724,18 +4700,6 @@
 			"type": "text",
 			"path": "assets/data/char_sprite_settings.json"
 		},
-		"assets/image/font/README.txt": {
-			"type": "text",
-			"path": "assets/image/font/README.txt"
-		},
-		"assets/image/font/glyph_area_16.json": {
-			"type": "text",
-			"path": "assets/image/font/glyph_area_16.json"
-		},
-		"assets/image/font/glyph_area_20.json": {
-			"type": "text",
-			"path": "assets/image/font/glyph_area_20.json"
-		},
 		"CharEntity": {
 			"type": "script",
 			"path": "script/lib/CharEntity.js",
@@ -4760,6 +4724,52 @@
 			"type": "script",
 			"path": "script/src/main.js",
 			"global": true
+		},
+		"assets/font/dseg14.classic.mini.bold.italic.size24.bitmapfont.png": {
+			"type": "image",
+			"path": "assets/font/dseg14.classic.mini.bold.italic.size24.bitmapfont.png",
+			"width": 256,
+			"height": 236
+		},
+		"assets/font/font16_1.png": {
+			"type": "image",
+			"path": "assets/font/font16_1.png",
+			"width": 256,
+			"height": 96
+		},
+		"assets/font/font16_2.png": {
+			"type": "image",
+			"path": "assets/font/font16_2.png",
+			"width": 256,
+			"height": 96
+		},
+		"assets/font/font20_1.png": {
+			"type": "image",
+			"path": "assets/font/font20_1.png",
+			"width": 320,
+			"height": 120
+		},
+		"assets/font/font20_2.png": {
+			"type": "image",
+			"path": "assets/font/font20_2.png",
+			"width": 320,
+			"height": 120
+		},
+		"assets/font/README.txt": {
+			"type": "text",
+			"path": "assets/font/README.txt"
+		},
+		"assets/font/dseg14.classic.mini.bold.italic.size24.bitmapfont_glyphs.json": {
+			"type": "text",
+			"path": "assets/font/dseg14.classic.mini.bold.italic.size24.bitmapfont_glyphs.json"
+		},
+		"assets/font/glyph_area_16.json": {
+			"type": "text",
+			"path": "assets/font/glyph_area_16.json"
+		},
+		"assets/font/glyph_area_20.json": {
+			"type": "text",
+			"path": "assets/font/glyph_area_20.json"
 		}
 	},
 	"environment": {
