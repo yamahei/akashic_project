@@ -5,7 +5,7 @@
 ----
 
 `/ORIGINAL_ASSETS/map`配下の画像は、FirstSeedMaterialで配布されていた、RPGツクール想定のマップチップ各種。
-自作ゲームで利用するには規模が大きすぎるので、横スクロールゲーム向けに選定して、1枚画像を作成したい。
+自作ゲームで利用するには規模が大きすぎるので、自分ゲーム向けに選定して、1枚画像を作成したい。
 このプロジェクトでは、そのためのツールを作成する。
 
 操作方法
@@ -13,9 +13,10 @@
 
 ### 下準備：元画像のパスをjson化する
 
-※シンボリックリンクはGitHub Actionsで削除されるので、実態をコピーして使う
+※シンボリックリンクはGitHub Actionsで削除されてしまい、GitHub Pages上で参照できないので、実態をコピーして使う
 
 ```sh
+rm -f -r -d ./CP_ASSETS_MAPS
 cp -rp ./assets/image/map ./CP_ASSETS_MAPS
 ls -1 ./CP_ASSETS_MAPS/* | jq -R . | jq -s . > original_mapchips.json
 ```
@@ -197,4 +198,12 @@ composite -geometry +"${X}"+"${Y}" "${CHIPFILE}" "${CANVASFILE}" "${OUTPUTFILE}"
 
 </details>
 
+#### 操作方法
+
+1. `📜Command`ボタン押下でコマンドダイアログを表示する。
+1. ダイアログ内の`📔Copy`ボタンでコマンドをクリップボードにコピーする
+1. プロジェクトの階層（`prj/04.mapchip_selector`）でコマンド実行（ペースト）
+   - ※ImageMagicが必要
+1. `mapchip.png`が作成される
+   - ※`prj/assets/image/map`へのコピーは自分でやる
 
