@@ -46,7 +46,7 @@ COLOR=FF0000
 FONT=sourceFont.ttf
 OUTPUT=bitmap.png
 # Generate
-bmpfont-generator --chars '${CHARS}' --height ${HEIGHT} --fill '${COLOR}' ${FONT} ${OUTPUT}
+bmpfont-generator --chars ${CHARS} --height ${HEIGHT} --fill ${COLOR} ${FONT} ${OUTPUT}
 ```
 
 ### デジタル時計風のフォント
