@@ -684,8 +684,8 @@
                         const p2 = chip.rect.p2;
                         const width = (p2.x - p1.x + 1) * CHIP_SIZE;
                         const height = (p2.y - p1.y + 1) * CHIP_SIZE;
-                        const cx = p1.x * CHIP_SIZE - 1;
-                        const cy = p1.y * CHIP_SIZE - 1;
+                        const cx = p1.x * CHIP_SIZE;
+                        const cy = p1.y * CHIP_SIZE;
                         const geometory = `${width}x${height}+${cx}+${cy}`;
                         const out = chip.out;
                         const ox = out.x * CHIP_SIZE;
