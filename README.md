@@ -91,6 +91,8 @@ npm install markdown-to-html-cli -g
 PRJ_NAME=PRJ_NAME
 mkdir prj/${PRJ_NAME}
 cd prj/${PRJ_NAME}
+echo ${PRJ_NAME} > README.md
+echo "====" >> README.md
 akashic init -t typescript
 # prompt: width:  (1280) 320 / 256
 # prompt: height:  (720) 512 / 400
