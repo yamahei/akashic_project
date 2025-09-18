@@ -51,6 +51,8 @@ bmpfont-generator --chars ${CHARS} --height ${HEIGHT} --fill ${COLOR} ${FONT} ${
 
 ### デジタル時計風のフォント
 
+<details>
+<summary>没フォント</summary>
 - [7セグ・14セグフォント 「DSEG」](https://www.keshikan.net/fonts.html)
 
 サポートしてる文字かつ特殊文字じゃないものをBitmapFont化する
@@ -69,16 +71,25 @@ const xpath = "//table[@class='center']//tr/td[2]";
 ./fonts-DSEG_v046/DSEG14-Classic-MINI/DSEG14ClassicMini-BoldItalic.ttf
 ```
 
+</details>
+
+
+- [DS-Digital](https://www.dafont.com/ds-digital.font)
+
+
+
+
 ### 生成コマンドの記録
 
 ```sh
-CHARS='"$%&'\''()*+,-./0123456789:<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ\\^_`abcdefghijklmnopqrstuvwxyz|~\\¦'
+CHARS='"$%&'\''*+-=.,/\#@_<>()[]{}:;|\?!`~^0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 HEIGHT=24
-COLOR=040504
-FONT=./fonts-DSEG_v046/DSEG14-Classic-MINI/DSEG14ClassicMini-BoldItalic.ttf
-OUTPUT=dseg14.classic.mini.bold.italic.size24.bitmapfont.png
+COLOR='#040504'
+#FONT=./fonts-DSEG_v046/DSEG14-Classic-MINI/DSEG14ClassicMini-BoldItalic.ttf
+FONT=./fonts-ds_digital/DS-DIGIB.TTF
+OUTPUT=ds_digital.bold.size24.bitmapfont.png
 # Generate
-bmpfont-generator --chars ${CHARS} --height ${HEIGHT} --fill ${COLOR} ${FONT} ${OUTPUT}
+bmpfont-generator -c "${CHARS}" -H ${HEIGHT} -F ${COLOR} ${FONT} ${OUTPUT}
 ```
 
 
