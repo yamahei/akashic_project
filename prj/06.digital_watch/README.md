@@ -84,12 +84,14 @@ const xpath = "//table[@class='center']//tr/td[2]";
 ```sh
 CHARS='"$%&'\''*+-=.,/\#@_<>()[]{}:;|\?!`~^0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 HEIGHT=24
-COLOR='#040504'
-#FONT=./fonts-DSEG_v046/DSEG14-Classic-MINI/DSEG14ClassicMini-BoldItalic.ttf
 FONT=./fonts-ds_digital/DS-DIGIB.TTF
-OUTPUT=ds_digital.bold.size24.bitmapfont.png
+COLOR1='#040504'
+OUTPUT1=ds_digital.bold.size24.black.bitmapfont.png
+COLOR2='#E00504'
+OUTPUT2=ds_digital.bold.size24.red.bitmapfont.png
 # Generate
-bmpfont-generator -c "${CHARS}" -H ${HEIGHT} -F ${COLOR} ${FONT} ${OUTPUT}
+bmpfont-generator -c "${CHARS}" -H ${HEIGHT} -F ${COLOR1} ${FONT} ${OUTPUT1}
+bmpfont-generator -c "${CHARS}" -H ${HEIGHT} -F ${COLOR2} ${FONT} ${OUTPUT2}
 ```
 
 
