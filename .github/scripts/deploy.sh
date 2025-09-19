@@ -41,7 +41,7 @@ proc_in_prj () {
         local OUTDIR=${ROOTDIR}/${PUBLISHDIR_REL}/$(basename ${PJDIR_REL})
         
         npm install
-        # npm run build # publish.shにはbuildコマンドがなかったので削除
+        npm run build
         akashic export html --magnify --output "${OUTDIR}" --force
         
         jq --arg key "${PJDIR_REL}" --arg value "${PUBLISHDIR_REL}/$(basename ${PJDIR_REL})/index.html" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"

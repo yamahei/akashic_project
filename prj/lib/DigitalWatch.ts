@@ -2,9 +2,18 @@
 
 const FORMAT = "$HH:$MM.$SS";
 
-class DigitalWatch extends g.E {
+export type DigitalWatchParameter = {
+    fontSize?: number;
+    foreFont: string;
+    foreGlyph: string;
+    backFont?: string;
+    backGlyph?: string;
+    format?: string;
+    countdownStepMinute?: number;
+    countdownSecond?:number;
+}
 
-    private format:string;
+export class DigitalWatch extends g.E {
 
     private foreFontAsset?:g.ImageAsset;
     private foreFontGlyphAsset?:any
@@ -14,18 +23,29 @@ class DigitalWatch extends g.E {
     private foreFontLabel?:g.Label;
     private backFontLabel?:g.Label;
 
-    constructor(param: g.EParameterObject, fontSize=24, foreFont: string, foreGlyph: string, backFont: string=null, backGlyph: string=null, format: string=FORMAT) {
+    private format:string;
+    private countdownStepMinute:number;
+    private countdownSecond:number;
+
+    constructor(param: g.EParameterObject, DWParam: DigitalWatchParameter) {
         super(param);
+
+        const fontSize = DWParam.fontSize ?? 24;
+        const foreFont = DWParam.foreFont;
+        const foreGlyph = DWParam.foreGlyph;
+        const backFont = DWParam.backFont ?? foreFont;
+        const backGlyph = DWParam.backGlyph ?? foreGlyph;
+        const format = DWParam.format ?? FORMAT;
+        const countdownStepMinute = DWParam.countdownStepMinute ?? 30;
+        const countdownSecond = DWParam.countdownSecond ?? 10;
+
         this.format = format;
+        this.countdownStepMinute = countdownStepMinute;
+        this.countdownSecond = countdownSecond;
         this.foreFontAsset = param.scene.asset.getImage(foreFont);
         this.foreFontGlyphAsset = param.scene.asset.getJSONContent(foreGlyph);
-        if(backFont && backGlyph){
-            this.backFontAsset = param.scene.asset.getImage(backFont);
-            this.backFontGlyphAsset = param.scene.asset.getJSONContent(backGlyph);
-        }else{
-            this.backFontAsset = this.foreFontAsset;
-            this.backFontGlyphAsset = this.backFontGlyphAsset;
-        }
+        this.backFontAsset = param.scene.asset.getImage(backFont);
+        this.backFontGlyphAsset = param.scene.asset.getJSONContent(backGlyph);
 
         const foreFontBF = new g.BitmapFont({
             src: this.foreFontAsset, glyphInfo: this.foreFontGlyphAsset
@@ -34,12 +54,12 @@ class DigitalWatch extends g.E {
             src: this.backFontAsset, glyphInfo: this.backFontGlyphAsset
         });
 
-        this.foreFontLabel = new g.Label({
+        const foreFontLabel = this.foreFontLabel = new g.Label({
             scene: param.scene, text: FORMAT,
             fontSize: fontSize, font: foreFontBF,
             x: 0, y: 0,
         });
-        this.backFontLabel = new g.Label({
+        const backFontLabel = this.backFontLabel = new g.Label({
             scene: param.scene, text: FORMAT,
             fontSize: fontSize, font: backFontBF,
             x: 0, y: 0,
@@ -48,10 +68,10 @@ class DigitalWatch extends g.E {
         this.foreFontLabel.hide();
         this.backFontLabel.hide();
 
-        param.scene.append(this.backFontLabel);
-        param.scene.append(this.foreFontLabel);
+        param.scene.append(backFontLabel);
+        param.scene.append(foreFontLabel);
 
-        this.onUpdate.add(this.tick);
+        this.onUpdate.add(() => { this.tick(); });
     }
 
     private tick(){
@@ -59,15 +79,17 @@ class DigitalWatch extends g.E {
         const minutes = now.getMinutes();
         const seconds = now.getSeconds();
         const millisec = now.getMilliseconds();
-        const countdownMinutes = [29, 59];
-        const countdownSeconds = 5;
+        const countdownStepMinute = this.countdownStepMinute;
+        const countdownSecond = this.countdownSecond;
+
 
         let foreLabelOpacity = 1;
-        if(countdownMinutes.indexOf(minutes) <= 0){
-            if((60-countdownSeconds) >= seconds){
-                foreLabelOpacity = millisec;
+        if((minutes + 1) % countdownStepMinute == 0){
+            if((60 - countdownSecond) <= seconds){
+                foreLabelOpacity = millisec / 1000;
             }
         }
+        console.log({foreLabelOpacity, minutes, seconds});
 
         const dates = this.getDates(now);
         const timeText = this.getTimeText(dates);
@@ -75,11 +97,13 @@ class DigitalWatch extends g.E {
         this.foreFontLabel.text = timeText;
         this.foreFontLabel.opacity = foreLabelOpacity;
         this.foreFontLabel.show();
-        this.foreFontLabel.modified();
+        // this.foreFontLabel.modified();
+        this.foreFontLabel.invalidate();
         this.backFontLabel.text = timeText;
-        this.backFontLabel.opacity = 1;
+        this.backFontLabel.opacity = 1 - foreLabelOpacity;
         this.backFontLabel.show();
-        this.backFontLabel.modified();
+        // this.backFontLabel.modified();
+        this.backFontLabel.invalidate();
     }
     private getDates(now: Date):{ [key: string]: string } {
         return {
