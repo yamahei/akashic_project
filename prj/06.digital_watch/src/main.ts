@@ -1,8 +1,17 @@
+import { DigitalWatch } from "../lib/DigitalWatch";
+
+
 function main(param: g.GameMainParameterObject): void {
 	const scene = new g.Scene({
 		game: g.game,
 		// このシーンで利用するアセットのIDを列挙し、シーンに通知します
-		assetIds: ["player", "shot", "se"]
+		assetIds: ["player", "shot", "se"],
+		assetPaths: [
+			"/assets/font/digital-7.monoitalic.size24.black.bitmapfont.png",
+			"/assets/font/digital-7.monoitalic.size24.black.bitmapfont_glyphs.json",
+			"/assets/font/digital-7.monoitalic.size24.red.bitmapfont.png",
+			"/assets/font/digital-7.monoitalic.size24.red.bitmapfont_glyphs.json",
+		],
 	});
 	scene.onLoad.add(() => {
 		// ここからゲーム内容を記述します
@@ -61,6 +70,26 @@ function main(param: g.GameMainParameterObject): void {
 		});
 		scene.append(player);
 		// ここまでゲーム内容を記述します
+
+		const watch = new DigitalWatch(
+			{scene: scene},
+			{
+				foreFont: "/assets/font/digital-7.monoitalic.size24.black.bitmapfont.png",
+				foreGlyph: "/assets/font/digital-7.monoitalic.size24.black.bitmapfont_glyphs.json",
+				backFont: "/assets/font/digital-7.monoitalic.size24.red.bitmapfont.png",
+				backGlyph: "/assets/font/digital-7.monoitalic.size24.red.bitmapfont_glyphs.json",
+				countdownStepMinute: 5,
+				countdownSecond: 10,
+			}
+		);
+		scene.append(watch);
+
+
+
+
+
+		
+
 	});
 	g.game.pushScene(scene);
 }
