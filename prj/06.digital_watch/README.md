@@ -27,6 +27,8 @@ sudo apt install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev li
 ```
 
 インストール後に再実行したらうまく行った。
+</details>
+
 
 - [DS-Digital](https://www.dafont.com/ds-digital.font): 没
 - [7セグ・14セグフォント 「DSEG」](https://www.keshikan.net/fonts.html): 没
