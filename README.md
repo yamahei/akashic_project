@@ -99,13 +99,14 @@ npm install markdown-to-html-cli -g
 PRJ_NAME=PRJ_NAME
 mkdir prj/${PRJ_NAME}
 cd prj/${PRJ_NAME}
-echo ${PRJ_NAME} > README.md
-echo "====" >> README.md
+echo ${PRJ_NAME} > README.md # Akashic Engine使う場合は作らない！
+echo "====" >> README.md # 同上！
 akashic init -t typescript
 # prompt: width:  (1280) 320 / 256
 # prompt: height:  (720) 512 / 400
 # prompt: fps:  (30) 
 npm install # VSCode用型定義参照
+# npm audit fix --force
 ln -s ../assets assets
 ln -s ../lib lib
 cat tsconfig.json | jq '.include |= .+["lib/**/*.ts"]' > .jqtmp && mv .jqtmp tsconfig.json
