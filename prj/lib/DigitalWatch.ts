@@ -128,6 +128,7 @@ export class DigitalWatch extends g.E {
         this.backFontLabel.opacity = (foreLabelOpacity == 1 ? 0 : 1);
         this.backFontLabel.invalidate();
 
+        //E自身に大きさがないと、クリックや衝突が起きない
         this.width = Math.max(this.foreFontLabel.width, this.backFontLabel.width);
         this.height = Math.max(this.foreFontLabel.height, this.backFontLabel.height);
         this.modified();
