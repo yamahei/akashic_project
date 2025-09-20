@@ -71,29 +71,34 @@ export class DigitalWatch extends g.E {
         this.backFontAsset = scene.asset.getImage(backFont);
         this.backFontGlyphAsset = scene.asset.getJSONContent(backGlyph);
 
+        const hasForeGlyphMap = !!this.foreFontGlyphAsset?.map;
         const foreFontBF = new g.BitmapFont({
-            src: this.foreFontAsset, glyphInfo: this.foreFontGlyphAsset
+            src: this.foreFontAsset, 
+            glyphInfo: hasForeGlyphMap ? this.foreFontGlyphAsset : undefined,
+            map: hasForeGlyphMap ? undefined : this.foreFontGlyphAsset,
+            defaultGlyphWidth: fontSize, defaultGlyphHeight: fontSize
         });
+        const hasBackGlyphMap = !!this.backFontGlyphAsset?.map;
         const backFontBF = new g.BitmapFont({
-            src: this.backFontAsset, glyphInfo: this.backFontGlyphAsset
+            src: this.backFontAsset,
+            glyphInfo: hasBackGlyphMap ? this.backFontGlyphAsset : undefined,
+            map: hasBackGlyphMap ? undefined : this.backFontGlyphAsset,
+            defaultGlyphWidth: fontSize, defaultGlyphHeight: fontSize
         });
 
         const foreFontLabel = this.foreFontLabel = new g.Label({
-            scene: scene, text: FORMAT,
+            scene: scene, text: "",//FORMAT,
             fontSize: fontSize, font: foreFontBF,
             x: 0, y: 0,
         });
         const backFontLabel = this.backFontLabel = new g.Label({
-            scene: scene, text: FORMAT,
+            scene: scene, text: "",//FORMAT,
             fontSize: fontSize, font: backFontBF,
             x: 0, y: 0,
         });
 
-        this.foreFontLabel.hide();
-        this.backFontLabel.hide();
-
-        scene.append(backFontLabel);//backを先に
-        scene.append(foreFontLabel);
+        this.append(backFontLabel);//backを先に
+        this.append(foreFontLabel);
 
         this.onUpdate.add(() => { this.tick(); });
     }
@@ -118,14 +123,14 @@ export class DigitalWatch extends g.E {
 
         this.foreFontLabel.text = timeText;
         this.foreFontLabel.opacity = foreLabelOpacity;
-        this.foreFontLabel.show();
-        // this.foreFontLabel.modified();
         this.foreFontLabel.invalidate();
         this.backFontLabel.text = timeText;
-        this.backFontLabel.opacity = 1 - foreLabelOpacity;
-        this.backFontLabel.show();
-        // this.backFontLabel.modified();
+        this.backFontLabel.opacity = (foreLabelOpacity == 1 ? 0 : 1);
         this.backFontLabel.invalidate();
+
+        this.width = Math.max(this.foreFontLabel.width, this.backFontLabel.width);
+        this.height = Math.max(this.foreFontLabel.height, this.backFontLabel.height);
+        this.modified();
     }
     private getDates(now: Date):{ [key: string]: string } {
         return {

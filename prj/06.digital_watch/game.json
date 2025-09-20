@@ -4785,6 +4785,12 @@
 		"assets/font/digital-7.monoitalic.size48.red.bitmapfont_glyphs.json": {
 			"type": "text",
 			"path": "assets/font/digital-7.monoitalic.size48.red.bitmapfont_glyphs.json"
+		},
+		"assets/font/font16_3.png": {
+			"type": "image",
+			"path": "assets/font/font16_3.png",
+			"width": 256,
+			"height": 96
 		}
 	},
 	"environment": {

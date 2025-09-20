@@ -7,6 +7,11 @@ function main(param: g.GameMainParameterObject): void {
 		// このシーンで利用するアセットのIDを列挙し、シーンに通知します
 		assetIds: ["player", "shot", "se"],
 		assetPaths: [
+            //official font
+			"/assets/font/font16_1.png",
+			"/assets/font/font16_3.png",
+			"/assets/font/glyph_area_16.json",
+            //original font
 			"/assets/font/digital-7.monoitalic.size48.black.bitmapfont.png",
 			"/assets/font/digital-7.monoitalic.size48.black.bitmapfont_glyphs.json",
 			"/assets/font/digital-7.monoitalic.size48.red.bitmapfont.png",
@@ -71,23 +76,43 @@ function main(param: g.GameMainParameterObject): void {
 		scene.append(player);
 		// ここまでゲーム内容を記述します
 
-		const param:DigitalWatchParameter = {
+		const paramOrg:DigitalWatchParameter = {
 			EParam: {scene: scene},
+            //original font
 			foreFont: "/assets/font/digital-7.monoitalic.size48.black.bitmapfont.png",
 			foreGlyph: "/assets/font/digital-7.monoitalic.size48.black.bitmapfont_glyphs.json",
 			backFont: "/assets/font/digital-7.monoitalic.size48.red.bitmapfont.png",
 			backGlyph: "/assets/font/digital-7.monoitalic.size48.red.bitmapfont_glyphs.json",
+			fontSize: 48,
 			countdownStepMinute: 5,
 			countdownSecond: 10,
 		}
-		const watch = new DigitalWatch(param);
-		scene.append(watch);
+		const watchOrg = new DigitalWatch(paramOrg);
+		scene.append(watchOrg);
 
-
-
-
-
-		
+		const paramOfficial:DigitalWatchParameter = {
+			EParam: {scene: scene, touchable: true, x: 30, y: 100},
+            //official font
+			foreFont: "/assets/font/font16_1.png",
+			foreGlyph: "/assets/font/glyph_area_16.json",
+			backFont: "/assets/font/font16_3.png",
+			backGlyph: "/assets/font/glyph_area_16.json",
+			fontSize: 16,
+			countdownStepMinute: 5,
+			countdownSecond: 10,
+		}
+		const watchOfficial = new DigitalWatch(paramOfficial);
+		scene.append(watchOfficial);
+		let dragging = false;
+		watchOfficial.onPointDown.add(function () { dragging = true; });
+		watchOfficial.onPointUp.add(function () { dragging = false; });
+		watchOfficial.onPointMove.add(function (e) {
+			if (dragging) {
+				watchOfficial.x += e.prevDelta.x;
+				watchOfficial.y += e.prevDelta.y;
+				watchOfficial.modified();
+			}
+		});
 
 	});
 	g.game.pushScene(scene);

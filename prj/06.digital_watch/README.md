@@ -47,6 +47,7 @@ const param:DigitalWatchParameter = {
     foreGlyph: "/assets/font/digital-7.monoitalic.size48.black.bitmapfont_glyphs.json",
     backFont: "/assets/font/digital-7.monoitalic.size48.red.bitmapfont.png",
     backGlyph: "/assets/font/digital-7.monoitalic.size48.red.bitmapfont_glyphs.json",
+    fontSize: 48,
     countdownStepMinute: 5,
     countdownSecond: 10,
 }
