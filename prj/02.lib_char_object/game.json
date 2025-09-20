@@ -4718,6 +4718,11 @@
 			"type": "script",
 			"path": "script/lib/ObjectFactory.js",
 			"global": true
+		},
+		"DigitalWatch": {
+			"type": "script",
+			"path": "script/lib/DigitalWatch.js",
+			"global": true
 		}
 	},
 	"environment": {
