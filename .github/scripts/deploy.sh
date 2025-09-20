@@ -48,7 +48,7 @@ proc_in_prj () {
     fi
 
     # png画像があれば情報を記録 (コピーは不要)
-    IMGFILE=$(ls -1 *.png | head -n 1 || true)
+    IMGFILE=$(ls -1 *.png | shuf | head -n 1 || true)
     if [ -f "${IMGFILE}" ]; then
         jq --arg key "${PJDIR_REL}" --arg value "${PJDIR_REL}${IMGFILE}" '.[$key] += [$value]' < "${PROJECTINFO}" > "${PROJECTINFO}.tmp" && mv "${PROJECTINFO}.tmp" "${PROJECTINFO}"
     fi

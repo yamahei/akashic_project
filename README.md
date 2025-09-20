@@ -10,10 +10,12 @@ GitHub Pages
 ----
 
 - [Akashic Engine](https://akashic-games.github.io/)を使ってゲームを作る
-- いくつかの目的を同時に進めるため、ちょっと特殊な構成にする
+- いくつかの目的を同時に進めるため、`prj`配下に複数のプロジェクトを作る
   - エンジンへの習熟を兼ねたサンプルの作成
   - 手持ちのアセットを使うためのライブラリの開発
   - 設計・製造のためのツール開発
+  - AIによる開発支援
+  - ゲーム（目標）
 - Github上で公開するためのコマンドラインツールも併せて開発する
 
 構成
@@ -21,19 +23,22 @@ GitHub Pages
 
 ```sh
 .
-├── bin              # 各種のコマンドラインツール群
+├── .github          # GitHubワークフロー、チケットテンプレートなど
 │   └── ...
-├── prj              # プロジェクトルート
-│   ├── assets       # アセット格納用ディレクトリ
-│   ├── lib          # 自作ライブラリ格納用ディレクトリ
-│   ├── projectA     # プロジェクトルート（A）
-│   ├── projectB     # プロジェクトルート（B）
+├── bin/             # 各種のコマンドラインツール群
 │   └── ...
-├── publish          # 生成したゲーム公開用
+├── prj/             # プロジェクトルート
+│   ├── assets/      # アセット格納用ディレクトリ
+│   ├── lib/         # 自作ライブラリ格納用ディレクトリ
+│   ├── projectA/    # プロジェクトルート（A）
+│   ├── projectB/    # プロジェクトルート（B）
+│   └── ...
+├── publish/         # 生成したゲーム公開用
 │   └── ...
 ├── GEMINI.md        # Geminiへの基本指示
 ├── README.md        # このファイル
-├── WEB_ASSETS       # GitHub Pages用CSSとかスクリプト
+├── ORIGINAL_ASSETS/ # 拾ったフリー素材（未加工）置き場
+├── WEB_ASSETS/      # GitHub Pages用CSSとかスクリプト
 └── index.html       # Github公開トップページ
 ```
 
@@ -76,7 +81,10 @@ npm install markdown-to-html-cli -g
 
 「プロジェクト」とは主にAkashic Engineを使ったプロジェクトを指す。
 （その他ツール等の非Akashicプロジェクトもあり得る）
-プロジェクトは直下に`README.md`を置くこと。
+
+- プロジェクトは直下に`README.md`を置くこと。
+- ゲーム（Akashic Engine使用プログラム）でない場合は直下に`index.html`を置くこと。
+- プロジェクト直下の`png`ファイルが公開サイトの画像として使われる（複数ある場合はランダム）
 
 <details>
 <summary>プロジェクト共通の情報・ルール</summary>
@@ -138,22 +146,42 @@ akashic export html --magnify --output "${OUTDIR}" --force
 ### プロジェクト
 
 #### 00.hello-akashic
+
 `akashic init -t typescript`で生成されるサンプルプログラム。
 参考用に残している。
 
 #### 01.collision_editor
+
 キャラチップの当たり判定領域作成ツール。非Akashic。
 キャラチップ設定データ`char_sprite_settings.json`を作成する。
 （`prj/assets/data/`に配置する）
 
 #### 02.lib_char_object
 
-`01.collision_editor`の`char_sprite_settings.json`を読み込んで、いい感じにキャラクタスプライトを制御するためのオブジェクトを開発する
+`01.collision_editor`の`char_sprite_settings.json`を読み込んで、いい感じにキャラクタスプライトを制御するためのオブジェクトを開発する。
 
 #### 03.lib_object_object
 
-オブジェクトスプライト制御クラスの開発と動作確認
+オブジェクトスプライト制御クラスの開発と動作確認。
+`02.lib_char_object`に似てるけど、こっちの方が簡素。
 
+#### 04.mapchip_selector
+
+マップチップ素材を自分ゲーム用にピックアップして1枚のマップチップ画像を作成するツール。
+
+#### 05.flexbox_css
+
+フレックスボックスレイアウトを提供するだけのCSSライブラリ。
+`attr()`が過渡期でブラウザのサポート状況がまちまちのため、イマイチ使えない。
+
+#### 06.digital_watch
+
+アナログじゃない時計を表示するクラス。
+カウントダウン機能付き。
+
+#### 07.message_box
+
+ゲームのセリフとかを表示するクラス。
 
 その他
 ------
@@ -162,6 +190,7 @@ akashic export html --magnify --output "${OUTDIR}" --force
 
 - キャラクタ制御クラスとサンプル（`prj/02.lib_char_object/README.md`）
 - オブジェクト制御クラスとサンプル（`prj/03.lib_object_object/README.md`）
+- 時計表示クラスとサンプル（`prj/06.digital_watch/README.md`）
 
 ### コマンドラインツール(`/bin`)
 
@@ -226,17 +255,25 @@ git周り？で変な落ち方することがあるので、成功しない場�
 Webサイト（GitHub Pages）
 -------------------------
 
-### Beer CSSを使ってみる
+### 概要
 
-シンプルで良さそう
-→シンプルで良いのは間違いないが、、余白多めなので、カッチリしたレイアウトのツール的な画面には向かない
+- このリポジトリ内の全プロジェクトの説明とサンプルが動くWebサイト
+- `gh-pages`ブランチを公開（GitHub Actionsで`main`リポジトリから生成）
 
-- [公式サイト](https://www.beercss.com/)
-- [GitHub](https://github.com/beercss/beercss)
+### 内部の作り
+
+- 雛形のhtml（`index.html`）とJS（`WEB_ASSETS/script.js`）で基本の見栄えと挙動を制御する
+  - CSSは`Beer CSS`（ [公式サイト](https://www.beercss.com/)）
+    →シンプルで良いのは間違いないが、、余白多めなので、カッチリしたレイアウトのツール的な画面には向かない
+
+  - FEFWは`Vue.js`（ [公式サイト](https://ja.vuejs.org/)）
+- デプロイスクリプトが各プロジェクト内を走査して作成する`prj-info.json`を読み込んでコンテンツを動的に生成する
 
 ### デプロイ
 
-- [publish.sh](#publishsh)参照 `TODO:` GitHub Action化したい
+- ~~[publish.sh](#publishsh)参照~~
+- GitHub Action化した
+  - 中で何やってるかは`.github/scripts/deploy.sh`を参照
 
 保守
 ----
