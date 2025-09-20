@@ -4766,25 +4766,25 @@
 			"path": "script/lib/DigitalWatch.js",
 			"global": true
 		},
-		"assets/font/digital-7.monoitalic.size24.black.bitmapfont.png": {
+		"assets/font/digital-7.monoitalic.size48.black.bitmapfont.png": {
 			"type": "image",
-			"path": "assets/font/digital-7.monoitalic.size24.black.bitmapfont.png",
-			"width": 256,
-			"height": 156
+			"path": "assets/font/digital-7.monoitalic.size48.black.bitmapfont.png",
+			"width": 512,
+			"height": 252
 		},
-		"assets/font/digital-7.monoitalic.size24.red.bitmapfont.png": {
+		"assets/font/digital-7.monoitalic.size48.red.bitmapfont.png": {
 			"type": "image",
-			"path": "assets/font/digital-7.monoitalic.size24.red.bitmapfont.png",
-			"width": 256,
-			"height": 156
+			"path": "assets/font/digital-7.monoitalic.size48.red.bitmapfont.png",
+			"width": 512,
+			"height": 252
 		},
-		"assets/font/digital-7.monoitalic.size24.black.bitmapfont_glyphs.json": {
+		"assets/font/digital-7.monoitalic.size48.black.bitmapfont_glyphs.json": {
 			"type": "text",
-			"path": "assets/font/digital-7.monoitalic.size24.black.bitmapfont_glyphs.json"
+			"path": "assets/font/digital-7.monoitalic.size48.black.bitmapfont_glyphs.json"
 		},
-		"assets/font/digital-7.monoitalic.size24.red.bitmapfont_glyphs.json": {
+		"assets/font/digital-7.monoitalic.size48.red.bitmapfont_glyphs.json": {
 			"type": "text",
-			"path": "assets/font/digital-7.monoitalic.size24.red.bitmapfont_glyphs.json"
+			"path": "assets/font/digital-7.monoitalic.size48.red.bitmapfont_glyphs.json"
 		}
 	},
 	"environment": {

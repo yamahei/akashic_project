@@ -1,4 +1,4 @@
-import { DigitalWatch } from "../lib/DigitalWatch";
+import { DigitalWatch, DigitalWatchParameter } from "../lib/DigitalWatch";
 
 
 function main(param: g.GameMainParameterObject): void {
@@ -7,10 +7,10 @@ function main(param: g.GameMainParameterObject): void {
 		// このシーンで利用するアセットのIDを列挙し、シーンに通知します
 		assetIds: ["player", "shot", "se"],
 		assetPaths: [
-			"/assets/font/digital-7.monoitalic.size24.black.bitmapfont.png",
-			"/assets/font/digital-7.monoitalic.size24.black.bitmapfont_glyphs.json",
-			"/assets/font/digital-7.monoitalic.size24.red.bitmapfont.png",
-			"/assets/font/digital-7.monoitalic.size24.red.bitmapfont_glyphs.json",
+			"/assets/font/digital-7.monoitalic.size48.black.bitmapfont.png",
+			"/assets/font/digital-7.monoitalic.size48.black.bitmapfont_glyphs.json",
+			"/assets/font/digital-7.monoitalic.size48.red.bitmapfont.png",
+			"/assets/font/digital-7.monoitalic.size48.red.bitmapfont_glyphs.json",
 		],
 	});
 	scene.onLoad.add(() => {
@@ -71,17 +71,16 @@ function main(param: g.GameMainParameterObject): void {
 		scene.append(player);
 		// ここまでゲーム内容を記述します
 
-		const watch = new DigitalWatch(
-			{scene: scene},
-			{
-				foreFont: "/assets/font/digital-7.monoitalic.size24.black.bitmapfont.png",
-				foreGlyph: "/assets/font/digital-7.monoitalic.size24.black.bitmapfont_glyphs.json",
-				backFont: "/assets/font/digital-7.monoitalic.size24.red.bitmapfont.png",
-				backGlyph: "/assets/font/digital-7.monoitalic.size24.red.bitmapfont_glyphs.json",
-				countdownStepMinute: 5,
-				countdownSecond: 10,
-			}
-		);
+		const param:DigitalWatchParameter = {
+			EParam: {scene: scene},
+			foreFont: "/assets/font/digital-7.monoitalic.size48.black.bitmapfont.png",
+			foreGlyph: "/assets/font/digital-7.monoitalic.size48.black.bitmapfont_glyphs.json",
+			backFont: "/assets/font/digital-7.monoitalic.size48.red.bitmapfont.png",
+			backGlyph: "/assets/font/digital-7.monoitalic.size48.red.bitmapfont_glyphs.json",
+			countdownStepMinute: 5,
+			countdownSecond: 10,
+		}
+		const watch = new DigitalWatch(param);
 		scene.append(watch);
 
 
