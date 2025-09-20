@@ -1,87 +1,109 @@
-# typescript-game-sample
+メッセージボックス（改行、送り機能付き）クラス
+==============================================
 
-**typescript-game-sample**はTypeScriptでAkashicのゲームを作る際のサンプルプロジェクトです。
+概要
+----
 
-## 利用方法
+ゲームで使うメッセージボックスのクラスを作る
 
- `typescript-game-sample` を利用するにはNode.jsが必要です。
+- ありがちな機能は押さえたい
+  - 外枠あり
+  - 長い文字は自動で改行
+  - 枠いっぱいになったら停止（クリックで進める）
+- フォントは選択可能にしたい
+- [akashic-label](https://github.com/akashic-games/akashic-label)を使う
 
-初回のみ、以下のコマンドを実行して、ビルドに必要なパッケージをインストールしてください。
-この作業は `typescript-game-sample` を新しく生成するごとに必要です。
+事前の準備
+----------
 
-```sh
-npm install
-```
-
-### ビルド方法
-
-`typescript-game-sample` はTypeScriptで書かれているため、以下のコマンドでJavaScriptファイルに変換する必要があります。
-
-```sh
-npm run build
-```
-
-`src` ディレクトリ以下のTypeScriptファイルがコンパイルされ、`script` ディレクトリ以下にJavaScriptファイルが生成されます。
-
-`npm run build` は自動的に `akashic scan asset script` を実行するので、`game.json` の更新が行われます。
-
-### 動作確認方法
-
-以下のどちらかを実行後、ブラウザで `http://localhost:3000/game/` にアクセスすることでゲームを実行できます。
-
-* `npm start`
-* `npm install -g @akashic/akashic-cli` 後、 `akashic sandbox .`
-
-また、マルチプレイゲームの動作確認は `akashic-cli-serve` を利用します。以下のどちらかを実行後、ブラウザで `http://localhost:3300` にアクセスすることでゲームを実行できます。
-
-* `npm run start:multi`
-* `npm install -g @akashic/akashic-cli` 後、 `akashic serve .`
-
-### テンプレートの使い方
-
-* `src/main.ts` を編集することでゲームの作成が可能です。
-  * スプライトの表示、音を鳴らす、タッチイベント定義等が、最初からこのテンプレートで行われています。
-
-### アセットの更新方法
-
-各種アセットを追加したい場合は、それぞれのアセットファイルを以下のディレクトリに格納します。
-
-* 画像アセット: `image`
-* スクリプトアセット: `script`
-* テキストアセット: `text`
-* オーディオアセット: `audio`
-
-これらのアセットを追加・変更したあとに `npm run update` をすると、アセットの変更内容をもとに `game.json` を書き換えることができます。
-
-### npm モジュールの追加・削除
-
-`typescript-game-sample` でnpmモジュールを利用する場合、このディレクトリで `akashic install <package_name>` することで npm モジュールを追加することができます。
-
-また `akashic uninstall <package_name>` すると npm モジュールを削除することができます。
-
-## エクスポート方法
-
-`typescript-game-sample` をエクスポートするときは以下のコマンドを利用します。
-
-### htmlファイルのエクスポート
-
-`npm run export-html` のコマンドを利用することで `game` ディレクトリにエクスポートすることができます。
-
-`game/index.html` をブラウザで開くと単体動作させることができます。
-
-### zipファイルのエクスポート
-
-`npm run export-zip` のコマンドを利用することで `game.zip` という名前のzipファイルを出力できます。
-
-## テスト方法
-
-1. [TSLint](https://github.com/palantir/tslint "TSLint")を使ったLint
-2. [Jest](https://jestjs.io/ "Jest")を使ったテスト
-
-がそれぞれ実行されます。
+### akashic-label のインストール
 
 ```sh
-npm test
+akashic install @akashic-extension/akashic-label
 ```
 
-テストコードのサンプルとして `spec/testSpec.js` を用意していますので参考にしてテストコードを記述して下さい。
+### 良さげなフォント
+
+- [自家製ドットフォントシリーズ](http://jikasei.me/font/jf-dotfont/)
+  - JFドットM+10（`JF-Dot-MPlus10.ttf`）
+
+![](./jfdotfont-sample-mplus.png)
+
+> JFドットM+10 … JIS X 0208：1990 対応、等幅 (太字あり)
+
+`JIS X 0208：1990`は「JIS第1第2水準漢字」とほぼ同義（「[JIS X 0208 | Wikipedia](https://ja.wikipedia.org/wiki/JIS_X_0208)」）
+
+### 外部フォントをAkashic Engineで使う方法
+
+- [ニコ生ゲーにフォントを埋め込んでお洒落にする](https://isobe-yaki.hateblo.jp/entry/2023/05/15/024253)
+
+#### ① `game.json`にフォントファイルを追加する
+```json
+{
+  //前略
+	"assets": {
+    //前略
+		"JF-Dot-MPlus10.ttf": {//追加
+			"type": "text",
+			"path": "assets/font/jfdotfont/JF-Dot-MPlus10.ttf",
+			"global": true
+		}
+    //後略
+	},
+  //後略
+}
+```
+
+#### ② FontFaceを登録する
+
+Akashic Engine外のブラウザ世界にアクセスする（※）ために、`dom`を追加しないとエラーが出ちゃうので、`tsconfig.json`を編集する。
+※`document`,`fetch`あたりのこと。
+
+```json
+//前略
+"lib": [
+  "es5",
+  "dom"//これを追加
+],
+//後略
+```
+
+登録コードはこんな感じ。
+なぜか`document.fonts.add`がTSエラーになるので`@ts-ignore`で抑止する。
+
+```ts
+const assetConfig = g.game._assetManager.configuration;
+const fontPath = assetConfig["JF-Dot-MPlus10.ttf"].path;
+const fontFaceName = "MyFavoriteFont";
+
+await fetch(fontPath)
+.then(b => b.blob())
+.then(blob => blob.arrayBuffer())
+.then(buf => {
+    new FontFace(fontFaceName, buf)
+    .load()
+    .then(font => {
+        const faceSet:FontFaceSet = document.fonts;
+        // fonts.addはあるのにエラーが出るので無視する
+        // https://developer.mozilla.org/ja/docs/Web/API/FontFaceSet/add
+        // @ts-ignore
+        faceSet.add(font);
+    });
+});        
+```
+
+FontFaceが登録できたら後はいつもの通り。
+`注意`
+- Promiseの完了を待たないと適用されない！
+- `fontFaceName`に変な記号が入るとエラーなく適用されない
+  - `JFM+10`はダメだった
+```ts
+const font = new g.DynamicFont({
+  game: g.game, fontFamily: fontFaceName, size: 10
+});
+const label = new g.Label({
+  scene: scene, font: font, fontSize: 10, textColor: "blue",
+  text: `コレが俺の[${fontFaceName}]だっ！`,
+});
+scene.append(label);
+```

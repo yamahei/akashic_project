@@ -1,3 +1,8 @@
+import { MessageBox } from "../lib/MessageBox";
+
+const FONTFACE_NAME = "JFMPlus10";
+
+
 function main(param: g.GameMainParameterObject): void {
 	const scene = new g.Scene({
 		game: g.game,
@@ -61,6 +66,21 @@ function main(param: g.GameMainParameterObject): void {
 		});
 		scene.append(player);
 		// ここまでゲーム内容を記述します
+
+		//自分フォントの登録と確認
+		const assetConfig = g.game._assetManager.configuration;
+		const fontPath = assetConfig["JF-Dot-MPlus10.ttf"].path;
+		MessageBox.appendNewFontFace(fontPath, FONTFACE_NAME).then(()=>{
+			const font = new g.DynamicFont({
+				game: g.game, fontFamily: FONTFACE_NAME, size: 10
+			});
+			const label = new g.Label({
+				scene: scene, font: font, fontSize: 10, textColor: "blue",
+				text: `コレが俺の[${FONTFACE_NAME}]だっ！`,
+			});
+			scene.append(label);
+		});
+
 	});
 	g.game.pushScene(scene);
 }
