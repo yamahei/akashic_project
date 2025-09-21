@@ -69,7 +69,8 @@ Akashic Engine外のブラウザ世界にアクセスする（※）ために、
 ```
 
 登録コードはこんな感じ。
-なぜか`document.fonts.add`がTSエラーになるので`@ts-ignore`で抑止する。
+- なぜか`document.fonts.add`がTSエラーになるので`@ts-ignore`で抑止する。
+- （自前で`fetch`するため）`scene`のコンストラクタ引数`assetPaths`には書かなくて良い。
 
 ```ts
 const assetConfig = g.game._assetManager.configuration;
