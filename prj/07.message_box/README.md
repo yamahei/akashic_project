@@ -73,10 +73,10 @@ Akashic Engine外のブラウザ世界にアクセスする（※）ために、
 //後略
 ```
 
-型定義も入れる必要あり
+型定義も入れる必要あり？
 
 ```sh
-npm install @types/node
+npm install -g @types/node
 ```
 
 登録コードはこんな感じ。
