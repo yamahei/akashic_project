@@ -13,6 +13,11 @@
 - フォントは選択可能にしたい
 - [akashic-label](https://github.com/akashic-games/akashic-label)を使う
 
+仕様/使い方
+-----------
+
+
+
 事前の準備
 ----------
 
@@ -66,6 +71,12 @@ Akashic Engine外のブラウザ世界にアクセスする（※）ために、
   "dom"//これを追加
 ],
 //後略
+```
+
+型定義も入れる必要あり
+
+```sh
+npm install @types/node
 ```
 
 登録コードはこんな感じ。
