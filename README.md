@@ -110,6 +110,7 @@ npm install # VSCode用型定義参照
 ln -s ../assets assets
 ln -s ../lib lib
 cat tsconfig.json | jq '.include |= .+["lib/**/*.ts"]' > .jqtmp && mv .jqtmp tsconfig.json
+cat tsconfig.json | jq '.compilerOptions.lib |= .+["dom"]' > .jqtmp && mv .jqtmp tsconfig.json # for refer document, fetch
 cat package.json | jq '.scripts |= .+ {"debug":"npm run build && npm run start"}' > .jqtmp && mv .jqtmp package.json
 # akashic scan asset
 npm run build
