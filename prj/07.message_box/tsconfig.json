@@ -3,7 +3,7 @@
     "target": "ES6",
     "lib": [
       "es5",
-      "dom"
+      "dom", "DOM"
     ],
     "noImplicitAny": true,
     "module": "commonjs",
