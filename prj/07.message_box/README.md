@@ -7,20 +7,84 @@
 ゲームで使うメッセージボックスのクラスを作る
 
 - ありがちな機能は押さえたい
-  - 外枠あり
-  - 長い文字は自動で改行
-  - 枠いっぱいになったら停止（クリックで進める）
-- フォントは選択可能にしたい
+  - 外枠あり☑
+  - 長い文字は自動で改行☑
+  - 枠いっぱいになったら停止（クリックで進める）☑
+- フォントは選択可能にしたい☑
 - [akashic-label](https://github.com/akashic-games/akashic-label)を使う
 
-仕様/使い方
------------
+### サンプルの起動方法
 
-### 独自フォントの登録（任意）
+```sh
+npm run debug # access to http://localhost:3000
+```
 
-- `MessageBox.appendNewFontFace`
+<dl>
+<dt style="color: red;">■</dt>
+<dd>複数段落で表示するサンプル</dd>
+<dt style="color: blue;">■</dt>
+<dd>1段落で全行表示するサンプル</dd>
+</dl>
 
-### 
+メッセージボックスクラス
+------------------------
+
+### 自分の好きなフォントを登録する
+
+```ts
+const assetConfig = g.game._assetManager.configuration;
+const fontPath = assetConfig["JF-Dot-MPlus10.ttf"].path;
+MessageBox.appendNewFontFace(fontPath, FONTFACE_NAME).then(()=>{
+  // 省略：登録したフォントの使用はこの中で
+});
+```
+
+### インスタンスの生成、`scene`への追加
+
+```ts
+const messageBox = new MessageBox({
+  EParam: {scene: scene, touchable: true},
+  fontFamily: FONTFACE_NAME,
+  fontSize: 10,
+});
+scene.append(messageBox);
+```
+
+### メッセージの表示
+
+```ts
+const message = [
+  "メッセージは文字列か配列",
+  "配列の1要素が1つの段落",
+  "\\nで改行"
+];
+messageBox.showMessage(message);
+```
+
+### メッセージを次に進める
+
+```ts
+messageBox.onPointUp.add(()=>{ messageBox.next(); });
+```
+
+- 1段落表示が終わると待ち状態になる
+  - メッセージ全体を表示終わっても待ち状態になる
+- `next`で次の段落に進む
+  - 全体表示終わってる状態なら`end`を呼ぶ
+  - 全体表示終わってる状態で`next`すると内部で`end`を呼ぶ
+
+### イベント
+
+```ts
+// 1段落表示が終わって待ち状態になった時に発生
+messageBox.OnWaitToNext.add(()=>{
+  console.log("OnWaitToNext");
+});
+// メッセージ全体を表示終わって待ち状態になった時に発生
+messageBox.OnWaitToEnd.add(()=>{
+  console.log("OnWaitToEnd");
+});
+```
 
 
 事前の準備
@@ -31,7 +95,7 @@
 ```sh
 akashic install @akashic-extension/akashic-label
 ```
-※全てのAkashicプロジェクトで必要なので手順に追加する
+※全てのAkashicプロジェクトで必要なので手順に追加する☑
 
 ### 良さげなフォント
 

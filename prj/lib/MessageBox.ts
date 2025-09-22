@@ -2,23 +2,29 @@
 
 import { Label } from "@akashic-extension/akashic-label";
 
+export type MessageBoxText = MessageBoxSingleText | MessageBoxMultilineText;
 export type MessageBoxSingleText = string;
 export type MessageBoxMultilineText = Array<string>;
-export type MessageBoxText = MessageBoxSingleText | MessageBoxMultilineText;
 
+/**
+ * メッセージボックスクラスの生成パラメータ
+ */
 export type MessageBoxParam = {
-    EParam:g.EParameterObject;
+    EParam:g.EParameterObject;//g.E用のパラメータ
     fontFamily: string;
     fontSize: number;
     fontColor?: string;// default: 'white'
     backgroundColor?: string;// default: 'black'
+    lineGap?: number;// default: fontSize / 2
     //ATTENTION: 以下、外枠の幅を含むので、実際の表示エリアはもっと小さい
     width?: number;// default: game.width
     // minHeight?: number;// default: fontSize * 4
     // maxHeight?: number;// default: game.height
-    lineGap?: number;// default: fontSize / 2
 };
 
+/**
+ * メッセージボックスクラス
+ */
 export class MessageBox  extends g.E {
 
     //イベント
@@ -34,15 +40,26 @@ export class MessageBox  extends g.E {
     private boxLine:g.FilledRect;
     private boxFill:g.FilledRect;
     private messageLabel:Label;
+
     //表示メッセージ
     private paragraphList:string[] = [];
     private listIndex = 0;
     private charIndex = 0;
+
     //表示制御
     private fontSize:number;
     private showing:boolean = false;//showMessageで表示中
     private waiting:boolean = false;//表示途中（入力待ち）
 
+
+    /**
+     * [static] ブラウザに FontFaceを登録する
+     * - 凝ったフォントを使いたい時に使う
+     * - 呼び出し元からの`await MessageBox.appendNewFontFace(...)`が効いてない気がする
+     *   - `then(...)`で受けて初期化が終わってることを確認してから使う
+     * @param {string} fontPath : game.jsonに登録したフォントのパス
+     * @param {string} fontFaceName : 登録したいフォント名
+     */
     public static async appendNewFontFace(fontPath: string, fontFaceName: string):Promise<void>{
 
         await fetch(fontPath)
@@ -61,6 +78,10 @@ export class MessageBox  extends g.E {
         });        
     }
 
+    /**
+     * コンストラクタ
+     * @param {MessageBoxParam} param 
+     */
     constructor(param:MessageBoxParam){
         super(param.EParam);
 
@@ -173,6 +194,10 @@ export class MessageBox  extends g.E {
         }
     }
 
+    /**
+     * メッセージを表示する
+     * @param {MessageBoxText} message : 表示するメッセージ
+     */
     public showMessage(message:MessageBoxText){
         this.paragraphList = Array.isArray(message) ? message : [message];
         this.listIndex = 0;
@@ -187,11 +212,20 @@ export class MessageBox  extends g.E {
         this.modified();
     }
 
+    /**
+     * 段落終わりで停止しているメッセージを進める
+     * - 全体表示終わりで呼ばれると、`end`を呼ぶ
+     */
     public next(){
         this.waiting = false;
         this.charIndex = 0;
         this.listIndex += 1;
     }
+
+    /**
+     * 全体表示終わりで停止しているメッセージを終了する
+     * - メッセージボックス自体も非表示にする
+     */
     public end(){
         this.paragraphList = null;
         this.listIndex = 0;

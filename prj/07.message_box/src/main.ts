@@ -110,7 +110,7 @@ function main(param: g.GameMainParameterObject): void {
 			});
 			scene.append(rect2);
 			rect2.onPointDown.add((e)=>{
-				messageBox.showMessage(message.join("\n"));
+				messageBox.showMessage(message.join("\n\n"));
 			});
 
 		});
