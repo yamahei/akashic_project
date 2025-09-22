@@ -16,6 +16,11 @@
 仕様/使い方
 -----------
 
+### 独自フォントの登録（任意）
+
+- `MessageBox.appendNewFontFace`
+
+### 
 
 
 事前の準備
@@ -61,8 +66,9 @@ akashic install @akashic-extension/akashic-label
 
 #### ② FontFaceを登録する
 
-Akashic Engine外のブラウザ世界にアクセスする（※）ために、`dom`を追加しないとエラーが出ちゃうので、`tsconfig.json`を編集する。
-※`document`,`fetch`あたりのこと。
+Akashic Engine外のブラウザ世界にアクセスする（※1）ために、`dom`を追加しないとエラーが出ちゃうので、`tsconfig.json`を編集する（※2）。
+※1: `document`,`fetch`あたりのこと。
+※2: 今後のプロジェクト作成の手順に必要なので追加済み。
 
 ```json
 //前略
@@ -72,7 +78,6 @@ Akashic Engine外のブラウザ世界にアクセスする（※）ために、
 ],
 //後略
 ```
-
 
 登録コードはこんな感じ。
 - なぜか`document.fonts.add`がTSエラーになるので`@ts-ignore`で抑止する。
@@ -99,11 +104,8 @@ await fetch(fontPath)
 });        
 ```
 
-FontFaceが登録できたら後はいつもの通り。
-`注意`
-- Promiseの完了を待たないと適用されない！
-- `fontFaceName`に変な記号が入るとエラーなく適用されない
-  - `JFM+10`はダメだった
+#### ③ FontFaceが登録できたら後はいつもの通り
+
 ```ts
 const font = new g.DynamicFont({
   game: g.game, fontFamily: fontFaceName, size: 10
@@ -114,3 +116,8 @@ const label = new g.Label({
 });
 scene.append(label);
 ```
+
+`注意`
+- Promiseの完了を待たないと適用されない！
+- `fontFaceName`に変な記号が入るとエラーなく適用されない
+  - `JFM+10`はダメだった
