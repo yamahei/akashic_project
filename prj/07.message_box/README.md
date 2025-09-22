@@ -56,7 +56,7 @@ scene.append(messageBox);
 const message = [
   "メッセージは文字列か配列",
   "配列の1要素が1つの段落",
-  "\\nで改行"
+  "\nで改行"
 ];
 messageBox.showMessage(message);
 ```
