@@ -31,6 +31,7 @@
 ```sh
 akashic install @akashic-extension/akashic-label
 ```
+※全てのAkashicプロジェクトで必要なので手順に追加する
 
 ### 良さげなフォント
 

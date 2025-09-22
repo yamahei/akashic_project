@@ -4791,10 +4791,24 @@
 			"path": "assets/font/font16_3.png",
 			"width": 256,
 			"height": 96
+		},
+		"MessageBox": {
+			"type": "script",
+			"path": "script/lib/MessageBox.js",
+			"global": true
 		}
 	},
 	"environment": {
 		"sandbox-runtime": "3"
 	},
-	"globalScripts": []
+	"globalScripts": [
+		"node_modules/@akashic-extension/akashic-label/lib/DefaultRubyParser.js",
+		"node_modules/@akashic-extension/akashic-label/lib/FragmentDrawInfo.js",
+		"node_modules/@akashic-extension/akashic-label/lib/Label.js",
+		"node_modules/@akashic-extension/akashic-label/lib/RubyParser.js",
+		"node_modules/@akashic-extension/akashic-label/lib/index.js"
+	],
+	"moduleMainScripts": {
+		"@akashic-extension/akashic-label": "node_modules/@akashic-extension/akashic-label/lib/index.js"
+	}
 }

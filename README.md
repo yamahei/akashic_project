@@ -106,6 +106,7 @@ akashic init -t typescript
 # prompt: height:  (720) 512 / 400
 # prompt: fps:  (30) 
 npm install # VSCode用型定義参照
+akashic install @akashic-extension/akashic-label # for MessageBox
 # npm audit fix --force
 ln -s ../assets assets
 ln -s ../lib lib
