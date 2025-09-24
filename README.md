@@ -96,11 +96,12 @@ npm install markdown-to-html-cli -g
 リポジトリのルートディレクトリで以下のコマンドを実行する。
 （プロジェクト名は`${PRJ_NAME}`とする）
 ```sh
+# 共通
 PRJ_NAME=PRJ_NAME
 mkdir prj/${PRJ_NAME}
 cd prj/${PRJ_NAME}
-echo ${PRJ_NAME} > README.md # Akashic Engine使う場合は作らない！
-echo "====" >> README.md # 同上！
+# echo ${PRJ_NAME} > README.md # Akashic Engine使う場合は作らない！
+# echo "====" >> README.md # 同上！
 akashic init -t typescript
 # prompt: width:  (1280) 320 / 256
 # prompt: height:  (720) 512 / 400
