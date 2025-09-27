@@ -108,14 +108,14 @@ akashic init -t typescript
 # prompt: fps:  (30) 
 npm install # VSCode用型定義参照
 akashic install @akashic-extension/akashic-label # for MessageBox
-# npm audit fix --force
+# npm audit fix --force # 余計依存が出るので放置するのがよい
 ln -s ../assets assets
 ln -s ../lib lib
 cat tsconfig.json | jq '.include |= .+["lib/**/*.ts"]' > .jqtmp && mv .jqtmp tsconfig.json
 cat tsconfig.json | jq '.compilerOptions.lib |= .+["dom"]' > .jqtmp && mv .jqtmp tsconfig.json # for refer document, fetch
 cat package.json | jq '.scripts |= .+ {"debug":"npm run build && npm run start"}' > .jqtmp && mv .jqtmp package.json
-# akashic scan asset
-npm run build
+cat game.json | jq '.main |= "./script/src/main.js"' > .jqtmp && mv .jqtmp game.json
+npm run debug # scan & build & run
 ```
 自動生成されるサンプルプログラムの`main`設定が変な気がするけど、毎回ではなさそう…？
 →毎回ダメかも。。

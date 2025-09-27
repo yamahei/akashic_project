@@ -1,0 +1,80 @@
+{
+	"width": 256,
+	"height": 400,
+	"fps": 30,
+	"main": "./script/src/main.js",
+	"assets": {
+		"player": {
+			"type": "image",
+			"width": 32,
+			"height": 32,
+			"path": "image/player.png"
+		},
+		"shot": {
+			"type": "image",
+			"width": 16,
+			"height": 16,
+			"path": "image/shot.png"
+		},
+		"se": {
+			"type": "audio",
+			"path": "audio/se",
+			"systemId": "sound",
+			"duration": 250,
+			"hint": {
+				"extensions": [
+					".aac",
+					".ogg"
+				]
+			}
+		},
+		"CharEntity": {
+			"type": "script",
+			"path": "script/lib/CharEntity.js",
+			"global": true
+		},
+		"CharFactory": {
+			"type": "script",
+			"path": "script/lib/CharFactory.js",
+			"global": true
+		},
+		"DigitalWatch": {
+			"type": "script",
+			"path": "script/lib/DigitalWatch.js",
+			"global": true
+		},
+		"MessageBox": {
+			"type": "script",
+			"path": "script/lib/MessageBox.js",
+			"global": true
+		},
+		"ObjectEntity": {
+			"type": "script",
+			"path": "script/lib/ObjectEntity.js",
+			"global": true
+		},
+		"ObjectFactory": {
+			"type": "script",
+			"path": "script/lib/ObjectFactory.js",
+			"global": true
+		},
+		"main": {
+			"type": "script",
+			"path": "script/src/main.js",
+			"global": true
+		}
+	},
+	"environment": {
+		"sandbox-runtime": "3"
+	},
+	"globalScripts": [
+		"node_modules/@akashic-extension/akashic-label/lib/DefaultRubyParser.js",
+		"node_modules/@akashic-extension/akashic-label/lib/FragmentDrawInfo.js",
+		"node_modules/@akashic-extension/akashic-label/lib/Label.js",
+		"node_modules/@akashic-extension/akashic-label/lib/RubyParser.js",
+		"node_modules/@akashic-extension/akashic-label/lib/index.js"
+	],
+	"moduleMainScripts": {
+		"@akashic-extension/akashic-label": "node_modules/@akashic-extension/akashic-label/lib/index.js"
+	}
+}
