@@ -30,6 +30,16 @@ npm run debug # access to http://localhost:3000
 
 ### ゲームコントローラ
 
+エントリーポイント（`main`）の役割を明確にする。
+
+- データ管理
+  - レベル
+- シーン管理
+  - 各シーン生成
+  - イベント拾ってシーンを切り替える
+
+コレ以外は配下でやる。
+
 ```mermaid
 graph LR
   %% Elements
