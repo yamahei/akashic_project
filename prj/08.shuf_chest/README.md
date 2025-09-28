@@ -30,11 +30,52 @@ npm run debug # access to http://localhost:3000
 
 ### ゲームコントローラ
 
+```mermaid
+graph LR
+  %% Elements
+  start([Start])
+  title[Title Scene]
+  game[Game Scene]
+  bonus[Bonus Scene]
+  next{level % 5}
+  %% Relations
+  start --> title
+  title -- onStart --> game
+  game -- onClear --> next
+  game -- onMiss --> title
+  next -- (no) --> game
+  next -- (yes) --> bonus
+  bonus -- onNext --> game
+```
+
 ### シーン
 
-- タイトル
-- ゲーム
-- ボーナス
+#### タイトル
+
+- `onStart`
+  - ゲーム開始時に発生する
+  - ゲームシーンに差し替える（レベル=1）
+
+#### ゲーム
+
+- `onMiss`
+  - 不正解時に発生する
+    （GAME OVER表示とかも終わってから）
+  - タイトルシーンに差し替える
+- `onClear`
+  - 正解時に発生する
+    （CLEAR表示とかも終わってから）
+  - 遷移先判定：
+    - ゲームシーンに差し替える
+      （新規インスタンス、level+=1）
+    - ボーナスシーンに差し替える
+
+#### ボーナス
+
+- `onNext`
+  - ボーナス終わりに発生する
+  - ゲームシーンに差し替える
+    （新規インスタンス、level+=1）
 
 ### レイヤー（`E`とか）
 
