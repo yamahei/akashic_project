@@ -50,29 +50,29 @@ graph LR
   next{level % 5}
   %% Relations
   start --> title
-  title -- onStart --> game
-  game -- onClear --> next
-  game -- onMiss --> title
+  title -- onGameStart --> game
+  game -- onSuccessLevel --> next
+  game -- onFailedLevel --> title
   next -- (no) --> game
   next -- (yes) --> bonus
-  bonus -- onNext --> game
+  bonus -- onFinishBonus --> game
 ```
 
 ### シーン
 
 #### タイトル
 
-- `onStart`
+- `onGameStart`
   - ゲーム開始時に発生する
   - ゲームシーンに差し替える（レベル=1）
 
 #### ゲーム
 
-- `onMiss`
+- `onFailedLevel`
   - 不正解時に発生する
     （GAME OVER表示とかも終わってから）
   - タイトルシーンに差し替える
-- `onClear`
+- `onSuccessLevel`
   - 正解時に発生する
     （CLEAR表示とかも終わってから）
   - 遷移先判定：
@@ -82,7 +82,7 @@ graph LR
 
 #### ボーナス
 
-- `onNext`
+- `onFinishBonus`
   - ボーナス終わりに発生する
   - ゲームシーンに差し替える
     （新規インスタンス、level+=1）

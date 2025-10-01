@@ -62,6 +62,21 @@
 			"type": "script",
 			"path": "script/src/main.js",
 			"global": true
+		},
+		"BonusScene": {
+			"type": "script",
+			"path": "script/src/BonusScene.js",
+			"global": true
+		},
+		"GameScene": {
+			"type": "script",
+			"path": "script/src/GameScene.js",
+			"global": true
+		},
+		"TitleScene": {
+			"type": "script",
+			"path": "script/src/TitleScene.js",
+			"global": true
 		}
 	},
 	"environment": {
