@@ -1,3 +1,5 @@
+import { DigitalWatch, DigitalWatchParameter } from "../lib/DigitalWatch";
+import { FONT_ASSET_PATH, WATCH_PARAMS } from "./Consts";
 
 export class GameScene extends g.Scene {
 
@@ -6,21 +8,15 @@ export class GameScene extends g.Scene {
     get OnSuccessLevel(): g.Trigger<void>{ return this.onSuccessLevel; }
     private onFailedLevel: g.Trigger<void> = new g.Trigger<void>();
     get OnFailedLevel(): g.Trigger<void>{ return this.onFailedLevel; }
-    
-    constructor(param: g.SceneParameterObject) {
-        super(param);
-        const scene = this;
-
-        // scene.onLoad.add(() => {
-        //     this.refresh(1);
-        // });
-    }
 
     public refresh(level: number): void {
+
+        console.log(`GameScene: level=${level}`);
+
         const scene = this;
         this.children.forEach(c => c.destroy());
-        console.log(level);
 
+        //UI
         const rectSuccess = new g.FilledRect({
             scene: scene, touchable: true,
             cssColor: "red", width: 20, height: 20, x: 30, y: 50,
@@ -38,5 +34,23 @@ export class GameScene extends g.Scene {
         rectFailed.onPointDown.add((e)=>{
             this.onFailedLevel.fire();
         });
+
+        //watch
+        scene.append(this.createDigitalWatchE());
+
     }
+
+    private createDigitalWatchE():g.E{
+
+		const param:DigitalWatchParameter = {
+			EParam: {scene: this},
+            ...FONT_ASSET_PATH,
+			...WATCH_PARAMS,
+		}
+		const watch = new DigitalWatch(param);
+        const digitalWatchE = new g.E({ scene: this});
+        digitalWatchE.append(watch);
+        return digitalWatchE;
+    }
+
 }

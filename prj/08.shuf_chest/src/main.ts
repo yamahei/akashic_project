@@ -1,3 +1,4 @@
+import { FONT_ASSET_PATH } from "./Consts";
 import { TitleScene } from "./TitleScene";
 import { GameScene } from "./GameScene";
 import { BonusScene } from "./BonusScene";
@@ -6,73 +7,85 @@ const SCENESTATE_ACTIVE:g.SceneStateString = "active";
 
 function main(param: g.GameMainParameterObject): void {
 	const game = g.game;
-	let level = 1;
+	game.vars.level = 1;
 
 	const titleScene = createTitleScene();	
-	titleScene.OnGameStart.add(() => {
-		console.log("titleScene.OnGameStart");
-		level = 1;
-		const gameScene: GameScene = createGameScene(level);
-		g.game.pushScene(gameScene);
-	});
 	game.pushScene(titleScene);
 }
 
 function createTitleScene(): TitleScene {
-	const scene =  new TitleScene({
+	const titleScene =  new TitleScene({
 		game: g.game,
-		// assetIds: ["player", "shot", "se"]
+		assetPaths: [
+			...Object.values(FONT_ASSET_PATH),//要"es2017"
+		],
 	});
-	scene.onStateChange.add(() => {
-		console.log(`titleScene.onStateChange: state=${scene.state}`);
-		if (scene.state === SCENESTATE_ACTIVE) {
-			scene.refresh();
+	// titleScene.onLoad.add(() => {
+	// 	titleScene.refresh();
+	// });
+	titleScene.onStateChange.add(() => {
+		if (titleScene.state === SCENESTATE_ACTIVE) {
+			titleScene.refresh();
 		}
 	});
-	return scene;
+	titleScene.OnGameStart.add(() => {
+		g.game.vars.level = 1;
+		const gameScene: GameScene = createGameScene();
+		g.game.pushScene(gameScene);
+	});
+	return titleScene;
 }
 
-function createGameScene(level:number): GameScene {
-	const scene =  new GameScene({
+function createGameScene(): GameScene {
+	const gameScene =  new GameScene({
 		game: g.game,
-		// assetIds: ["player", "shot", "se"]
+		assetPaths: [
+			...Object.values(FONT_ASSET_PATH),//要"es2017"
+		],
 	});
-	scene.OnSuccessLevel.add(() => {
-		console.log("gameScene.OnSuccessLevel");
-		level += 1;
-		const nextIsBonus = ((level - 1) % 5 == 0);
+	// scene.onLoad.add(() => {
+	//     scene.refresh(1);
+	// });
+	gameScene.onStateChange.add(() => {
+		if (gameScene.state === SCENESTATE_ACTIVE) {
+			gameScene.refresh(g.game.vars.level);
+		}
+	});
+	gameScene.OnSuccessLevel.add(() => {
+		g.game.vars.level += 1;
+		const nextIsBonus = ((g.game.vars.level - 1) % 5 == 0);
 		if (nextIsBonus) {
-			console.log("game.replaceScene(bonusScene)");
 			const bonus: BonusScene = createBonusScene();
 			g.game.pushScene(bonus);
 		} else {
-			console.log(`gameScene.refresh(level=${level});`);
-			scene.refresh(level);
+			gameScene.refresh(g.game.vars.level);
 		}
 	});
-	scene.OnFailedLevel.add(() => {
-		console.log("gameScene.OnFailedLevel");
+	gameScene.OnFailedLevel.add(() => {
 		g.game.popScene();
 	});
-	scene.onStateChange.add(() => {
-		console.log(`gameScene.onStateChange: state=${scene.state}`);
-		if (scene.state === SCENESTATE_ACTIVE) {
-			scene.refresh(level);
-		}
-	});
-	return scene;
+	return gameScene;
 }
 
 function createBonusScene(): BonusScene {
-	const scene =  new BonusScene({
+	const bonusScene =  new BonusScene({
 		game: g.game,
-		// assetIds: ["player", "shot", "se"]
+		assetPaths: [
+			...Object.values(FONT_ASSET_PATH),//要"es2017"
+		],
 	});
-	scene.OnFinishBonus.add(() => {
-		console.log("bonusScene.OnFinishBonus");
+	// bonusScene.onLoad.add(() => {
+	// 	bonusScene.refresh();
+	// });
+	bonusScene.onStateChange.add(() => {
+		if (bonusScene.state === SCENESTATE_ACTIVE) {
+			bonusScene.refresh();
+		}
+	});
+	bonusScene.OnFinishBonus.add(() => {
 		g.game.popScene();
 	});
-	return scene;
+	return bonusScene;
 }
 
 export = main;
