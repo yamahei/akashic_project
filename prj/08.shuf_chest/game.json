@@ -5032,6 +5032,12 @@
 		"assets/font/glyph_area_20.json": {
 			"type": "text",
 			"path": "assets/font/glyph_area_20.json"
+		},
+		"image/Title_TreasureInChest.png": {
+			"type": "image",
+			"path": "image/Title_TreasureInChest.png",
+			"width": 178,
+			"height": 30
 		}
 	},
 	"environment": {

@@ -22,7 +22,6 @@ export const GET_FONT_OBJECT161 = (scene: g.Scene) =>{
         src: fontimage,
         glyphInfo: hasForeGlyphMap ? fontglyph : undefined,
         map: hasForeGlyphMap ? undefined : fontglyph,
-
     });
 };
 

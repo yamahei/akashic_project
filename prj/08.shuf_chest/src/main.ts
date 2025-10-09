@@ -16,6 +16,9 @@ function main(param: g.GameMainParameterObject): void {
 function createTitleScene(): TitleScene {
 	const titleScene =  new TitleScene({
 		game: g.game,
+		assetIds: [
+			"image/Title_TreasureInChest.png",
+		],
 		assetPaths: [
 			...Object.values(FONT_ASSET_PATH),//要"es2017"
 		],

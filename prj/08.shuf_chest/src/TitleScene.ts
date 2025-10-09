@@ -18,41 +18,26 @@ export class TitleScene extends g.Scene {
         const titleE = this.createTitleE();
         scene.append(titleE);
 
-        const rectStart = new g.FilledRect({
-            scene: scene, touchable: true,
-            cssColor: "cyan", width: 20, height: 20, x: 30, y: 30,
-        });
-        scene.append(rectStart);
-        rectStart.onPointDown.add((e)=>{
-            this.onGameStart.fire();
-        });
-
         //watch
         scene.append(scene.createDigitalWatchE());
     }
 
     private createTitleE():g.E{
         const scene = this;
-        const font = GET_FONT_OBJECT161(scene);
-        const titleLabel = new Label({
-            scene: scene, font: font,
-            text: "abc@123",//Treasure in Chest
-            width: g.game.width, textAlign: "center",
-            fontSize: 16, lineGap: 8, x: 0, y: 50,
-            // textColor: 'black',
-            // touchable: true,
+        const image = scene.asset.getImageById("image/Title_TreasureInChest.png");
+        const sprite = new g.Sprite({
+            scene: scene,
+            src: image,
+            touchable: true,
+            x: (g.game.width - image.width) / 2,
+            y: g.game.height / 2 - image.height,
         });
-        // const y = (g.game.height - titleLabel.height) / 2;
-        // titleLabel.y = y;
-        // titleLabel.modified();
-        // titleLabel.onPointDown.add((e)=>{
-        //     scene.onGameStart.fire();
-        // });
+        sprite.onPointDown.add((e)=>{
+            scene.onGameStart.fire();
+        });
 
         const titleE = new g.E({ scene: scene });
-        //TODO: not apperar .. why?
-        titleE.append(titleLabel);
-        //TODO: not apperar .. why?
+        titleE.append(sprite);
 
         return titleE;
     }
