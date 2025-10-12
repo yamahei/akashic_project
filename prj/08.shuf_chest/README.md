@@ -28,6 +28,21 @@ npm run debug # access to http://localhost:3000
 設計？構想？
 ------------
 
+### ロゴ
+
+#### タイトル
+
+- `Find me if you can`
+  - ![](./image/Title_FindMeIfYouCan.png)
+  - https://supalogo.com/CrimstoneRounded/Find-20s-me-20s-if-20s-you-20s-can/e000y/5/26/half_gradient/ffca38/ff5024/000000/000000/false/true/false/false/4/ffffff/50/0
+
+#### 選択時
+
+- `Which one?`
+- `Which is it?`
+- `Take your pick!`
+- `Guess which one?`
+
 ### ゲームコントローラ
 
 エントリーポイント（`main`）の役割を明確にする。

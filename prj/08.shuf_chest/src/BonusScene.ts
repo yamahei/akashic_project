@@ -8,9 +8,22 @@ export class BonusScene extends g.Scene {
     private onFinishBonus: g.Trigger<void> = new g.Trigger<void>();
     get OnFinishBonus(): g.Trigger<void>{ return this.onFinishBonus; }
 
+    private cleanup():void{
+        const scene = this;
+        while(scene.children.length > 0) {
+            // scene.children.forEachだと
+            // なぜか全部消えないので
+            // whileで（過剰に）頑張る
+            const c = scene.children.shift();
+            if(c) { c.y = scene.game.height + 100; }// 隠し
+            if(c) { c.hide(); }// 消し
+            if(c) { c.destroy(); }// 捨てる
+        }
+    }
+
     public refresh(): void {
         const scene = this;
-        this.children.forEach(c => c.destroy());
+        scene.cleanup();
 
         //UI
         const rectFinish = new g.FilledRect({

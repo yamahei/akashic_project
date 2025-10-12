@@ -10,9 +10,22 @@ export class TitleScene extends g.Scene {
     private onGameStart: g.Trigger<void> = new g.Trigger<void>();
     get OnGameStart(): g.Trigger<void>{ return this.onGameStart; }
     
+    private cleanup():void{
+        const scene = this;
+        while(scene.children.length > 0) {
+            // scene.children.forEachだと
+            // なぜか全部消えないので
+            // whileで（過剰に）頑張る
+            const c = scene.children.shift();
+            if(c) { c.y = scene.game.height + 100; }// 隠し
+            if(c) { c.hide(); }// 消し
+            if(c) { c.destroy(); }// 捨てる
+        }
+    }
+
     public refresh(): void {
         const scene = this;
-        this.children.forEach(c => c.destroy());
+        scene.cleanup();
 
         //UI
         const titleE = this.createTitleE();
@@ -24,7 +37,7 @@ export class TitleScene extends g.Scene {
 
     private createTitleE():g.E{
         const scene = this;
-        const image = scene.asset.getImageById("image/Title_TreasureInChest.png");
+        const image = scene.asset.getImageById("image/Title_FindMeIfYouCan.png");
         const sprite = new g.Sprite({
             scene: scene,
             src: image,

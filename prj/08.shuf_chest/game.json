@@ -5038,6 +5038,12 @@
 			"path": "image/Title_TreasureInChest.png",
 			"width": 178,
 			"height": 30
+		},
+		"image/Title_FindMeIfYouCan.png": {
+			"type": "image",
+			"path": "image/Title_FindMeIfYouCan.png",
+			"width": 222,
+			"height": 34
 		}
 	},
 	"environment": {
