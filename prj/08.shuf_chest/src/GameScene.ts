@@ -101,46 +101,32 @@ export class GameScene extends g.Scene {
          * game
          */
     	game.vars.game = { selectable: false };
-        const gameController = (result:string):Promise<string>=>{
-            return new Promise<string>((resolve, reject) => {
-                console.log(result);
-                scene.setTimeout(() => {
-                    resolve("gameController");
-                },1000);
-            });
-        };
-        const appear = (result:string):Promise<string>=>{
-            return new Promise<string>((resolve, reject) => {
-                console.log(result);
-                scene.setTimeout(() => {
-                    resolve("appear");
-                },1000);
-            });
-        };
-        const shuffle = (result:string):Promise<string>=>{
-            return new Promise<string>((resolve, reject) => {
-                console.log(result);
-                scene.setTimeout(() => {
-                    resolve("shuffle");
-                },1000);
-            });
-        };
-        const guess = (result:string):Promise<string>=>{
-            return new Promise<string>((resolve, reject) => {
-                console.log(result);
-                scene.setTimeout(() => {
-                    resolve("guess");
-                },1000);
-            });
-        };
-        gameController("start")
+        const gameController = this.DEBUG_PROMISE("gameController");
+        const appear = this.DEBUG_PROMISE("appear");
+        const shuffle = this.DEBUG_PROMISE("shuffle");
+        const guess = this.DEBUG_PROMISE("guess");
+
+        Promise.resolve()
+        .then(result => {return gameController(result)})
         .then(result => { return appear(result); })
         .then(result => { return shuffle(result); })
         .then(result => { return guess(result); })
-        .then(result => { console.log(result); })
+        ;
 
 
+    }
 
+    private DEBUG_PROMISE(key:string):Function{
+        const scene = this;
+        const debug = (result:string):Promise<string>=>{
+            return new Promise<string>((resolve, reject) => {
+                console.log(`* debug promise [${key}] = ${result}`);
+                scene.setTimeout(() => {
+                    resolve(key);
+                },1000);
+            });
+        }
+        return debug;
     }
 
     private shuffledChests(): ObjectEntity[] {
