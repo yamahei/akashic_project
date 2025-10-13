@@ -28,14 +28,14 @@ export class TitleScene extends g.Scene {
         scene.cleanup();
 
         //UI
-        const titleE = this.createTitleE();
-        scene.append(titleE);
+        const title = this.createTitleSprite();
+        scene.append(title);
 
         //watch
         scene.append(scene.createDigitalWatchE());
     }
 
-    private createTitleE():g.E{
+    private createTitleSprite():g.Sprite{
         const scene = this;
         const image = scene.asset.getImageById("image/Title_FindMeIfYouCan.png");
         const sprite = new g.Sprite({
@@ -48,11 +48,7 @@ export class TitleScene extends g.Scene {
         sprite.onPointDown.add((e)=>{
             scene.onGameStart.fire();
         });
-
-        const titleE = new g.E({ scene: scene });
-        titleE.append(sprite);
-
-        return titleE;
+        return sprite;
     }
 
     private createDigitalWatchE():g.E{

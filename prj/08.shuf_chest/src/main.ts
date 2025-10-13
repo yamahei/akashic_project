@@ -2,6 +2,7 @@ import { FONT_ASSET_PATH } from "./Consts";
 import { TitleScene } from "./TitleScene";
 import { GameScene } from "./GameScene";
 import { BonusScene } from "./BonusScene";
+import { ObjectEntity } from "../lib/ObjectEntity";
 
 const SCENESTATE_ACTIVE:g.SceneStateString = "active";
 
@@ -14,6 +15,8 @@ function main(param: g.GameMainParameterObject): void {
 }
 
 function createTitleScene(): TitleScene {
+	const chectSetting = ObjectEntity.getObjectSetting("chest_bright");
+	const chestPath = chectSetting.asset_path;
 	const titleScene =  new TitleScene({
 		game: g.game,
 		assetIds: [
@@ -21,6 +24,7 @@ function createTitleScene(): TitleScene {
 		],
 		assetPaths: [
 			...Object.values(FONT_ASSET_PATH),//要"es2017"
+			chestPath,
 		],
 	});
 	// titleScene.onLoad.add(() => {
@@ -41,10 +45,13 @@ function createTitleScene(): TitleScene {
 }
 
 function createGameScene(): GameScene {
+	const chectSetting = ObjectEntity.getObjectSetting("chest_bright");
+	const chestPath = chectSetting.asset_path;
 	const gameScene =  new GameScene({
 		game: g.game,
 		assetPaths: [
 			...Object.values(FONT_ASSET_PATH),//要"es2017"
+			chestPath,
 		],
 	});
 	// scene.onLoad.add(() => {
@@ -73,10 +80,13 @@ function createGameScene(): GameScene {
 }
 
 function createBonusScene(): BonusScene {
+	const chectSetting = ObjectEntity.getObjectSetting("chest_bright");
+	const chestPath = chectSetting.asset_path;
 	const bonusScene =  new BonusScene({
 		game: g.game,
 		assetPaths: [
 			...Object.values(FONT_ASSET_PATH),//要"es2017"
+			chestPath,
 		],
 	});
 	// bonusScene.onLoad.add(() => {

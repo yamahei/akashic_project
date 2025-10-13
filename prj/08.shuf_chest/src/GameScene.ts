@@ -1,5 +1,7 @@
 import { DigitalWatch, DigitalWatchParameter } from "../lib/DigitalWatch";
 import { FONT_ASSET_PATH, FONT_SIZE, GET_FONT_OBJECT161, WATCH_PARAMS } from "./Consts";
+import { ObjectEntity } from "../lib/ObjectEntity";
+import { ObjectFactory } from "../lib/ObjectFactory";
 
 export class GameScene extends g.Scene {
 
@@ -10,13 +12,38 @@ export class GameScene extends g.Scene {
     get OnFailedLevel(): g.Trigger<void>{ return this.onFailedLevel; }
 
     //
+    // private const HORIZONY = g.game.height / 2 - 32;
     private font161:g.BitmapFont;
+    private chests:ObjectEntity[];
 
     constructor(param: g.SceneParameterObject) {
         super(param);
-
+        const game = g.game;
         const scene = this;
+
+        //ゲーム制御変数の初期値
+    	game.vars.game = { selectable: null };
+        //フォント生成
         this.font161 = GET_FONT_OBJECT161(scene);
+        //宝箱作っておく
+        const objectParam:g.EParameterObject = {
+            scene: scene,
+            touchable: true,
+            y: game.height,//非表示,
+        };
+        const paramBright = { tag: "chest_bright", ...objectParam}
+        const paramDark = { tag: "chest_red", ...objectParam}
+        this.chests = [
+            ObjectFactory.getObjectObject("chest_bright", paramBright),
+            ObjectFactory.getObjectObject("chest_red", paramDark),
+            ObjectFactory.getObjectObject("chest_red", paramDark),
+            ObjectFactory.getObjectObject("chest_red", paramDark),
+            ObjectFactory.getObjectObject("chest_red", paramDark),
+        ];
+        this.chests.forEach((chest)=>{
+            scene.append(chest);
+            chest.setAction("open");
+        });
     }
 
     private cleanup():void{
@@ -34,6 +61,7 @@ export class GameScene extends g.Scene {
     
     public refresh(level: number): void {
 
+    	const game = g.game;
         const scene = this;
         scene.cleanup();
 
@@ -63,6 +91,8 @@ export class GameScene extends g.Scene {
         scene.append(levelLabel);
 
         //chests
+        const chests = this.shuffledChests();
+        console.log(chests.map(c=> c.tag).join(","));
 
         //watch
         scene.append(this.createDigitalWatchE());
@@ -70,11 +100,59 @@ export class GameScene extends g.Scene {
         /**
          * game
          */
-        //appear
-        //shuffle
-        //guess
+    	game.vars.game = { selectable: false };
+        const gameController = (result:string):Promise<string>=>{
+            return new Promise<string>((resolve, reject) => {
+                console.log(result);
+                scene.setTimeout(() => {
+                    resolve("gameController");
+                },1000);
+            });
+        };
+        const appear = (result:string):Promise<string>=>{
+            return new Promise<string>((resolve, reject) => {
+                console.log(result);
+                scene.setTimeout(() => {
+                    resolve("appear");
+                },1000);
+            });
+        };
+        const shuffle = (result:string):Promise<string>=>{
+            return new Promise<string>((resolve, reject) => {
+                console.log(result);
+                scene.setTimeout(() => {
+                    resolve("shuffle");
+                },1000);
+            });
+        };
+        const guess = (result:string):Promise<string>=>{
+            return new Promise<string>((resolve, reject) => {
+                console.log(result);
+                scene.setTimeout(() => {
+                    resolve("guess");
+                },1000);
+            });
+        };
+        gameController("start")
+        .then(result => { return appear(result); })
+        .then(result => { return shuffle(result); })
+        .then(result => { return guess(result); })
+        .then(result => { console.log(result); })
 
 
+
+    }
+
+    private shuffledChests(): ObjectEntity[] {
+        const chests = this.chests;
+        const orders = chests.map((c, i) => {
+            return {
+                index: i, chest: c,
+                order: g.game.random.generate(),
+            };
+        });
+        orders.sort((a, b)=>{  return a.order - b.order; });
+        return orders.map(o => o.chest);
     }
 
     private createDigitalWatchE():g.E{
