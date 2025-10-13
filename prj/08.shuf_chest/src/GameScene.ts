@@ -3,6 +3,14 @@ import { FONT_ASSET_PATH, FONT_SIZE, GET_FONT_OBJECT161, WATCH_PARAMS } from "./
 import { ObjectEntity } from "../lib/ObjectEntity";
 import { ObjectFactory } from "../lib/ObjectFactory";
 
+
+const HORIZONY = g.game.height / 2 - 32;
+
+const ANIMATION_MS = 5;
+const MAX_VERTICAL_SPEED = 16;
+const VERTICAL_ACCEL = 0.5;
+
+
 export class GameScene extends g.Scene {
 
     //ゲーム開始イベント
@@ -12,9 +20,8 @@ export class GameScene extends g.Scene {
     get OnFailedLevel(): g.Trigger<void>{ return this.onFailedLevel; }
 
     //
-    // private const HORIZONY = g.game.height / 2 - 32;
     private font161:g.BitmapFont;
-    private chests:ObjectEntity[];
+    private chestsE:g.E;
 
     constructor(param: g.SceneParameterObject) {
         super(param);
@@ -25,25 +32,6 @@ export class GameScene extends g.Scene {
     	game.vars.game = { selectable: null };
         //フォント生成
         this.font161 = GET_FONT_OBJECT161(scene);
-        //宝箱作っておく
-        const objectParam:g.EParameterObject = {
-            scene: scene,
-            touchable: true,
-            y: game.height,//非表示,
-        };
-        const paramBright = { tag: "chest_bright", ...objectParam}
-        const paramDark = { tag: "chest_red", ...objectParam}
-        this.chests = [
-            ObjectFactory.getObjectObject("chest_bright", paramBright),
-            ObjectFactory.getObjectObject("chest_red", paramDark),
-            ObjectFactory.getObjectObject("chest_red", paramDark),
-            ObjectFactory.getObjectObject("chest_red", paramDark),
-            ObjectFactory.getObjectObject("chest_red", paramDark),
-        ];
-        this.chests.forEach((chest)=>{
-            scene.append(chest);
-            chest.setAction("open");
-        });
     }
 
     private cleanup():void{
@@ -90,21 +78,21 @@ export class GameScene extends g.Scene {
         levelLabel.x = (g.game.width - levelLabel.width) / 2;
         scene.append(levelLabel);
 
-        //chests
-        const chests = this.shuffledChests();
-        console.log(chests.map(c=> c.tag).join(","));
-
         //watch
         scene.append(this.createDigitalWatchE());
+
+        //chests
+        const chestsE = this.chestsE = this.createChestsE();
+        scene.append(chestsE);
 
         /**
          * game
          */
     	game.vars.game = { selectable: false };
-        const gameController = this.DEBUG_PROMISE("gameController");
-        const appear = this.DEBUG_PROMISE("appear");
-        const shuffle = this.DEBUG_PROMISE("shuffle");
-        const guess = this.DEBUG_PROMISE("guess");
+        const gameController = this.getEmptyPromise("gameController");
+        const appear = this.getAppearPromise("appear");
+        const shuffle = this.getEmptyPromise("shuffle");
+        const guess = this.getEmptyPromise("guess");
 
         Promise.resolve()
         .then(result => {return gameController(result)})
@@ -115,30 +103,53 @@ export class GameScene extends g.Scene {
 
 
     }
+    getAppearPromise(key: string) {
+        const scene = this;
+        const chestsE = this.chestsE;
+        const promise = (result:string):Promise<string>=>{
+            chestsE.y = 0;
+            chestsE.modified();
+            let speed = 0.1;
+            return new Promise<string>((resolve, reject) => {
+                const animation = () => {
+                    scene.setTimeout(() => {
+                        if(chestsE.y < HORIZONY){
+                            speed += VERTICAL_ACCEL;
+                            if(speed > MAX_VERTICAL_SPEED) { speed = MAX_VERTICAL_SPEED };
+                            chestsE.y += speed;
+                            chestsE.modified();
+                            animation();//next
+                        }else{
+                            if(Math.floor(chestsE.y) == HORIZONY){
+                                chestsE.y = HORIZONY;
+                                chestsE.modified();
+                                resolve(key);//end
+                            }else{
+                                speed *= -0.55;
+                                chestsE.y = HORIZONY + speed;
+                                chestsE.modified();
+                                animation();//next
+                            }
+                        }
+                    }, ANIMATION_MS);
+                };
+                animation();
+            });
+        }
+        return promise;
+    }
 
-    private DEBUG_PROMISE(key:string):Function{
+    private getEmptyPromise(key:string):Function{
         const scene = this;
         const debug = (result:string):Promise<string>=>{
             return new Promise<string>((resolve, reject) => {
                 console.log(`* debug promise [${key}] = ${result}`);
                 scene.setTimeout(() => {
                     resolve(key);
-                },1000);
+                },300);
             });
         }
         return debug;
-    }
-
-    private shuffledChests(): ObjectEntity[] {
-        const chests = this.chests;
-        const orders = chests.map((c, i) => {
-            return {
-                index: i, chest: c,
-                order: g.game.random.generate(),
-            };
-        });
-        orders.sort((a, b)=>{  return a.order - b.order; });
-        return orders.map(o => o.chest);
     }
 
     private createDigitalWatchE():g.E{
@@ -153,6 +164,33 @@ export class GameScene extends g.Scene {
         const digitalWatchE = new g.E({ scene: scene });
         digitalWatchE.append(watch);
         return digitalWatchE;
+    }
+
+    private createChestsE():g.E{
+        const scene:g.Scene = this;
+        const game = scene.game;
+        const chestsE = new g.E({ scene: scene, y: game.height });//隠しておく
+        const objectParam:g.EParameterObject = {
+            scene: scene, touchable: true, y: 0
+        };
+        const paramBright = { tag: "chest_bright", ...objectParam}
+        const paramDark = { tag: "chest_red", ...objectParam}
+        const chests = [
+            ObjectFactory.getObjectObject("chest_bright", paramBright),
+            ObjectFactory.getObjectObject("chest_red", paramDark),
+            ObjectFactory.getObjectObject("chest_red", paramDark),
+            ObjectFactory.getObjectObject("chest_red", paramDark),
+            ObjectFactory.getObjectObject("chest_red", paramDark),
+        ];
+        this.shuffleArray(chests);
+
+        chests.forEach((chest, index)=>{
+            chest.x = (game.width / 2) + ((index - 2) * (game.width / 6)) - (chest.width / 2);
+            chestsE.append(chest);
+            chest.setAction("close");
+            // chest.setAction("open");
+        });
+        return chestsE;
     }
 
     private createBitMapFontGessMessage():g.Label {
@@ -181,5 +219,11 @@ export class GameScene extends g.Scene {
             font: this.font161,
         });
     };
+
+    private shuffleArray(array:any[]){
+        array.sort(()=>{
+            return g.game.random.generate() - g.game.random.generate();
+        });
+    }
 
 }
