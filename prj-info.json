@@ -1,0 +1,55 @@
+{
+  "./prj/00.hello-akashic/": [
+    "## typescript-game-sample",
+    "./prj/00.hello-akashic/README.html",
+    "./publish/00.hello-akashic/index.html",
+    "./prj/00.hello-akashic/screen.png"
+  ],
+  "./prj/01.collision_editor/": [
+    "./prj/01.collision_editor/index.html",
+    "#キャラクタの当たり判定領域作成ツール",
+    "./prj/01.collision_editor/README.html",
+    "./prj/01.collision_editor/screen.png"
+  ],
+  "./prj/02.lib_char_object/": [
+    "#キャラクタ制御クラスとサンプル",
+    "./prj/02.lib_char_object/README.html",
+    "./publish/02.lib_char_object/index.html",
+    "./prj/02.lib_char_object/screen.png"
+  ],
+  "./prj/03.lib_object_object/": [
+    "#オブジェクト制御クラスとサンプル",
+    "./prj/03.lib_object_object/README.html",
+    "./publish/03.lib_object_object/index.html",
+    "./prj/03.lib_object_object/screen.png"
+  ],
+  "./prj/04.mapchip_selector/": [
+    "./prj/04.mapchip_selector/index.html",
+    "#マップチップの選定と画像作成ツール",
+    "./prj/04.mapchip_selector/README.html",
+    "./prj/04.mapchip_selector/localhost_8080_index.html.source.png"
+  ],
+  "./prj/05.flexbox_css/": [
+    "./prj/05.flexbox_css/index.html",
+    "#Flexレイアウトだけを提供するCSS",
+    "./prj/05.flexbox_css/README.html",
+    "./prj/05.flexbox_css/screenshot.png"
+  ],
+  "./prj/06.digital_watch/": [
+    "#デジタル表示のBitmapFontとデジタル時計のクラス",
+    "./prj/06.digital_watch/README.html",
+    "./publish/06.digital_watch/index.html",
+    "./prj/06.digital_watch/digital-7.monoitalic.size48.red.bitmapfont.png"
+  ],
+  "./prj/07.message_box/": [
+    "#メッセージボックス（改行、送り機能付き）クラス",
+    "./prj/07.message_box/README.html",
+    "./publish/07.message_box/index.html",
+    "./prj/07.message_box/jfdotfont-sample-mplus.png"
+  ],
+  "./prj/08.shuf_chest/": [
+    "#[game]宝箱当てゲーム＆ウォッチ",
+    "./prj/08.shuf_chest/README.html",
+    "./publish/08.shuf_chest/index.html"
+  ]
+}
